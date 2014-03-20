@@ -3,6 +3,15 @@ package com.excilys.om;
 public class Company {
 	private long id;
 	private String name;
+	
+	public Company() {
+		super();
+	}
+	public Company(long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 	public long getId() {
 		return id;
 	}

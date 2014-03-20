@@ -9,6 +9,18 @@ public class Computer {
 	private Date discontinuted;
 	private long company_id;
 	
+	public Computer() {
+		super();
+	}
+	public Computer(long id, String name, Date introduced, Date discontinuted,
+			long company_id) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinuted = discontinuted;
+		this.company_id = company_id;
+	}
 	public long getId() {
 		return id;
 	}
@@ -38,6 +50,12 @@ public class Computer {
 	}
 	public void setCompany_id(long company_id) {
 		this.company_id = company_id;
+	}
+	@Override
+	public String toString() {
+		return "Computer [id=" + id + ", name=" + name + ", introduced="
+				+ introduced + ", discontinuted=" + discontinuted
+				+ ", company_id=" + company_id + "]";
 	}
 	
 	
