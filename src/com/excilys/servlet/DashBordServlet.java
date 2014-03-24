@@ -40,8 +40,18 @@ public class DashBordServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		if (request.getParameter("delete")!=null) {
+			DaoFactory.getComputerDao().deleteOne(Long.parseLong(request.getParameter("delete")));
+		}
+		List<Computer> computerList=null;
+		if (request.getParameter("search")!=null) {
+			computerList=ServiceFactory.getComputerService().getSearch(request.getParameter("search"));
+		}else{
+			computerList=ServiceFactory.getComputerService().getAll();
+		}
 		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
-		List<Computer> computerList=ServiceFactory.getComputerService().getAll();
+		
+		
 		//System.out.println(computerList);
 		Integer computerSize=ServiceFactory.getComputerService().getSize();
 		System.out.println(computerSize);

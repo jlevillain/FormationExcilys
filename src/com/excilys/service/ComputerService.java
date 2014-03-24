@@ -16,4 +16,5 @@ public interface ComputerService {
 	public boolean insertOne(Computer comp);
 	public boolean deleteOne(long id);
 	public boolean updateOne(Computer comp);
+	public List<Computer> getSearch(String search);
 }

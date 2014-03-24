@@ -31,8 +31,9 @@
 			<tbody>
 			
 				<c:forEach var="item" items="${computerList}">
-   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td></tr>
+   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td><td><a class="btn btn-danger" href="?delete=${item.id}">Delete</a></td></tr>
  				</c:forEach>
+ 				<!--  
 				<tr>
 					<td><a href="#" onclick="">ThinkPad T420</a></td>
 					<td>2011-01-01</td>
@@ -51,6 +52,7 @@
 					<td>2008-06-06</td>
 					<td>Apple</td>
 				</tr>
+				-->
 			</tbody>
 		</table>
 </section>

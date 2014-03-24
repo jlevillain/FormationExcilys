@@ -88,6 +88,37 @@ public class ComputerDao {
 		return liste;
 	
 	}
+	
+	public List<Computer> getSearch(String search) {
+		List<Computer> liste = new ArrayList<Computer>();
+		ResultSet rs = null;
+		Statement stmt = null;
+		Connection cn=DaoFactory.getConnection();
+		try {
+			stmt = cn.createStatement();
+			rs = stmt.executeQuery("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id where c.name LIKE '%"+search+"%';");
+			
+			while (rs.next()) {
+				Computer comp=new Computer();
+				comp.setId(rs.getLong(1));
+				comp.setName(rs.getString(2));
+				comp.setDiscontinued(rs.getDate(3));
+				comp.setIntroduced(rs.getDate(4));
+				Company company=new Company();
+				company.setId(rs.getLong(5));
+				company.setName(rs.getString(6));
+				comp.setCompany(company);
+				liste.add(comp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DaoFactory.closeConnection(cn, stmt, rs);
+		}
+		return liste;
+	}
+	
 	public int getSize() {
 		ResultSet rs = null;
 		Statement stmt = null;

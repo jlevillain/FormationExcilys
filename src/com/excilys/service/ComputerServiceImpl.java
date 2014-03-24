@@ -42,4 +42,8 @@ public class ComputerServiceImpl implements ComputerService {
 	public Computer getOne(long id) {
 		return DaoFactory.getComputerDao().getOne(id);
 	}
+	
+	public List<Computer> getSearch(String search) {
+		return DaoFactory.getComputerDao().getSearch(search);
+	}
 }

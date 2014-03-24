@@ -37,7 +37,7 @@
 			<div class="form-group">
 				<label for="company">Company Name:</label>
 				<div class="input-group">
-					<select name="company">
+					<select name="company" class="form-control">
 						<option value="null">--</option>
 						<c:forEach var="item" items="${companyList}">
 							<c:if test="${item.id==computer.company.id}">
