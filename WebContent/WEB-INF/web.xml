@@ -16,13 +16,27 @@
     <res-auth>Container</res-auth>
   </resource-ref>
   <servlet>
-  	<display-name></display-name>
-  	<servlet-name>DashBoard</servlet-name>
-  	<servlet-class>com.excilys.service.DashBordServlet</servlet-class>
+    <servlet-name>DashBoard</servlet-name>
+    <servlet-class>com.excilys.servlet.DashBordServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>DashBoard</servlet-name>
-  	<url-pattern>DashBoard</url-pattern>
+    <servlet-name>DashBoard</servlet-name>
+    <url-pattern>/DashBoard</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>UpdateComputer</servlet-name>
+    <servlet-class>com.excilys.servlet.UpdateComputerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateComputer</servlet-name>
+    <url-pattern>/UpdateComputer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddComputer</servlet-name>
+    <servlet-class>com.excilys.servlet.AddComputerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddComputer</servlet-name>
+    <url-pattern>/AddComputer</url-pattern>
+  </servlet-mapping>
 </web-app>

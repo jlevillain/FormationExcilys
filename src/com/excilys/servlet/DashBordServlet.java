@@ -1,4 +1,4 @@
-package com.excilys.service;
+package com.excilys.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,14 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.dao.ComputerDao;
+import com.excilys.dao.DaoFactory;
 import com.excilys.om.Computer;
+import com.excilys.service.ComputerService;
+import com.excilys.service.ServiceFactory;
 
 /**
  * Servlet implementation class DashBordServlet
  */
 @WebServlet("/DashBordServlet")
 public class DashBordServlet extends HttpServlet {
+	Logger logger = LoggerFactory.getLogger(DashBordServlet.class);
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -33,9 +40,14 @@ public class DashBordServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher disp=getServletContext().getRequestDispatcher("/dashboard.jsp");
-		List<Computer> computerList=ComputerDao.getComputerDao().getAll();
+		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
+		List<Computer> computerList=ServiceFactory.getComputerService().getAll();
+		//System.out.println(computerList);
+		Integer computerSize=ServiceFactory.getComputerService().getSize();
+		System.out.println(computerSize);
 		request.setAttribute("computerList",computerList);
+		request.setAttribute("computerSize", computerSize);
+		logger.debug("coucou");
 		disp.forward(request, response);
 	}
 

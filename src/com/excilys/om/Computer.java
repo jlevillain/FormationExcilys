@@ -6,20 +6,20 @@ public class Computer {
 	private long id;
 	private String name;
 	private Date introduced;
-	private Date discontinuted;
-	private long company_id;
+	private Date discontinued;
+	private Company company;
 	
 	public Computer() {
 		super();
 	}
-	public Computer(long id, String name, Date introduced, Date discontinuted,
-			long company_id) {
+	public Computer(long id, String name, Date introduced, Date discontinued,
+			Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
-		this.discontinuted = discontinuted;
-		this.company_id = company_id;
+		this.discontinued = discontinued;
+		this.company = company;
 	}
 	public long getId() {
 		return id;
@@ -39,23 +39,37 @@ public class Computer {
 	public void setIntroduced(Date introduced) {
 		this.introduced = introduced;
 	}
-	public Date getDiscontinuted() {
-		return discontinuted;
+	public Date getDiscontinued() {
+		return discontinued;
 	}
-	public void setDiscontinuted(Date discontinuted) {
-		this.discontinuted = discontinuted;
+	public void setDiscontinued(Date discontinued) {
+		this.discontinued = discontinued;
 	}
-	public long getCompany_id() {
-		return company_id;
+	public Company getCompany() {
+		return company;
 	}
-	public void setCompany_id(long company_id) {
-		this.company_id = company_id;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced="
-				+ introduced + ", discontinuted=" + discontinuted
-				+ ", company_id=" + company_id + "]";
+				+ introduced + ", discontinued=" + discontinued
+				+ ", company=" + company + "]\n";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Computer))
+			return false;
+		Computer other = (Computer) obj;
+		if (id==other.id)
+			return false;
+		return true;
 	}
 	
 	

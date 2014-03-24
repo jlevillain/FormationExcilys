@@ -1,19 +1,21 @@
 <jsp:include page="include/header.jsp" />
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <section id="main">
-	<h1 id="homeTitle">456 Computers found</h1>
+	<h1 id="homeTitle"><!--  456-->${computerSize} Computers found</h1>
 	<div id="actions">
-		<form action="" method="GET">
-			<input type="search" id="searchbox" name="search"
-				value="" placeholder="Search name">
-			<input type="submit" id="searchsubmit"
-				value="Filter by name"
-				class="btn primary">
+		<form class="form-inline" action="" method="GET">
+				<input class="form-control" type="search" id="searchbox" name="search"
+					value="" placeholder="Search name">
+				<input type="submit" id="searchsubmit"
+					value="Filter by name"
+					class="btn btn-primary">
+			
 		</form>
-		<a class="btn success" id="add" href="addComputer.jsp">Add Computer</a>
+		<a class="btn btn-success" id="add" href="AddComputer">Add Computer</a>
 	</div>
 
-		<table class="computers zebra-striped">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
@@ -27,7 +29,10 @@
 				</tr>
 			</thead>
 			<tbody>
-
+			
+				<c:forEach var="item" items="${computerList}">
+   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td></tr>
+ 				</c:forEach>
 				<tr>
 					<td><a href="#" onclick="">ThinkPad T420</a></td>
 					<td>2011-01-01</td>

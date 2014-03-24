@@ -28,6 +28,20 @@ public class Company {
 	public String toString() {
 		return "Company [id=" + id + ", name=" + name + "]";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Company))
+			return false;
+		Company other = (Company) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 	
 }

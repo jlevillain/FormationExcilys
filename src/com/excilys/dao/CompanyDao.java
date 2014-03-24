@@ -1,26 +1,26 @@
 package com.excilys.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.excilys.om.Company;
 
+
 public class CompanyDao {
+	Logger logger = LoggerFactory.getLogger(CompanyDao.class);
 	private static CompanyDao companyDao=null;
 	public CompanyDao() {
 		
 	}
 	
-	public static CompanyDao getCompanyDao() {
+	public static CompanyDao getInstance() {
 		if (companyDao==null) {
 			companyDao=new CompanyDao();
 		}
@@ -28,7 +28,28 @@ public class CompanyDao {
 	}
 
 	
-
+	public Company getOne(long id) {
+		Connection cn=DaoFactory.getConnection();
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		Company comp =null;
+		try {
+			stmt =cn.prepareStatement("SELECT id,name FROM company where id=?;");
+			stmt.setLong(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				comp = new Company();
+				comp.setId(rs.getLong(1));
+				comp.setName(rs.getString(2));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DaoFactory.closeConnection(cn, stmt, rs);
+		}
+		return comp;
+	}
 
 	
 	public List<Company> getAll() {
@@ -49,19 +70,7 @@ public class CompanyDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				if (rs != null)
-
-					rs.close();
-
-				if (stmt != null)
-
-					stmt.close();
-
-				if (cn != null)
-					cn.close();
-			} catch (SQLException e) {
-			}
+			DaoFactory.closeConnection(cn, stmt, rs);
 		}
 
 		return liste;
