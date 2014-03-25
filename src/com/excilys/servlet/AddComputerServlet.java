@@ -57,9 +57,20 @@ public class AddComputerServlet extends HttpServlet {
 		try {
 			Computer comp=new Computer();
 			comp.setName(request.getParameter("name"));
-			SimpleDateFormat format=new SimpleDateFormat("YYYY-MM-DD");
-			Date introduced = format.parse(request.getParameter("introducedDate"));
-			Date discontinued = format.parse(request.getParameter("discontinuedDate"));
+			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+			Date introduced, discontinued;
+			if(request.getParameter("introducedDate").equals("")) {
+				introduced=null;
+			}else {
+				introduced = format.parse(request.getParameter("introducedDate"));
+			}
+			if(request.getParameter("discontinuedDate").equals("")) {
+				discontinued =null;
+			}else {
+				discontinued = format.parse(request.getParameter("discontinuedDate"));
+			}
+			logger.debug(""+request.getParameter("introducedDate")+request.getParameter("discontinuedDate"));
+			logger.debug(""+introduced+discontinued);
 			comp.setIntroduced(introduced);
 			comp.setDiscontinued(discontinued);
 			

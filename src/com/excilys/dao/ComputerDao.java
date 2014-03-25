@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
+import com.sun.org.apache.bcel.internal.generic.Type;
+
 import java.sql.Date;
 public class ComputerDao {
 	Logger logger = LoggerFactory.getLogger(ComputerDao.class);
@@ -41,8 +45,8 @@ public class ComputerDao {
 				comp=new Computer();
 				comp.setId(rs.getLong(1));
 				comp.setName(rs.getString(2));
-				comp.setDiscontinued(rs.getDate(3));
-				comp.setIntroduced(rs.getDate(4));
+				comp.setIntroduced(rs.getDate(3));
+				comp.setDiscontinued(rs.getDate(4));
 				Company company=new Company();
 				company.setId(rs.getLong(5));
 				company.setName(rs.getString(6));
@@ -71,8 +75,40 @@ public class ComputerDao {
 				Computer comp=new Computer();
 				comp.setId(rs.getLong(1));
 				comp.setName(rs.getString(2));
-				comp.setDiscontinued(rs.getDate(3));
-				comp.setIntroduced(rs.getDate(4));
+				comp.setIntroduced(rs.getDate(3));
+				comp.setDiscontinued(rs.getDate(4));
+				Company company=new Company();
+				company.setId(rs.getLong(5));
+				company.setName(rs.getString(6));
+				comp.setCompany(company);
+				liste.add(comp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DaoFactory.closeConnection(cn, stmt, rs);
+		}
+		return liste;
+	
+	}
+	
+	public List<Computer> getAll(int begin, int end) {
+		List<Computer> liste = new ArrayList<Computer>();
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		Connection cn=DaoFactory.getConnection();
+		try {
+			stmt = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id BETWEEN ? AND ?;");
+			stmt.setInt(1, begin);
+			stmt.setInt(2, end);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Computer comp=new Computer();
+				comp.setId(rs.getLong(1));
+				comp.setName(rs.getString(2));
+				comp.setIntroduced(rs.getDate(3));
+				comp.setDiscontinued(rs.getDate(4));
 				Company company=new Company();
 				company.setId(rs.getLong(5));
 				company.setName(rs.getString(6));
@@ -146,11 +182,27 @@ public class ComputerDao {
 			stmt = cn.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? where id=?");
 			//stmt.setLong(1, comp.getId());
 			stmt.setString(1, comp.getName());
-			Date introduced=new Date(comp.getIntroduced().getTime());
-			Date discontinued=new Date(comp.getDiscontinued().getTime());
-			stmt.setDate(2, introduced);
-			stmt.setDate(3, discontinued);
-			stmt.setLong(4, comp.getCompany().getId());
+			Date introduced=null;
+			Date discontinued=null;
+
+			if(comp.getIntroduced()==null) {
+				stmt.setObject(2, Types.NULL);
+			}else {
+				introduced=new Date(comp.getIntroduced().getTime());
+				stmt.setObject(2, introduced);
+			}
+			if (comp.getDiscontinued()==null) {
+				stmt.setObject(3, Types.NULL);
+			}else {
+				discontinued=new Date(comp.getDiscontinued().getTime());
+				stmt.setDate(3, discontinued);
+				
+			}
+			if (comp.getCompany()!=null) {
+				stmt.setLong(4, comp.getCompany().getId());
+			}else {
+				stmt.setNull(4, java.sql.Types.NULL);
+			}
 			stmt.setLong(5, comp.getId());
 			rs= stmt.executeUpdate();
 			logger.debug("count"+rs);
@@ -170,11 +222,28 @@ public class ComputerDao {
 			stmt = cn.prepareStatement("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?);");
 			//stmt.setLong(1, comp.getId());
 			stmt.setString(1, comp.getName());
-			Date introduced=new Date(comp.getIntroduced().getTime());
-			Date discontinued=new Date(comp.getDiscontinued().getTime());
-			stmt.setDate(2, introduced);
-			stmt.setDate(3, discontinued);
-			stmt.setLong(4, comp.getCompany().getId());
+			Date introduced=null;
+			Date discontinued=null;
+			
+			if(comp.getIntroduced()==null) {
+				stmt.setObject(2, Types.NULL);
+			}else {
+				introduced=new Date(comp.getIntroduced().getTime());
+				stmt.setObject(2, introduced);
+			}
+			if (comp.getDiscontinued()==null) {
+				stmt.setObject(3, Types.NULL);
+			}else {
+				discontinued=new Date(comp.getDiscontinued().getTime());
+				stmt.setDate(3, discontinued);
+				
+			}		
+		
+			if (comp.getCompany()!=null) {
+				stmt.setLong(4, comp.getCompany().getId());
+			}else {
+				stmt.setNull(4, java.sql.Types.NULL);
+			}
 			rs= stmt.executeUpdate();
 
 		} catch (Exception e) {

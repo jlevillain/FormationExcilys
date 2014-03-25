@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class Computer {
 	private long id;
-	private String name;
-	private Date introduced;
-	private Date discontinued;
-	private Company company;
+	private String name=null;
+	private Date introduced=null;
+	private Date discontinued=null;
+	private Company company=null;
 	
 	public Computer() {
 		super();

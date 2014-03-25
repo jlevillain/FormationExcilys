@@ -61,13 +61,31 @@ public class UpdateComputerServlet extends HttpServlet {
 		try {
 			Computer comp=new Computer();
 			comp.setId(Long.parseLong(request.getParameter("id")));
+			
 			comp.setName(request.getParameter("name"));
+			/*
 			SimpleDateFormat format=new SimpleDateFormat("YYYY-MM-DD");
 			Date introduced = format.parse(request.getParameter("introducedDate"));
 			Date discontinued = format.parse(request.getParameter("discontinuedDate"));
 			comp.setIntroduced(introduced);
 			comp.setDiscontinued(discontinued);
-			
+			*/
+			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+			Date introduced=null;
+			Date discontinued=null;
+			if(request.getParameter("introducedDate").equals("")) {
+				introduced=null;
+			}else {
+				introduced = format.parse(request.getParameter("introducedDate"));
+			}
+			if(request.getParameter("discontinuedDate").equals("")) {
+				discontinued =null;
+			}else {
+				discontinued = format.parse(request.getParameter("discontinuedDate"));
+			}
+			logger.debug(""+discontinued+introduced);
+			comp.setIntroduced(introduced);
+			comp.setDiscontinued(discontinued);
 			Company company=new Company();
 			if (request.getParameter("company").equals("null")) {
 				comp.setCompany(null);

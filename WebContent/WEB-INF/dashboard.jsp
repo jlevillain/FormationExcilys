@@ -55,6 +55,20 @@
 				-->
 			</tbody>
 		</table>
+		<ul class="pagination">
+			<li><a href="#">&laquo;</a></li>
+			<c:forEach var="nombre" begin="" end="">
+				<li><a href="#">1</a></li>
+			</c:forEach>
+ 			 <
+  			
+  			<li><a href="#">2</a></li>
+  			<li><a href="#">3</a></li>
+  			<li><a href="#">4</a></li>
+  			<li><a href="#">5</a></li>
+  			<li><a href="#">&raquo;</a></li>
+</ul>
+		
 </section>
 
 <jsp:include page="include/footer.jsp" />
