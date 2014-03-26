@@ -68,7 +68,7 @@ $(function() {
 			<c:if test="${computer==null}"><input type="submit" value="Add" class="btn btn-primary"></c:if>
 			<c:if test="${computer!=null}"><input type="submit" value="Edit" class="btn btn-primary"></c:if>
 			
-			or <a href="DashBoard" class="btn btn-default">Cancel</a>
+			or <a onclick="history.back()" class="btn btn-default">Cancel</a>
 		</div>
 		</fieldset>
 	</form>

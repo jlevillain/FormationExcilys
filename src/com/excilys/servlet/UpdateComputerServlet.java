@@ -96,11 +96,10 @@ public class UpdateComputerServlet extends HttpServlet {
 			
 			logger.debug("dzead"+comp.toString());
 			ServiceFactory.getComputerService().updateOne(comp);
-			response.sendRedirect("DashBoard");
+			response.sendRedirect("");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			response.sendRedirect("AddComputer");
 		}
 		
 	}

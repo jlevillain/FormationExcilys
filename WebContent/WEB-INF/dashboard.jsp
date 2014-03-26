@@ -1,12 +1,16 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <section id="main">
 	<h1 id="homeTitle"><!--  456-->${computerSize} Computers found</h1>
 	<div id="actions">
-		<form class="form-inline" action="" method="GET">
+		<form class="form-inline" action="?page=1&" method="GET">
 				<input class="form-control" type="search" id="searchbox" name="search"
-					value="" placeholder="Search name">
+					value="${param.search}" placeholder="Search name">
+				<input type="hidden" name="page" value="1">
+				<input type="hidden" name="orderBy" value="${param.orderBy}">
+				<input type="hidden" name="isDesc" value="${param.isDesc}">
 				<input type="submit" id="searchsubmit"
 					value="Filter by name"
 					class="btn btn-primary">
@@ -20,18 +24,18 @@
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
-					<th>Computer Name</th>
-					<th>Introduced Date</th>
+					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="2" isDesc="${(param.isDesc=='false')?'true':'false'}">Computer Name</tags:url></th>
+					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="3" isDesc="${(param.isDesc=='false')?'true':'false'}">Introduced Date</tags:url></th>
 					<!-- Table header for Discontinued Date -->
-					<th>Discontinued Date</th>
+					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="4" isDesc="${(param.isDesc=='false')?'true':'false'}">Discontinued Date</tags:url></th>
 					<!-- Table header for Company -->
-					<th>Company</th>
+					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="5" isDesc="${(param.isDesc=='false')?'true':'false'}">Company</tags:url></th>
 				</tr>
 			</thead>
 			<tbody>
 			
 				<c:forEach var="item" items="${computerList}">
-   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td><td><a class="btn btn-danger" href="?delete=${item.id}">Delete</a></td></tr>
+   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td><td><a class="btn btn-danger" href="DeleteComputer?delete=${item.id}">Delete</a></td></tr>
  				</c:forEach>
  				<!--  
 				<tr>
@@ -55,19 +59,12 @@
 				-->
 			</tbody>
 		</table>
-		<ul class="pagination">
-			<li><a href="#">&laquo;</a></li>
-			<c:forEach var="nombre" begin="" end="">
-				<li><a href="#">1</a></li>
-			</c:forEach>
- 			 <
-  			
-  			<li><a href="#">2</a></li>
-  			<li><a href="#">3</a></li>
-  			<li><a href="#">4</a></li>
-  			<li><a href="#">5</a></li>
-  			<li><a href="#">&raquo;</a></li>
-</ul>
+		
+		<fmt:formatNumber var="nbPages" value="${computerSize/10}"  maxFractionDigits="0" />
+		<c:if test="${(computerSize/10)-nbPages > 0}">
+			<c:set var="nbPages" value="${nbPages+1}"></c:set>
+		</c:if>
+		<tags:pagination begin="1" end="${nbPages}" interval="3" page="${param.page }" search="${param.search}" orderBy="${param.orderBy}" isDesc="${param.isDesc}"></tags:pagination>
 		
 </section>
 

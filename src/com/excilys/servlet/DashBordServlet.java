@@ -40,21 +40,41 @@ public class DashBordServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if (request.getParameter("delete")!=null) {
-			DaoFactory.getComputerDao().deleteOne(Long.parseLong(request.getParameter("delete")));
-		}
+		
 		List<Computer> computerList=null;
-		if (request.getParameter("search")!=null) {
-			computerList=ServiceFactory.getComputerService().getSearch(request.getParameter("search"));
-		}else{
+		Integer computerSize;
+		
+		String search=request.getParameter("search");
+		if (search==null) {
+			search="";
+		}
+		computerSize=ServiceFactory.getComputerService().getSize(search);
+		int nbPage=1;
+		if (request.getParameter("page")!=null && (!request.getParameter("page").equals(""))) {
+			nbPage=Integer.parseInt(request.getParameter("page"));
+		}
+		int orderBy=2;
+		if (request.getParameter("orderBy")!=null && (!request.getParameter("orderBy").equals(""))) {
+			orderBy=Integer.parseInt(request.getParameter("orderBy"));
+		}
+		boolean asc=true;
+		if (request.getParameter("isDesc")!=null && (request.getParameter("isDesc").equals("true"))) {
+			asc=false;
+		}else {
+			asc=true;
+		}
+		logger.debug(""+asc);
+		computerList=DaoFactory.getComputerDao().getAll(search, ((nbPage-1)*10), 10,orderBy,asc);
+		/*
+		if(request.getParameter("page")==null && request.getParameter("search")==null) {
 			computerList=ServiceFactory.getComputerService().getAll();
 		}
+		*/
 		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
 		
 		
 		//System.out.println(computerList);
-		Integer computerSize=ServiceFactory.getComputerService().getSize();
-		System.out.println(computerSize);
+		
 		request.setAttribute("computerList",computerList);
 		request.setAttribute("computerSize", computerSize);
 		logger.debug("coucou");

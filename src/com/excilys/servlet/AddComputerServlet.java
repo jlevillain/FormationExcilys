@@ -84,11 +84,10 @@ public class AddComputerServlet extends HttpServlet {
 			
 			logger.debug(comp.toString());
 			ServiceFactory.getComputerService().insertOne(comp);
-			response.sendRedirect("DashBoard");
+			response.sendRedirect("");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			response.sendRedirect("AddComputer");
 		}
 		
 		

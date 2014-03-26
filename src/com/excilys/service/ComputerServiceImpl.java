@@ -23,6 +23,9 @@ public class ComputerServiceImpl implements ComputerService {
 		return DaoFactory.getComputerDao().getSize();
 	}
 	
+	public int getSize(String search) {
+		return DaoFactory.getComputerDao().getSize(search);
+	}
 	public boolean insertOne(Computer comp) {
 		return DaoFactory.getComputerDao().insertOne(comp);
 	}
@@ -46,4 +49,18 @@ public class ComputerServiceImpl implements ComputerService {
 	public List<Computer> getSearch(String search) {
 		return DaoFactory.getComputerDao().getSearch(search);
 	}
+	public List<Computer> getAll(int begin, int end) {
+		return DaoFactory.getComputerDao().getAll(begin, end);
+	}
+	public List<Computer> getAll(String search, int begin, int number) {
+		return DaoFactory.getComputerDao().getAll(search,begin, number);
+	}
+	public List<Computer> getAll(String search, int begin,int number, int order) {
+		return DaoFactory.getComputerDao().getAll(search,begin, number,order);
+	}
+	
+	public List<Computer> getAll(String search, int begin,int number, int order, boolean asc) {
+		return DaoFactory.getComputerDao().getAll(search,begin, number,order,asc);
+	}
+	
 }

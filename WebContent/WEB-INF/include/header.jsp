@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +21,8 @@
 <body>
 	<header class="navbar navbar-inverse">
 		<h1 class="fill">
-			<a href="DashBoard"> Application - Computer Database </a>
+		<tags:url servlet="DashBoard"> Application - Computer Database </tags:url></li>
+			
+			<!-- <a href="DashBoard?search=&page=1"> Application - Computer Database </a> -->
 		</h1>
 	</header>
