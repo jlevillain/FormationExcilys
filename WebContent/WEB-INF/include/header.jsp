@@ -16,9 +16,10 @@
 <script src="js/jquery.validate.js"></script>
 <script src="js/additional-methods.js"></script>
 <script src="js/jquery-ui-1.10.4.custom.js"></script>
-
+<script src="js/main.js"></script>
 </head>
 <body>
+	
 	<header class="navbar navbar-inverse">
 		<h1 class="fill">
 		<tags:url servlet="DashBoard"> Application - Computer Database </tags:url></li>
@@ -26,3 +27,4 @@
 			<!-- <a href="DashBoard?search=&page=1"> Application - Computer Database </a> -->
 		</h1>
 	</header>
+	

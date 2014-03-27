@@ -329,7 +329,7 @@ public class ComputerDao {
 			}
 			stmt.setLong(5, comp.getId());
 			rs= stmt.executeUpdate();
-			logger.debug("count"+rs);
+			logger.debug("updateone nbLigne modify"+rs);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -369,7 +369,7 @@ public class ComputerDao {
 				stmt.setNull(4, java.sql.Types.NULL);
 			}
 			rs= stmt.executeUpdate();
-
+			logger.debug("insertOne nbLigne modify"+rs);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

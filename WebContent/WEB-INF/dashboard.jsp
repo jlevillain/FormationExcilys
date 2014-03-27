@@ -29,13 +29,13 @@
 					<!-- Table header for Discontinued Date -->
 					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="4" isDesc="${(param.isDesc=='false')?'true':'false'}">Discontinued Date</tags:url></th>
 					<!-- Table header for Company -->
-					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="5" isDesc="${(param.isDesc=='false')?'true':'false'}">Company</tags:url></th>
+					<th><tags:url servlet="DashBoard" page="${param.page}" search="${param.search}" orderBy="6" isDesc="${(param.isDesc=='false')?'true':'false'}">Company</tags:url></th>
 				</tr>
 			</thead>
 			<tbody>
 			
 				<c:forEach var="item" items="${computerList}">
-   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td><td><a class="btn btn-danger" href="DeleteComputer?delete=${item.id}">Delete</a></td></tr>
+   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td><td><a class="btn btn-danger" onclick="deleteComputer('DeleteComputer?delete=${item.id}')">Delete</a></td></tr>
  				</c:forEach>
  				<!--  
 				<tr>

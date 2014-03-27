@@ -15,10 +15,11 @@ $(function() {
 });
 </script>
 <section id="main">
-
+  	
 	<h1><c:if test="${computer==null}">Add Computer</c:if>
 		<c:if test="${computer!=null}">Edit Computer</c:if>
 	</h1>
+	<div class="container">
 	<c:if test="${computer==null}"><form id="signupForm" class="form-horizontal" action="AddComputer" method="POST"></c:if>
 	<c:if test="${computer!=null}"><form id="signupForm" class="form-horizontal" action="UpdateComputer" method="POST">
 		<input type="hidden" name="id" value="${computer.id }"/>
@@ -72,6 +73,7 @@ $(function() {
 		</div>
 		</fieldset>
 	</form>
+	</div>
 </section>
 
 <jsp:include page="include/footer.jsp" />
