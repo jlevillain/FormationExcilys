@@ -43,42 +43,44 @@ public class DashBordServlet extends HttpServlet {
 		
 		List<Computer> computerList=null;
 		Integer computerSize;
-		
-		String search=request.getParameter("search");
-		if (search==null) {
-			search="";
+		try {
+			String search=request.getParameter("search");
+			if (search==null) {
+				search="";
+			}
+			computerSize=ServiceFactory.getComputerService().getSize(search);
+			int nbPage=1;
+			if (request.getParameter("page")!=null && (!request.getParameter("page").equals(""))) {
+				nbPage=Integer.parseInt(request.getParameter("page"));
+			}
+			int orderBy=2;
+			if (request.getParameter("orderBy")!=null && (!request.getParameter("orderBy").equals(""))) {
+				orderBy=Integer.parseInt(request.getParameter("orderBy"));
+			}
+			boolean asc=true;
+			if (request.getParameter("isDesc")!=null && (request.getParameter("isDesc").equals("true"))) {
+				asc=false;
+			}else {
+				asc=true;
+			}
+			logger.debug(""+asc);
+			computerList=DaoFactory.getComputerDao().getAll(search, ((nbPage-1)*10), 10,orderBy,asc);
+			/*
+			if(request.getParameter("page")==null && request.getParameter("search")==null) {
+				computerList=ServiceFactory.getComputerService().getAll();
+			}
+			*/
+			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
+			
+			
+			//System.out.println(computerList);
+			
+			request.setAttribute("computerList",computerList);
+			request.setAttribute("computerSize", computerSize);
+			disp.forward(request, response);
+		}catch(NumberFormatException e) {
+			logger.debug("NumberFormatException "+e.getStackTrace());
 		}
-		computerSize=ServiceFactory.getComputerService().getSize(search);
-		int nbPage=1;
-		if (request.getParameter("page")!=null && (!request.getParameter("page").equals(""))) {
-			nbPage=Integer.parseInt(request.getParameter("page"));
-		}
-		int orderBy=2;
-		if (request.getParameter("orderBy")!=null && (!request.getParameter("orderBy").equals(""))) {
-			orderBy=Integer.parseInt(request.getParameter("orderBy"));
-		}
-		boolean asc=true;
-		if (request.getParameter("isDesc")!=null && (request.getParameter("isDesc").equals("true"))) {
-			asc=false;
-		}else {
-			asc=true;
-		}
-		logger.debug(""+asc);
-		computerList=DaoFactory.getComputerDao().getAll(search, ((nbPage-1)*10), 10,orderBy,asc);
-		/*
-		if(request.getParameter("page")==null && request.getParameter("search")==null) {
-			computerList=ServiceFactory.getComputerService().getAll();
-		}
-		*/
-		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
-		
-		
-		//System.out.println(computerList);
-		
-		request.setAttribute("computerList",computerList);
-		request.setAttribute("computerSize", computerSize);
-		logger.debug("coucou");
-		disp.forward(request, response);
 	}
 
 	/**

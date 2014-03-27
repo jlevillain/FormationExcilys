@@ -42,15 +42,22 @@ public class UpdateComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
-		long id=Long.parseLong(request.getParameter("id"));
-		Computer comp=DaoFactory.getComputerDao().getOne(id);
 		
-		List<Company> companyList=DaoFactory.getCompanyDao().getAll(); 
-		logger.debug(""+companyList);
-		request.setAttribute("companyList", companyList);
-		request.setAttribute("computer", comp);
-		disp.forward(request, response);
+		try {
+			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
+			long id=Long.parseLong(request.getParameter("id"));
+		
+			Computer comp=DaoFactory.getComputerDao().getOne(id);
+			
+			List<Company> companyList=DaoFactory.getCompanyDao().getAll(); 
+			logger.debug(""+companyList);
+			request.setAttribute("companyList", companyList);
+			request.setAttribute("computer", comp);
+			disp.forward(request, response);
+		}catch (NumberFormatException e) {
+			logger.debug("id not long");
+			response.sendRedirect("");
+		}
 	}
 
 	/**
@@ -58,50 +65,54 @@ public class UpdateComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		try {
-			Computer comp=new Computer();
-			comp.setId(Long.parseLong(request.getParameter("id")));
-			
-			comp.setName(request.getParameter("name"));
-			/*
-			SimpleDateFormat format=new SimpleDateFormat("YYYY-MM-DD");
-			Date introduced = format.parse(request.getParameter("introducedDate"));
-			Date discontinued = format.parse(request.getParameter("discontinuedDate"));
-			comp.setIntroduced(introduced);
-			comp.setDiscontinued(discontinued);
-			*/
-			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-			Date introduced=null;
-			Date discontinued=null;
-			if(request.getParameter("introducedDate").equals("")) {
-				introduced=null;
-			}else {
-				introduced = format.parse(request.getParameter("introducedDate"));
+		if (request.getParameter("id")!=null && request.getParameter("name")!=null 
+				&& ! request.getParameter("name").equals("") &&request.getParameter("introducedDate")!=null
+				&& request.getParameter("discontinuedDate")!=null && request.getParameter("company")!=null) {
+			try {
+				Computer comp=new Computer();
+				comp.setId(Long.parseLong(request.getParameter("id")));
+				comp.setName(request.getParameter("name"));
+				/*
+				SimpleDateFormat format=new SimpleDateFormat("YYYY-MM-DD");
+				Date introduced = format.parse(request.getParameter("introducedDate"));
+				Date discontinued = format.parse(request.getParameter("discontinuedDate"));
+				comp.setIntroduced(introduced);
+				comp.setDiscontinued(discontinued);
+				*/
+				SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+				Date introduced=null;
+				Date discontinued=null;
+				if(request.getParameter("introducedDate").equals("")) {
+					introduced=null;
+				}else {
+					introduced = format.parse(request.getParameter("introducedDate"));
+				}
+				if(request.getParameter("discontinuedDate").equals("")) {
+					discontinued =null;
+				}else {
+					discontinued = format.parse(request.getParameter("discontinuedDate"));
+				}
+				logger.debug(""+discontinued+introduced);
+				comp.setIntroduced(introduced);
+				comp.setDiscontinued(discontinued);
+				Company company=new Company();
+				if (request.getParameter("company").equals("null")) {
+					comp.setCompany(null);
+				}else {
+					company.setId(Integer.parseInt(request.getParameter("company")));
+					comp.setCompany(company);
+				}
+				
+				logger.debug("Computer "+comp.toString());
+				ServiceFactory.getComputerService().updateOne(comp);
+				response.sendRedirect("");
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				logger.debug("NumberFormatException "+e.getStackTrace());
+			}catch (ParseException e) {
+				logger.debug("ParseException "+e.getStackTrace());
 			}
-			if(request.getParameter("discontinuedDate").equals("")) {
-				discontinued =null;
-			}else {
-				discontinued = format.parse(request.getParameter("discontinuedDate"));
-			}
-			logger.debug(""+discontinued+introduced);
-			comp.setIntroduced(introduced);
-			comp.setDiscontinued(discontinued);
-			Company company=new Company();
-			if (request.getParameter("company").equals("null")) {
-				comp.setCompany(null);
-			}else {
-				company.setId(Integer.parseInt(request.getParameter("company")));
-				comp.setCompany(company);
-			}
-			
-			logger.debug("dzead"+comp.toString());
-			ServiceFactory.getComputerService().updateOne(comp);
-			response.sendRedirect("");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		
 	}
 
 }

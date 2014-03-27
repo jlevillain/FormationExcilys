@@ -19,7 +19,9 @@
 <script src="js/main.js"></script>
 </head>
 <body>
-	
+	<noscript>
+		<h1>Our site Work Better with JavaScript</h1> 
+	</noscript>
 	<header class="navbar navbar-inverse">
 		<h1 class="fill">
 		<tags:url servlet="DashBoard"> Application - Computer Database </tags:url></li>

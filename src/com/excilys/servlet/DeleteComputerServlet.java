@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.dao.ComputerDao;
 import com.excilys.dao.DaoFactory;
 
 /**
@@ -15,6 +19,7 @@ import com.excilys.dao.DaoFactory;
  */
 
 public class DeleteComputerServlet extends HttpServlet {
+	Logger logger = LoggerFactory.getLogger(DeleteComputerServlet.class);
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -26,12 +31,18 @@ public class DeleteComputerServlet extends HttpServlet {
     }
 
 	/**
+	 * @throws IOException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		if (request.getParameter("delete")!=null) {
-			DaoFactory.getComputerDao().deleteOne(Long.parseLong(request.getParameter("delete")));
+			try {
+				long id=Long.parseLong(request.getParameter("delete"));
+				DaoFactory.getComputerDao().deleteOne(id);
+			}catch(NumberFormatException except) {
+				logger.debug(""+except.getStackTrace());
+			}
 		}
 		response.sendRedirect("DashBoard");
 	}
