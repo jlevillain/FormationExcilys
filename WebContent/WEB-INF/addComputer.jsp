@@ -2,18 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script src="js/validation.js"></script>
-<script>
-$(function() {
-	$( "#introducedDate" ).datepicker();
-	$( "#introducedDate" ).datepicker("option", "dateFormat",  "yy-mm-dd");
-	$( "#introducedDate" ).datepicker("setDate","${computer.introduced}");
-});
-$(function() {
-	$( "#discontinuedDate" ).datepicker();
-	$( "#discontinuedDate" ).datepicker("option", "dateFormat", "yy-mm-dd");
-	$( "#discontinuedDate" ).datepicker("setDate", "${computer.discontinued}");
-});
-</script>
+<script src="js/datepicker.js"></script>
+
 <section id="main">
   	
 	<h1><c:if test="${computer==null}">Add Computer</c:if>

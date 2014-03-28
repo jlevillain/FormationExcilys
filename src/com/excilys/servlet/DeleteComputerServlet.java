@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.dao.ComputerDao;
 import com.excilys.dao.DaoFactory;
+import com.excilys.service.ServiceFactory;
 
 /**
  * Servlet implementation class DeleteComputer
@@ -39,9 +40,9 @@ public class DeleteComputerServlet extends HttpServlet {
 		if (request.getParameter("delete")!=null) {
 			try {
 				long id=Long.parseLong(request.getParameter("delete"));
-				DaoFactory.getComputerDao().deleteOne(id);
+				ServiceFactory.INSTANCE.getComputerService().deleteOne(id);
 			}catch(NumberFormatException except) {
-				logger.debug(""+except.getStackTrace());
+				logger.debug("NumberFormatException "+except.getMessage());
 			}
 		}
 		response.sendRedirect("DashBoard");

@@ -3,21 +3,14 @@ package com.excilys.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServiceFactory {
+public enum ServiceFactory {
+	INSTANCE;
 	Logger logger = LoggerFactory.getLogger(ComputerService.class);
-	private static ComputerService computerService=null;
-	private static CompanyService companyService=null;
-	public static ComputerService getComputerService() {
-		if (computerService==null) {
-			computerService=new ComputerServiceImpl();
-		}
-		return computerService;
+	public ComputerService getComputerService() {
+		return ComputerServiceImpl.INSTANCE;
 	}
 	
-	public static CompanyService getCompanyService() {
-		if (companyService==null) {
-			companyService=new CompanyServiceImpl();
-		}
-		return companyService;
+	public CompanyService getCompanyService() {
+		return CompanyServiceImpl.INSTANCE;
 	}
 }

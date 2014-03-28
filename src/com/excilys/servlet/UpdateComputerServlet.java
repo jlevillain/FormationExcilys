@@ -47,9 +47,9 @@ public class UpdateComputerServlet extends HttpServlet {
 			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
 			long id=Long.parseLong(request.getParameter("id"));
 		
-			Computer comp=DaoFactory.getComputerDao().getOne(id);
+			Computer comp=ServiceFactory.INSTANCE.getComputerService().getOne(id);
 			
-			List<Company> companyList=DaoFactory.getCompanyDao().getAll(); 
+			List<Company> companyList=ServiceFactory.INSTANCE.getCompanyService().getAll(); 
 			logger.debug(""+companyList);
 			request.setAttribute("companyList", companyList);
 			request.setAttribute("computer", comp);
@@ -80,14 +80,15 @@ public class UpdateComputerServlet extends HttpServlet {
 				comp.setDiscontinued(discontinued);
 				*/
 				SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+				format.setLenient(false);
 				Date introduced=null;
 				Date discontinued=null;
-				if(request.getParameter("introducedDate").equals("")) {
+				if("".equals(request.getParameter("introducedDate"))) {
 					introduced=null;
 				}else {
 					introduced = format.parse(request.getParameter("introducedDate"));
 				}
-				if(request.getParameter("discontinuedDate").equals("")) {
+				if("".equals(request.getParameter("discontinuedDate"))) {
 					discontinued =null;
 				}else {
 					discontinued = format.parse(request.getParameter("discontinuedDate"));
@@ -96,7 +97,7 @@ public class UpdateComputerServlet extends HttpServlet {
 				comp.setIntroduced(introduced);
 				comp.setDiscontinued(discontinued);
 				Company company=new Company();
-				if (request.getParameter("company").equals("null")) {
+				if ("null".equals(request.getParameter("company"))) {
 					comp.setCompany(null);
 				}else {
 					company.setId(Integer.parseInt(request.getParameter("company")));
@@ -104,7 +105,7 @@ public class UpdateComputerServlet extends HttpServlet {
 				}
 				
 				logger.debug("Computer "+comp.toString());
-				ServiceFactory.getComputerService().updateOne(comp);
+				ServiceFactory.INSTANCE.getComputerService().updateOne(comp);
 				response.sendRedirect("");
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

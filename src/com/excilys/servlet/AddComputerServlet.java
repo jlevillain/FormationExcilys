@@ -2,6 +2,7 @@ package com.excilys.servlet;
 
 import java.io.IOException;
 import java.util.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -43,7 +44,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
-		List<Company> companyList=ServiceFactory.getCompanyService().getAll();
+		List<Company> companyList=ServiceFactory.INSTANCE.getCompanyService().getAll();
 		logger.debug(""+companyList);
 		request.setAttribute("companyList", companyList);
 		disp.forward(request, response);
@@ -54,19 +55,20 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if (request.getParameter("name")!=null && !request.getParameter("name").equals("") &&request.getParameter("introducedDate")!=null
+		if (request.getParameter("name")!=null&& !"".equals(request.getParameter("name")) && request.getParameter("introducedDate")!=null
 				&& request.getParameter("discontinuedDate")!=null && request.getParameter("company")!=null) {
 			try {
 				Computer comp=new Computer();
 				comp.setName(request.getParameter("name"));
 				SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+				format.setLenient(false);
 				Date introduced, discontinued;
-				if(request.getParameter("introducedDate").equals("")) {
+				if("".equals(request.getParameter("introducedDate"))) {
 					introduced=null;
 				}else {
 					introduced = format.parse(request.getParameter("introducedDate"));
 				}
-				if(request.getParameter("discontinuedDate").equals("")) {
+				if("".equals(request.getParameter("discontinuedDate"))) {
 					discontinued =null;
 				}else {
 					discontinued = format.parse(request.getParameter("discontinuedDate"));
@@ -77,7 +79,7 @@ public class AddComputerServlet extends HttpServlet {
 				comp.setDiscontinued(discontinued);
 				
 				Company company=new Company();
-				if (request.getParameter("company").equals("null")) {
+				if ("null".equals(request.getParameter("company"))) {
 					comp.setCompany(null);
 				}else {
 					company.setId(Integer.parseInt(request.getParameter("company")));
@@ -85,13 +87,13 @@ public class AddComputerServlet extends HttpServlet {
 				}
 				
 				logger.debug(comp.toString());
-				ServiceFactory.getComputerService().insertOne(comp);
+				ServiceFactory.INSTANCE.getComputerService().insertOne(comp);
 				response.sendRedirect("");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
-				logger.debug("ParseException "+e.getStackTrace());
+				logger.debug("ParseException "+e.getMessage());
 			}catch(NumberFormatException e) {
-				logger.debug("NumberFormatException"+e.getStackTrace());
+				logger.debug("NumberFormatException"+e.getMessage());
 			}
 		
 		}else {

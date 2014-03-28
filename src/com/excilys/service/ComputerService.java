@@ -12,14 +12,10 @@ import com.excilys.om.Computer;
 
 public interface ComputerService {
 	public List<Computer> getAll();
-	public int getSize();
 	public int getSize(String search);
 	public boolean insertOne(Computer comp);
 	public boolean deleteOne(long id);
 	public boolean updateOne(Computer comp);
-	public List<Computer> getSearch(String search);
-	public List<Computer> getAll(int begin, int number);
-	public List<Computer> getAll(String search, int begin, int number);
-	public List<Computer> getAll(String search, int begin, int number,int order);
+	public Computer getOne(long id);
 	public List<Computer> getAll(String search, int begin,int number, int order, boolean asc);
 }

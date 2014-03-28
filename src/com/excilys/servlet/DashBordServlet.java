@@ -48,7 +48,7 @@ public class DashBordServlet extends HttpServlet {
 			if (search==null) {
 				search="";
 			}
-			computerSize=ServiceFactory.getComputerService().getSize(search);
+			computerSize=ServiceFactory.INSTANCE.getComputerService().getSize(search);
 			int nbPage=1;
 			if (request.getParameter("page")!=null && (!request.getParameter("page").equals(""))) {
 				nbPage=Integer.parseInt(request.getParameter("page"));
@@ -58,16 +58,16 @@ public class DashBordServlet extends HttpServlet {
 				orderBy=Integer.parseInt(request.getParameter("orderBy"));
 			}
 			boolean asc=true;
-			if (request.getParameter("isDesc")!=null && (request.getParameter("isDesc").equals("true"))) {
+			if ("true".equals(request.getParameter("isDesc"))) {
 				asc=false;
 			}else {
 				asc=true;
 			}
 			logger.debug(""+asc);
-			computerList=DaoFactory.getComputerDao().getAll(search, ((nbPage-1)*10), 10,orderBy,asc);
+			computerList=ServiceFactory.INSTANCE.getComputerService().getAll(search, ((nbPage-1)*10), 10,orderBy,asc);
 			/*
 			if(request.getParameter("page")==null && request.getParameter("search")==null) {
-				computerList=ServiceFactory.getComputerService().getAll();
+				computerList=ServiceFactory.INSTANCE.getComputerService().getAll();
 			}
 			*/
 			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
@@ -79,7 +79,7 @@ public class DashBordServlet extends HttpServlet {
 			request.setAttribute("computerSize", computerSize);
 			disp.forward(request, response);
 		}catch(NumberFormatException e) {
-			logger.debug("NumberFormatException "+e.getStackTrace());
+			logger.debug("NumberFormatException "+e.getMessage());
 		}
 	}
 

@@ -1,5 +1,7 @@
 package com.excilys.om;
 
+import com.excilys.dto.CompanyDto;
+
 public class Company {
 	private long id;
 	private String name;
@@ -43,5 +45,11 @@ public class Company {
 		return true;
 	}
 	
-	
+	public CompanyDto convertToDto() {
+		CompanyDto compDto=new CompanyDto();
+		compDto.setId(id);
+		compDto.setName(name);
+		return compDto;
+		
+	}
 }

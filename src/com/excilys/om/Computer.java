@@ -1,6 +1,9 @@
 package com.excilys.om;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.excilys.dto.ComputerDto;
 
 public class Computer {
 	private long id;
@@ -72,5 +75,20 @@ public class Computer {
 		return true;
 	}
 	
+	public ComputerDto convertToDto() {
+		ComputerDto compDto=new ComputerDto();
+		compDto.setId(id);
+		compDto.setName(name);
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		if (introduced != null) {
+			compDto.setIntroduced(format.format(introduced));
+		}
+		if (introduced != null) {
+			compDto.setDiscontinued(format.format(discontinued));
+		}
+		compDto.setCompany(company.convertToDto());
+		return compDto;
+		
+	}
 	
 }
