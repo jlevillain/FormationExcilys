@@ -140,7 +140,6 @@ public enum DaoFactory {
 			logger.debug("closeConnection rs stmt error "+e.getMessage());
 			throw new SQLRuntimeException("closeConnection rs stmt error "+e.getMessage(), e.getStackTrace());
 		}
-		threadLocalConnection.remove();
 	}
 	
 	
