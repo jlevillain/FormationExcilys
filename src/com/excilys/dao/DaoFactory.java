@@ -14,7 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jolbox.bonecp.BoneCPDataSource;
-import com.google.common.base.*;;
+import com.google.common.base.*;
+
+import exception.NamingRuntimeException;
+import exception.SQLRuntimeException;
 
 public enum DaoFactory {
 	INSTANCE;
@@ -32,6 +35,8 @@ public enum DaoFactory {
 			threadLocalConnection=new ThreadLocal<Connection>();
 		} catch (NamingException e) {
 			logger.debug(""+e.getMessage());
+			throw new NamingRuntimeException(e.getMessage(), e.getStackTrace());
+			
 		}
 	}
 	
@@ -54,15 +59,49 @@ public enum DaoFactory {
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			logger.debug(""+e.getMessage());
+			throw new NamingRuntimeException(e.getMessage(), e.getStackTrace());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.debug(""+e.getMessage());
+			throw new SQLRuntimeException(e.getMessage(), e.getStackTrace());
 		}
 		
 
 	
 		
 		return cn;
+	}
+	
+	public void startTransaction() {
+		try {
+			threadLocalConnection.get().setAutoCommit(false);;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			logger.debug("StartTransaction error s"+e.getMessage());
+			throw new SQLRuntimeException(e.getMessage(), e.getStackTrace());
+		}
+		
+	}
+	
+	public void commit() {
+		try {
+			threadLocalConnection.get().commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			logger.debug("Commit error s"+e.getMessage());
+			throw new SQLRuntimeException(e.getMessage(), e.getStackTrace());
+		}
+	}
+	
+	public void rollback() {
+		try {
+			threadLocalConnection.get().rollback();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			logger.debug("Rollback error s"+e.getMessage());
+			throw new SQLRuntimeException(e.getMessage(), e.getStackTrace());
+		}
+		
 	}
 	
 	public Connection getConnectionPool() {
@@ -72,7 +111,8 @@ public enum DaoFactory {
 				threadLocalConnection.set(bcpds.getConnection());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				logger.debug("");
+				logger.debug("getConnection error s"+e.getMessage());
+				throw new SQLRuntimeException(e.getMessage(), e.getStackTrace());
 			}
 		}
 		
@@ -81,14 +121,24 @@ public enum DaoFactory {
 	
 	
 	public void closeConnection() {
-		if (threadLocalConnection.get() != null) {
-			try {
-			
-				threadLocalConnection.get().close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+		
+			threadLocalConnection.get().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			logger.debug("closeConnection error s"+e.getMessage());
+		}
+		threadLocalConnection.remove();
+	}
+	
+	public void closeConnection(ResultSet rs,Statement stmt) {
+		try {
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			logger.debug("closeConnection rs stmt error "+e.getMessage());
+			throw new SQLRuntimeException("closeConnection rs stmt error "+e.getMessage(), e.getStackTrace());
 		}
 		threadLocalConnection.remove();
 	}

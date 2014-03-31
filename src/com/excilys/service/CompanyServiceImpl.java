@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.excilys.dao.DaoFactory;
 import com.excilys.om.Company;
 
+import exception.SQLRuntimeException;
+
 
 public enum CompanyServiceImpl implements CompanyService{
 	INSTANCE;
@@ -18,19 +20,11 @@ public enum CompanyServiceImpl implements CompanyService{
 		Connection cn=DaoFactory.INSTANCE.getConnectionPool();	
 		List<Company> list=null;
 		try {
-			cn.setAutoCommit(false);
 			list = DaoFactory.INSTANCE.getCompanyDao().getAll();
-			DaoFactory.INSTANCE.getLogDao().insertOne("getAll CompanyService");
-			cn.commit();
-		} catch (SQLException e) {
+		} catch (SQLRuntimeException e) {
 			// TODO Auto-generated catch block
 			logger.debug(new StringBuilder("getAll SQLexception ").append(e.getMessage()).append(" ").append(e.getStackTrace()).toString());
-			try {
-				cn.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			throw e;
 		}finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}

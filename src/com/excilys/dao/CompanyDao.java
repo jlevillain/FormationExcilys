@@ -14,46 +14,56 @@ import org.slf4j.LoggerFactory;
 import com.excilys.dto.CompanyDto;
 import com.excilys.om.Company;
 
+import exception.SQLRuntimeException;
+
 
 public enum CompanyDao {
 	INSTANCE;
 	Logger logger = LoggerFactory.getLogger(CompanyDao.class);
 	
-	public Company getOne(long id) throws SQLException {
+	public Company getOne(long id) throws SQLRuntimeException {
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		Company comp =null;
 		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
-		stmt =cn.prepareStatement("SELECT id,name FROM company where id=?;");
-		stmt.setLong(1, id);
-		rs = stmt.executeQuery();
-		while (rs.next()) {
-			comp = new Company();
-			comp.setId(rs.getLong(1));
-			comp.setName(rs.getString(2));
-			
+		try {
+			stmt =cn.prepareStatement("SELECT id,name FROM company where id=?;");
+			stmt.setLong(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				comp = new Company();
+				comp.setId(rs.getLong(1));
+				comp.setName(rs.getString(2));
+				
+			}
+		}catch(SQLException e) {
+			throw new SQLRuntimeException("getOneCompany "+e.getMessage(),e.getStackTrace());
+		}finally {
+			DaoFactory.INSTANCE.closeConnection(rs, stmt);
 		}
-		rs.close();
-		stmt.close();
 		return comp;
 	}
 
 	
-	public List<Company> getAll() throws SQLException {
+	public List<Company> getAll() throws SQLRuntimeException {
 		List<Company> liste = new ArrayList<Company>();
 		ResultSet rs = null;
 		Statement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
-		stmt = cn.createStatement();
-		rs = stmt.executeQuery("SELECT id, name FROM company;");
-		while (rs.next()) {
-			Company comp = new Company();
-			comp.setId(rs.getLong(1));
-			comp.setName(rs.getString(2));
-			liste.add(comp);
+		try {
+			Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+			stmt = cn.createStatement();
+			rs = stmt.executeQuery("SELECT id, name FROM company;");
+			while (rs.next()) {
+				Company comp = new Company();
+				comp.setId(rs.getLong(1));
+				comp.setName(rs.getString(2));
+				liste.add(comp);
+			}
+		}catch (SQLException e) {
+			throw new SQLRuntimeException("getAllCompany "+e.getMessage(),e.getStackTrace());
+		}finally {
+			DaoFactory.INSTANCE.closeConnection(rs, stmt);
 		}
-		rs.close();
-		stmt.close();
 		return liste;
 	}
 	
