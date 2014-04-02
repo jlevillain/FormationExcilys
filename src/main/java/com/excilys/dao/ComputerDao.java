@@ -12,25 +12,29 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.sun.jndi.cosnaming.CNCtx;
 import com.sun.org.apache.bcel.internal.generic.Type;
-
 import  com.excilys.exception.SQLRuntimeException;
 
 import java.sql.Date;
-public enum ComputerDao {
-	
-	INSTANCE;
-	Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 
+@Repository("computerDao")
+public class ComputerDao {
+	Logger logger = LoggerFactory.getLogger(ComputerDao.class);
+	
+	@Autowired
+	DaoFactory daoFactory;
+	
 	public Computer getOne(long id) throws SQLRuntimeException {
 		Computer comp=null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			stmt = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id where c.id=?");
 			stmt.setLong(1, id);
@@ -53,7 +57,7 @@ public enum ComputerDao {
 		}catch(SQLException e) {
 			throw new SQLRuntimeException("getOne "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(rs, stmt);
+			daoFactory.closeConnection(rs, stmt);
 		}
 		return comp;
 	
@@ -63,7 +67,7 @@ public enum ComputerDao {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
 		Statement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			stmt = cn.createStatement();
 			rs = stmt.executeQuery("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id order by c.name;");
@@ -82,7 +86,7 @@ public enum ComputerDao {
 		}catch(SQLException e) {
 			throw new SQLRuntimeException("getAll() "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(rs, stmt);
+			daoFactory.closeConnection(rs, stmt);
 		}
 		return liste;
 	
@@ -92,7 +96,8 @@ public enum ComputerDao {
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		int size=0;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		
+		Connection cn=daoFactory.getConnectionPool();
 		try {			
 			stmt = cn.prepareStatement("SELECT COUNT(*) FROM computer WHERE name LIKE ?");
 			stmt.setString(1,new StringBuilder("%").append(search).append("%").toString());
@@ -103,7 +108,7 @@ public enum ComputerDao {
 			// TODO: handle exception
 			throw new SQLRuntimeException("getSize "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(rs, stmt);
+			daoFactory.closeConnection(rs, stmt);
 		}
 		return size;
 	}
@@ -112,7 +117,7 @@ public enum ComputerDao {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			StringBuilder request=new StringBuilder("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c ");
 			request.append("LEFT JOIN company ON c.company_id=company.id where c.name LIKE ? order by ?");
@@ -144,14 +149,14 @@ public enum ComputerDao {
 		}catch(SQLException e) {
 			throw new SQLRuntimeException("getAll "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(rs, stmt);
+			daoFactory.closeConnection(rs, stmt);
 		}
 		return liste;
 	}
 	public boolean updateOne(Computer comp) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			
 			stmt = cn.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? where id=?");
@@ -184,7 +189,7 @@ public enum ComputerDao {
 		} catch (SQLException e) {
 			throw new SQLRuntimeException("updateOne "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(null, stmt);
+			daoFactory.closeConnection(null, stmt);
 		}
 		return (rs!=0);
 	}
@@ -192,7 +197,7 @@ public enum ComputerDao {
 	public boolean insertOne(Computer comp) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			stmt = cn.prepareStatement("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?);");
 			//stmt.setLong(1, comp.getId());
@@ -224,7 +229,7 @@ public enum ComputerDao {
 		}catch(SQLException e) {
 			throw new SQLRuntimeException("insertOne "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(null, stmt);
+			daoFactory.closeConnection(null, stmt);
 		}
 		return (rs!=0);
 	}
@@ -232,7 +237,7 @@ public enum ComputerDao {
 	public boolean deleteOne(long id) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			stmt = cn.prepareStatement("DELETE FROM computer WHERE id=?;");
 			stmt.setLong(1, id);
@@ -241,14 +246,11 @@ public enum ComputerDao {
 		}catch(SQLException e) {
 			throw new SQLRuntimeException("deleteOne "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(null, stmt);
+			daoFactory.closeConnection(null, stmt);
 		}
 		return (rs!=0);
 	}
 	
-	public static void main(String args[]) {
-		
-	}
 	
 
 }

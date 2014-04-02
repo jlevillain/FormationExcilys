@@ -6,27 +6,34 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import com.excilys.dao.CompanyDao;
 import com.excilys.dao.DaoFactory;
 import com.excilys.om.Company;
-
 import  com.excilys.exception.SQLRuntimeException;
 
-
-public enum CompanyServiceImpl implements CompanyService{
-	INSTANCE;
+@Service
+public class CompanyServiceImpl implements CompanyService{
+	
 	Logger logger = LoggerFactory.getLogger(ComputerService.class);
+	@Autowired
+	DaoFactory daoFactory;
+	@Autowired
+	CompanyDao companyDao;
 	public List<Company> getAll() {
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();	
+		Connection cn=daoFactory.getConnectionPool();	
 		List<Company> list=null;
 		try {
-			list = DaoFactory.INSTANCE.getCompanyDao().getAll();
+			list = companyDao.getAll();
 		} catch (SQLRuntimeException e) {
 			// TODO Auto-generated catch block
 			logger.debug(new StringBuilder("getAll SQLexception ").append(e.getMessage()).append(" ").append(e.getStackTrace()).toString());
 			throw e;
 		}finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 		
 		return list;

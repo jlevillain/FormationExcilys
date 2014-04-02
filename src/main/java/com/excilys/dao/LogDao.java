@@ -8,18 +8,23 @@ import java.sql.Types;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Computer;
-
 import  com.excilys.exception.SQLRuntimeException;
 
-public enum LogDao {
-	INSTANCE;
+@Repository("logDao")
+public class LogDao {
 	Logger logger = LoggerFactory.getLogger(LogDao.class);
+	
+	@Autowired
+	DaoFactory daoFactory;
+	
 	public boolean insertOne( String request) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=DaoFactory.INSTANCE.getConnectionPool();
+		Connection cn=daoFactory.getConnectionPool();
 		try {
 			stmt = cn.prepareStatement("INSERT INTO log_table (request) VALUES (?);");
 			//stmt.setLong(1, comp.getId());
@@ -30,7 +35,7 @@ public enum LogDao {
 		}catch(SQLException e) {
 			throw new SQLRuntimeException("getOne "+e.getMessage(),e.getStackTrace());
 		}finally {
-			DaoFactory.INSTANCE.closeConnection(null, stmt);
+			daoFactory.closeConnection(null, stmt);
 		}
 		return (rs!=0);
 	}

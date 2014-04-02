@@ -8,27 +8,35 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.dao.DaoFactory;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
-import com.excilys.service.ServiceFactory;
+import com.excilys.service.CompanyService;
+import com.excilys.service.ComputerService;
 
 /**
  * Servlet implementation class UpdateComputerServlet
  */
-@WebServlet("/UpdateComputerServlet")
+
 public class UpdateComputerServlet extends HttpServlet {
 	Logger logger = LoggerFactory.getLogger(UpdateComputerServlet.class);
 	private static final long serialVersionUID = 1L;
-       
+	
+	@Autowired
+	CompanyService companyService;
+	@Autowired
+	ComputerService computerService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -37,6 +45,12 @@ public class UpdateComputerServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    @Override
+    public void init() throws ServletException {
+    	// TODO Auto-generated method stub
+    	super.init();
+    	SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -47,9 +61,9 @@ public class UpdateComputerServlet extends HttpServlet {
 			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
 			long id=Long.parseLong(request.getParameter("id"));
 		
-			Computer comp=ServiceFactory.INSTANCE.getComputerService().getOne(id);
+			Computer comp=computerService.getOne(id);
 			
-			List<Company> companyList=ServiceFactory.INSTANCE.getCompanyService().getAll(); 
+			List<Company> companyList=companyService.getAll(); 
 			logger.debug(""+companyList);
 			request.setAttribute("companyList", companyList);
 			request.setAttribute("computer", comp);
@@ -105,7 +119,7 @@ public class UpdateComputerServlet extends HttpServlet {
 				}
 				
 				logger.debug("Computer "+comp.toString());
-				ServiceFactory.INSTANCE.getComputerService().updateOne(comp);
+				computerService.updateOne(comp);
 				response.sendRedirect("");
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

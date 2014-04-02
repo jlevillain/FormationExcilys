@@ -12,19 +12,25 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import com.google.common.base.*;
-
 import com.excilys.exception.NamingRuntimeException;
 import com.excilys.exception.SQLRuntimeException;
+import com.excilys.om.Computer;
 
-public enum DaoFactory {
-	INSTANCE;
+@Component("ConnectionManagement")
+public class DaoFactory {
 	private Logger logger = LoggerFactory.getLogger(DaoFactory.class);
 	private BoneCPDataSource bcpds=null;
 	private ThreadLocal<Connection> threadLocalConnection=null;
-	{
+	
+	public DaoFactory() {
 		try{
 			Context initContext = new InitialContext();
 				
@@ -38,38 +44,6 @@ public enum DaoFactory {
 			throw new NamingRuntimeException(e.getMessage(), e.getStackTrace());
 			
 		}
-	}
-	
-	public Connection getConnection() {
-		
-		Connection cn = null;
-		
-		/*
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		
-		cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/commerce","root","root");
-		*/
-		Context initContext;
-		try {
-			initContext = new InitialContext();
-			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			DataSource ds = (DataSource)envContext.lookup("jdbc/Computer");
-			cn = ds.getConnection();
-			logger.debug(cn.toString());
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			logger.debug(""+e.getMessage());
-			throw new NamingRuntimeException(e.getMessage(), e.getStackTrace());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.debug(""+e.getMessage());
-			throw new SQLRuntimeException(e.getMessage(), e.getStackTrace());
-		}
-		
-
-	
-		
-		return cn;
 	}
 	
 	public void startTransaction() {
@@ -142,19 +116,6 @@ public enum DaoFactory {
 			logger.debug("closeConnection rs stmt error "+e.getMessage());
 			throw new SQLRuntimeException("closeConnection rs stmt error "+e.getMessage(), e.getStackTrace());
 		}
-	}
-	
-	
-	public ComputerDao getComputerDao() {
-		return ComputerDao.INSTANCE;
-	}
-	
-	public CompanyDao getCompanyDao() {
-		return CompanyDao.INSTANCE;
-	}
-	
-	public LogDao getLogDao() {
-		return LogDao.INSTANCE;
 	}
 	
 }
