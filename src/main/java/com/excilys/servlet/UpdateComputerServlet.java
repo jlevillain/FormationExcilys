@@ -85,6 +85,11 @@ public class UpdateComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		if (request.getParameter("id")==null || request.getParameter("name")==null || request.getParameter("introducedDate")==null
+				|| request.getParameter("discontinuedDate")==null || request.getParameter("company")==null) {
+			response.sendRedirect("AddComputer");
+			return;
+		}
 		boolean succeed=false;
 		CompanyDto compDto=CompanyDto.build().
 				id(request.getParameter("company")).
