@@ -11,6 +11,8 @@
  	 <spring.version>4.0.3.RELEASE</spring.version>
  	</properties>
   <dependencies>
+  
+  <!--  logger  -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -41,6 +43,9 @@
       <version>1.1.1</version>
       <scope>runtime</scope>
     </dependency>
+    
+    <!--  bone CP -->
+    
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -53,6 +58,8 @@
       <version>0.8.0.RELEASE</version>
       <scope>runtime</scope>
     </dependency>
+    
+    <!--  JSTL  -->
     <dependency>
       <groupId>javax.servlet.jsp.jstl</groupId>
       <artifactId>javax.servlet.jsp.jstl-api</artifactId>
@@ -65,12 +72,16 @@
       <version>1.2.1</version>
       <scope>runtime</scope>
 	</dependency>	
+	
+	<!-- plugin war maven -->
 	<dependency>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-war-plugin</artifactId>
 		<version>2.2</version>
 		<scope>runtime</scope>
 	</dependency>
+	
+	<!-- Spring MVC -->
 	<dependency>
    		<groupId>org.springframework</groupId>
   		<artifactId>spring-webmvc</artifactId>

@@ -6,7 +6,7 @@
 	<h1 id="homeTitle"><!--  456-->${page.computerSize} Computers found 
 	<c:if test="${page.search!=''}">with "${page.search}"</c:if></h1>
 	<div id="actions">
-		<form class="form-inline" action="?page=1&" method="GET">
+		<form class="form-inline" action="" method="GET">
 				<input class="form-control" type="search" id="searchbox" name="search"
 					value="${page.search}" placeholder="Search name">
 				<input type="hidden" name="page" value="1">

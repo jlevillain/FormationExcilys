@@ -12,7 +12,11 @@ public class PageValidator {
 		if (orderBy==null)
 			return 2;
 		try {
-			return Integer.parseInt(orderBy);
+			int number=Integer.parseInt(orderBy);
+			if (1<=number && number<=6) {
+				return number; 
+			}
+			return 2;
 		}catch(NumberFormatException e) {
 			return 2;
 		}
@@ -23,7 +27,11 @@ public class PageValidator {
 			return 10;
 		}
 		try {
-			return Integer.parseInt(nbPage);
+			int number=Integer.parseInt(nbPage);
+			if (number<1) {
+				return 10;
+			}
+			return number; 
 		}catch(NumberFormatException e) {
 			return 10;
 		}
@@ -42,7 +50,11 @@ public class PageValidator {
 			return 1;
 		}
 		try {
-			return Integer.parseInt(page);
+			int number=Integer.parseInt(page);
+			if (number<1) {
+				return 1;
+			}
+			return number;
 		}catch(NumberFormatException e) {
 			return 1;
 		}
