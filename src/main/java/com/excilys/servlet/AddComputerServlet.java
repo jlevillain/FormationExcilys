@@ -22,10 +22,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.excilys.dto.CompanyDto;
+import com.excilys.dto.ComputerDto;
+import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
+import com.excilys.validator.ComputerValidator;
 
 /**
  * Servlet implementation class AddComputerServlet
@@ -40,6 +44,9 @@ public class AddComputerServlet extends HttpServlet {
     
 	@Autowired
     private CompanyService companyService;
+	
+	@Autowired
+	private ComputerMapper computerMapper;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -75,50 +82,34 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		
-		if (request.getParameter("name")!=null&& !"".equals(request.getParameter("name")) && request.getParameter("introducedDate")!=null
+		/*
+		if (request.getParameter("name")!=null && request.getParameter("introducedDate")!=null
 				&& request.getParameter("discontinuedDate")!=null && request.getParameter("company")!=null) {
-			try {
-				Computer comp=new Computer();
-				comp.setName(request.getParameter("name"));
-				SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-				format.setLenient(false);
-				Date introduced, discontinued;
-				if("".equals(request.getParameter("introducedDate"))) {
-					introduced=null;
-				}else {
-					introduced = format.parse(request.getParameter("introducedDate"));
-				}
-				if("".equals(request.getParameter("discontinuedDate"))) {
-					discontinued =null;
-				}else {
-					discontinued = format.parse(request.getParameter("discontinuedDate"));
-				}
-				logger.debug(""+request.getParameter("introducedDate")+request.getParameter("discontinuedDate"));
-				logger.debug(""+introduced+discontinued);
-				comp.setIntroduced(introduced);
-				comp.setDiscontinued(discontinued);
-				
-				Company company=new Company();
-				if ("null".equals(request.getParameter("company"))) {
-					comp.setCompany(null);
-				}else {
-					company.setId(Integer.parseInt(request.getParameter("company")));
-					comp.setCompany(company);
-				}
-				
+		*/	
+		boolean succeed=false;
+		CompanyDto compDto=CompanyDto.build().
+				id(request.getParameter("company")).
+				name("a").build();
+		ComputerDto cdto=ComputerDto.build().id("0").
+			name(request.getParameter("name")).
+			introduced(request.getParameter("introducedDate")).
+			discontinued(request.getParameter("discontinuedDate")).
+			company(compDto).build();
+		
+		List<String> error=ComputerValidator.valide(cdto);
+		request.setAttribute("error", error);
+		request.setAttribute("computer", cdto);
+		if ( error.size()==0 ) {
+			Computer comp=computerMapper.convertDtoToComputer(cdto);
+			if (comp!=null) {
 				logger.debug(comp.toString());
 				computerService.insertOne(comp);
+				succeed=true;
 				response.sendRedirect("");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				logger.debug("ParseException "+e.getMessage());
-			}catch(NumberFormatException e) {
-				logger.debug("NumberFormatException"+e.getMessage());
 			}
-		
-		}else {
-			response.sendRedirect("AddComputer");
+		}
+		if (!succeed) {
+			this.doGet(request, response);
 		}
 		
 	}

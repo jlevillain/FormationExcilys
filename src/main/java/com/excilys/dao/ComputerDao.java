@@ -113,7 +113,7 @@ public class ComputerDao {
 		return size;
 	}
 	
-	public List<Computer> getAll(String search, int begin, int number, int order, boolean asc) throws SQLRuntimeException {
+	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws SQLRuntimeException {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -121,7 +121,7 @@ public class ComputerDao {
 		try {
 			StringBuilder request=new StringBuilder("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c ");
 			request.append("LEFT JOIN company ON c.company_id=company.id where c.name LIKE ? order by ?");
-		    if (asc==false) {
+		    if (desc) {
 		    	request.append(" DESC");
 		    }
 		    request.append(" LIMIT ? OFFSET ?");

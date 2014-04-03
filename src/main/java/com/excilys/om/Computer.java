@@ -77,7 +77,7 @@ public class Computer {
 	
 	public ComputerDto convertToDto() {
 		ComputerDto compDto=new ComputerDto();
-		compDto.setId(id);
+		
 		compDto.setName(name);
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 		if (introduced != null) {
@@ -86,9 +86,48 @@ public class Computer {
 		if (introduced != null) {
 			compDto.setDiscontinued(format.format(discontinued));
 		}
-		compDto.setCompany(company.convertToDto());
+		
 		return compDto;
 		
 	}
 	
+	public static class Builder {
+		Computer computer;
+		private Builder()  {
+			computer=new Computer();
+		}
+		
+		public Builder name(String name) {
+			this.computer.setName(name);
+			return this;
+		}
+		
+		public Builder id(long id) {
+			this.computer.setId(id);
+			return this;
+		}
+		
+		public Builder introduced(Date introduced) {
+			this.computer.setIntroduced(introduced);
+			return this;
+		}
+		
+		public Builder discontinued(Date discontinued) {
+			this.computer.setDiscontinued(discontinued);
+			return this;
+		}
+		
+		public Builder company(Company company)  {
+			this.computer.setCompany(company);
+			return this;
+		}
+		
+		public Computer build()  {
+			return this.computer;
+		}
+	}
+	
+	public static Builder build() {
+		return new Builder();
+	}
 }

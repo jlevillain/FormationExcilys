@@ -20,10 +20,14 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.dao.DaoFactory;
+import com.excilys.dto.CompanyDto;
+import com.excilys.dto.ComputerDto;
+import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
+import com.excilys.validator.ComputerValidator;
 
 /**
  * Servlet implementation class UpdateComputerServlet
@@ -34,9 +38,12 @@ public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	CompanyService companyService;
+	private CompanyService companyService;
 	@Autowired
-	ComputerService computerService;
+	private ComputerService computerService;
+	@Autowired
+	private ComputerMapper computerMapper;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -59,14 +66,13 @@ public class UpdateComputerServlet extends HttpServlet {
 		
 		try {
 			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
-			long id=Long.parseLong(request.getParameter("id"));
-		
-			Computer comp=computerService.getOne(id);
-			
+			if (request.getAttribute("computer")==null) {
+				long id=Long.parseLong(request.getParameter("id"));
+				Computer comp=computerService.getOne(id);	
+				request.setAttribute("computer", comp);
+			}
 			List<Company> companyList=companyService.getAll(); 
-			logger.debug(""+companyList);
 			request.setAttribute("companyList", companyList);
-			request.setAttribute("computer", comp);
 			disp.forward(request, response);
 		}catch (NumberFormatException e) {
 			logger.debug("id not long");
@@ -79,54 +85,35 @@ public class UpdateComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		boolean succeed=false;
+		CompanyDto compDto=CompanyDto.build().
+				id(request.getParameter("company")).
+				name("a").build();
+		ComputerDto cdto=ComputerDto.build().
+			id(request.getParameter("id")).
+			name(request.getParameter("name")).
+			introduced(request.getParameter("introducedDate")).
+			discontinued(request.getParameter("discontinuedDate")).
+			company(compDto).build();
+		/*
 		if (request.getParameter("id")!=null && request.getParameter("name")!=null 
 				&& ! request.getParameter("name").equals("") &&request.getParameter("introducedDate")!=null
 				&& request.getParameter("discontinuedDate")!=null && request.getParameter("company")!=null) {
-			try {
-				Computer comp=new Computer();
-				comp.setId(Long.parseLong(request.getParameter("id")));
-				comp.setName(request.getParameter("name"));
-				/*
-				SimpleDateFormat format=new SimpleDateFormat("YYYY-MM-DD");
-				Date introduced = format.parse(request.getParameter("introducedDate"));
-				Date discontinued = format.parse(request.getParameter("discontinuedDate"));
-				comp.setIntroduced(introduced);
-				comp.setDiscontinued(discontinued);
-				*/
-				SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-				format.setLenient(false);
-				Date introduced=null;
-				Date discontinued=null;
-				if("".equals(request.getParameter("introducedDate"))) {
-					introduced=null;
-				}else {
-					introduced = format.parse(request.getParameter("introducedDate"));
-				}
-				if("".equals(request.getParameter("discontinuedDate"))) {
-					discontinued =null;
-				}else {
-					discontinued = format.parse(request.getParameter("discontinuedDate"));
-				}
-				logger.debug(""+discontinued+introduced);
-				comp.setIntroduced(introduced);
-				comp.setDiscontinued(discontinued);
-				Company company=new Company();
-				if ("null".equals(request.getParameter("company"))) {
-					comp.setCompany(null);
-				}else {
-					company.setId(Integer.parseInt(request.getParameter("company")));
-					comp.setCompany(company);
-				}
-				
-				logger.debug("Computer "+comp.toString());
+			*/
+		request.setAttribute("computer", cdto);
+		List<String> error=ComputerValidator.valide(cdto);
+		request.setAttribute("error", error);
+		if ( error.size()==0 ) {
+			Computer comp=computerMapper.convertDtoToComputer(cdto);
+			if (comp!=null) {
+				logger.debug(comp.toString());
 				computerService.updateOne(comp);
+				succeed=true;
 				response.sendRedirect("");
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				logger.debug("NumberFormatException "+e.getStackTrace());
-			}catch (ParseException e) {
-				logger.debug("ParseException "+e.getStackTrace());
 			}
+		}
+		if (!succeed) {
+			this.doGet(request, response);
 		}
 	}
 

@@ -4,6 +4,7 @@
 <%@attribute name="search" required="false" %>
 <%@attribute name="orderBy" required="false" %>
 <%@attribute name="isDesc" required="false" %>
+<%@attribute name="nbPage" required="false" %>
 <jsp:doBody var="tagBody"/>
 <c:if test="${empty page}">
 	<c:set var="page" value="1"></c:set>
@@ -14,4 +15,7 @@
 <c:if test="${empty isDesc}">
 	<c:set var="isDesc" value="false"></c:set>
 </c:if>
-<a href="${servlet}?search=${search}&page=${page}&orderBy=${orderBy}&isDesc=${isDesc}">${tagBody}</a>
+<c:if test="${empty nbPage}">
+	<c:set var="nbPage" value="10"></c:set>
+</c:if>
+<a href="${servlet}?search=${search}&page=${page}&orderBy=${orderBy}&isDesc=${isDesc}&nbPage=${nbPage}">${tagBody}</a>

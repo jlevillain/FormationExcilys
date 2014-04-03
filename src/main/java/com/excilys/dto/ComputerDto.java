@@ -3,10 +3,12 @@ package com.excilys.dto;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import com.excilys.om.Company;
 import com.excilys.om.Computer;
+import com.excilys.om.Company.Builder;
 
 public class ComputerDto {
-	private long id=0;
+	private String id=null;
 	private String name=null;
 	private String introduced=null;
 	private String discontinued=null;
@@ -23,16 +25,17 @@ public class ComputerDto {
 	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
 	}
+	
 	public CompanyDto getCompany() {
 		return company;
 	}
-	public void setCompany(CompanyDto company) {
-		this.company = company;
+	public void setCompany(CompanyDto companyDto) {
+		this.company = companyDto;
 	}
-	public long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -42,16 +45,59 @@ public class ComputerDto {
 		this.name = name;
 	}
 	
+	public static class Builder {
+		ComputerDto computerDto;
+		private Builder() {
+			// TODO Auto-generated constructor stub
+			computerDto=new ComputerDto();
+		}
+		
+		public Builder id(String id)  {
+			this.computerDto.setId(id);
+			return this;
+		}
+		
+		public Builder name(String name) {
+			this.computerDto.setName(name);
+			return this;
+		}
+		
+		public Builder introduced(String introduced) {
+			this.computerDto.setIntroduced(introduced);
+			return this;
+		}
+		
+		public Builder discontinued(String discontinued) {
+			this.computerDto.setDiscontinued(discontinued);
+			return this;
+		}
+		
+		public Builder company(CompanyDto company) {
+			this.computerDto.setCompany(company);
+			return this;
+		}
+		
+		public ComputerDto build() {
+			return this.computerDto;
+		}
+		
+	}
+	
+	public static Builder build() {
+		return new Builder();
+	}
+
+	
 	public Computer convertToComputer() throws ParseException {
 		Computer comp=null;
 		comp=new Computer();
-		comp.setId(id);
+		
 		comp.setName(name);
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 		format.setLenient(false);
 		comp.setDiscontinued(format.parse(discontinued));
 		comp.setIntroduced(format.parse(introduced));
-		comp.setCompany(company.convertToCompany());
+		
 		return comp;
 	}
 }

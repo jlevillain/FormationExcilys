@@ -22,6 +22,8 @@ import com.excilys.dao.DaoFactory;
 import com.excilys.om.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
+import com.excilys.validator.PageValidator;
+import com.excilys.wrapper.Page;
 
 /**
  * Servlet implementation class DashBordServlet
@@ -60,44 +62,24 @@ public class DashBordServlet extends HttpServlet {
 		
 		List<Computer> computerList=null;
 		Integer computerSize;
-		try {
-			String search=request.getParameter("search");
-			if (search==null) {
-				search="";
-			}
-			computerSize=computerService.getSize(search);
-			int nbPage=1;
-			if (request.getParameter("page")!=null && (!request.getParameter("page").equals(""))) {
-				nbPage=Integer.parseInt(request.getParameter("page"));
-			}
-			int orderBy=2;
-			if (request.getParameter("orderBy")!=null && (!request.getParameter("orderBy").equals(""))) {
-				orderBy=Integer.parseInt(request.getParameter("orderBy"));
-			}
-			boolean asc=true;
-			if ("true".equals(request.getParameter("isDesc"))) {
-				asc=false;
-			}else {
-				asc=true;
-			}
-			logger.debug(""+asc);
-			computerList=computerService.getAll(search, ((nbPage-1)*10), 10,orderBy,asc);
-			/*
-			if(request.getParameter("page")==null && request.getParameter("search")==null) {
-				computerList=ServiceFactorygetComputerService().getAll();
-			}
-			*/
-			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
-			
-			
-			//System.out.println(computerList);
-			
-			request.setAttribute("computerList",computerList);
-			request.setAttribute("computerSize", computerSize);
-			disp.forward(request, response);
-		}catch(NumberFormatException e) {
-			logger.debug("NumberFormatException "+e.getMessage());
-		}
+		
+		String search=PageValidator.validSearch(request.getParameter("search"));
+		int page=PageValidator.validPage(request.getParameter("page"));
+		int orderBy=PageValidator.validOrderBy(request.getParameter("orderBy"));
+		boolean desc=PageValidator.validIsDesc(request.getParameter("isDesc"));
+		int nbPage = PageValidator.validNbPage(request.getParameter("nbPage"));
+		
+		computerList=computerService.getAll(search, ((page-1)*nbPage), nbPage,orderBy,desc);
+		computerSize=computerService.getSize(search);
+		
+		Page pageWrapper=Page.build().search(search).page(page).isDesc(desc).
+				orderBy(orderBy).nbPage(nbPage).
+				computerList(computerList).computerSize(computerSize).build();
+		
+		RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp");
+		request.setAttribute("page", pageWrapper);
+
+		disp.forward(request, response);
 	}
 
 	/**

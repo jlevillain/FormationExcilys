@@ -14,6 +14,7 @@ import com.excilys.dao.ComputerDao;
 import com.excilys.dao.DaoFactory;
 import com.excilys.dao.LogDao;
 import com.excilys.om.Computer;
+import com.excilys.om.Log;
 import  com.excilys.exception.SQLRuntimeException;
 
 @Service
@@ -49,7 +50,7 @@ public class ComputerServiceImpl implements ComputerService {
 		try {	
 			daoFactory.startTransaction();
 			result = computerDao.insertOne(comp);
-			logDao.insertOne("insertOne Computer "+comp);
+			logDao.insertOne(Log.build().request("insertOne Computer "+comp).build());
 			daoFactory.commit();
 		}catch (SQLRuntimeException e) {
 			logger.debug(new StringBuilder("getinsertOne SqlException").append(e.getMessage()).append(e.getStackTrace()).toString());
@@ -70,7 +71,7 @@ public class ComputerServiceImpl implements ComputerService {
 		try {
 			daoFactory.startTransaction();
 			result = computerDao.deleteOne(id);
-			logDao.insertOne("deleteOne Computer "+id);
+			logDao.insertOne(Log.build().request("deleteOne Computer "+id).build());
 			daoFactory.commit();
 		}catch (SQLRuntimeException e) {
 			logger.debug(new StringBuilder("getAll SqlException").append(e.getMessage()).append(e.getStackTrace()).toString());
@@ -89,7 +90,7 @@ public class ComputerServiceImpl implements ComputerService {
 		try {
 			daoFactory.startTransaction();
 			result = computerDao.updateOne(comp);
-			logDao.insertOne("updateOne Computer "+comp);
+			logDao.insertOne(Log.build().request("updateOne Computer "+comp).build());
 			daoFactory.commit();
 		}catch (SQLRuntimeException e) {
 			logger.debug(new StringBuilder("update SqlException").append(e.getMessage()).append(e.getStackTrace()).toString());
@@ -116,11 +117,11 @@ public class ComputerServiceImpl implements ComputerService {
 		 
 	}
 	
-	public List<Computer> getAll(String search, int begin,int number, int order, boolean asc) {
+	public List<Computer> getAll(String search, int begin,int number, int order, boolean desc) {
 		Connection cn = daoFactory.getConnectionPool();
 		List<Computer> result=null;
 		try {
-			result = computerDao.getAll(search,begin, number,order,asc);
+			result = computerDao.getAll(search,begin, number,order,desc);
 		}catch (SQLRuntimeException e) {
 			logger.debug(new StringBuilder("getAll SqlException").append(e.getMessage()).append(e.getStackTrace()).toString());
 			throw e;

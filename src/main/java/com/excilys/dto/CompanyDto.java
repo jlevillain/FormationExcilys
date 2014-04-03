@@ -1,17 +1,17 @@
 package com.excilys.dto;
 
-import java.util.Date;
-
-import com.excilys.om.Company;
-
 public class CompanyDto {
-	private long id=0;
-	private String name=null;
+	String id;
+	String name;
+	public CompanyDto() {
+		id=null;
+		name=null;
+	}
 	
-	public long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -21,10 +21,29 @@ public class CompanyDto {
 		this.name = name;
 	}
 	
-	public Company convertToCompany() {
-		Company comp=new Company();
-		comp.setId(id);
-		comp.setName(name);
-		return comp;
+	public static class Builder{
+		CompanyDto companyDto;
+		private Builder() {
+			companyDto=new CompanyDto();
+		}
+		
+		public Builder id(String id) {
+			companyDto.setId(id);
+			return this;
+		}
+		
+		public Builder name(String name) {
+			companyDto.setName(name);
+			return this;
+		}
+		
+		public CompanyDto build() {
+			return companyDto;
+		}
 	}
+	
+	public static Builder build() {
+		return new Builder();
+	}
+	
 }

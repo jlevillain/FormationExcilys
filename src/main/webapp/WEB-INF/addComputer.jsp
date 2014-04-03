@@ -6,14 +6,32 @@
 
 <section id="main">
   	
-	<h1><c:if test="${computer==null}">Add Computer</c:if>
-		<c:if test="${computer!=null}">Edit Computer</c:if>
+	<h1>
+		<c:choose>
+  			<c:when test="${computer!=null && computer.id!=0}">Edit Computer</c:when>
+ 			 <c:otherwise>Add Computer</c:otherwise>
+		</c:choose>
 	</h1>
+	
 	<div class="container">
-	<c:if test="${computer==null}"><form id="signupForm" class="form-horizontal" action="AddComputer" method="POST"></c:if>
-	<c:if test="${computer!=null}"><form id="signupForm" class="form-horizontal" action="UpdateComputer" method="POST">
-		<input type="hidden" name="id" value="${computer.id }"/>
-	</c:if>
+		<c:if test="${not empty error}">
+		
+			<ul class="bg-danger">
+				<c:forEach var="item" items="${error}">
+		   			<li>${item}</li>
+		   		</c:forEach>
+	 		</ul>
+	 	
+ 		</c:if>
+		<c:choose>
+  			<c:when test="${computer!=null && computer.id!=0}">
+  				<form id="signupForm" class="form-horizontal" action="UpdateComputer" method="POST">
+					<input type="hidden" name="id" value="${computer.id }"/>
+  			</c:when>
+ 			 <c:otherwise>
+ 			 	<form id="signupForm" class="form-horizontal" action="AddComputer" method="POST">
+ 			 </c:otherwise>
+		</c:choose>
 	
 	<fieldset>
 			<div class="form-group has-feedback">
@@ -32,7 +50,7 @@
 			<div class="form-group has-feedback">
 				<label for="company">Company Name:</label>
 					<select name="company" class="form-control">
-						<option value="null">--</option>
+						<option value="0">--</option>
 						<c:forEach var="item" items="${companyList}">
 							<c:if test="${item.id==computer.company.id}">
 								<option value="${item.id}" selected>${item.name}</option>
@@ -56,10 +74,14 @@
 			
 		
 		<div class="actions">
-			<c:if test="${computer==null}"><input type="submit" value="Add" class="btn btn-primary"></c:if>
-			<c:if test="${computer!=null}"><input type="submit" value="Edit" class="btn btn-primary"></c:if>
-			
-			or <a onclick="history.back()" class="btn btn-default">Cancel</a>
+		<c:choose>
+  			<c:when test="${computer!=null && computer.id!=0}">
+  				<input type="submit" value="Edit" class="btn btn-primary">
+  			</c:when><c:otherwise>
+ 				<input type="submit" value="Add" class="btn btn-primary">
+ 			</c:otherwise>
+		</c:choose>	
+		or <a onclick="history.back()" class="btn btn-default">Cancel</a>
 		</div>
 		</fieldset>
 	</form>

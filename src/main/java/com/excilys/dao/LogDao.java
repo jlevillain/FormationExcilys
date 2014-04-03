@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Computer;
+import com.excilys.om.Log;
 import  com.excilys.exception.SQLRuntimeException;
 
 @Repository("logDao")
@@ -21,14 +22,14 @@ public class LogDao {
 	@Autowired
 	DaoFactory daoFactory;
 	
-	public boolean insertOne( String request) throws SQLRuntimeException {
+	public boolean insertOne( Log request) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
 		Connection cn=daoFactory.getConnectionPool();
 		try {
 			stmt = cn.prepareStatement("INSERT INTO log_table (request) VALUES (?);");
 			//stmt.setLong(1, comp.getId());
-			stmt.setString(1, request);
+			stmt.setString(1, request.getRequest());
 			
 			rs= stmt.executeUpdate();
 			logger.debug("insertOne request"+rs);
