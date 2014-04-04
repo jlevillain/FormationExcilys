@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.excilys.controller.UpdateComputerServlet;
 import com.excilys.dto.ComputerDto;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.excilys.service.ComputerService;
-import com.excilys.servlet.UpdateComputerServlet;
 
 
 @Component

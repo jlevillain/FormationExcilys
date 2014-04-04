@@ -1,8 +1,32 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<script src="js/validation.js"></script>
-<script src="js/datepicker.js"></script>
+<script src="<c:url value="/ressources/js/validation.js"/>"></script>
+<script>
+$(function() {
+	$( "#introducedDate" ).datepicker();
+	$( "#introducedDate" ).datepicker("option", "dateFormat",  "yy-mm-dd");
+	$( "#introducedDate" ).datepicker("setDate","${computer.introduced}");
+	$( "#introducedDate" ).datepicker({
+		onClose: function( selectedDate ) {
+			$('#introducedDate').trigger('change');
+			$('#discontinuedDate').trigger('onkeypress');
+		}
+	});
+});
+$(function() {
+	
+	$( "#discontinuedDate" ).datepicker();
+	$( "#discontinuedDate" ).datepicker("option", "dateFormat", "yy-mm-dd");
+	$( "#discontinuedDate" ).datepicker("setDate", "${computer.discontinued}");
+	$( "#discontinuedDate" ).datepicker({
+		onClose: function( selectedDate ) {
+			$('#discontinuedDate').trigger('change');
+			$('#discontinuedDate').trigger('onkeypress');
+		}
+	});
+});
+</script>
 
 <section id="main">
   	

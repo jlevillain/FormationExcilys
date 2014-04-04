@@ -1,4 +1,4 @@
-package com.excilys.servlet;
+package com.excilys.controller;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,6 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -32,7 +37,8 @@ import com.excilys.validator.ComputerValidator;
 /**
  * Servlet implementation class UpdateComputerServlet
  */
-
+@Controller
+@RequestMapping("/UpdateComputer")
 public class UpdateComputerServlet extends HttpServlet {
 	Logger logger = LoggerFactory.getLogger(UpdateComputerServlet.class);
 	private static final long serialVersionUID = 1L;
@@ -50,76 +56,61 @@ public class UpdateComputerServlet extends HttpServlet {
     public UpdateComputerServlet() {
         super();
         // TODO Auto-generated constructor stub
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    @Override
-    public void init() throws ServletException {
-    	// TODO Auto-generated method stub
-    	super.init();
-    	SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(method=RequestMethod.GET)
+	public String doGet(@RequestParam("id") int id, ModelMap model) {
 		// TODO Auto-generated method stub
-		
-		try {
-			RequestDispatcher disp=getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp");
-			if (request.getAttribute("computer")==null) {
-				long id=Long.parseLong(request.getParameter("id"));
-				Computer comp=computerService.getOne(id);	
-				request.setAttribute("computer", comp);
-			}
-			List<Company> companyList=companyService.getAll(); 
-			request.setAttribute("companyList", companyList);
-			disp.forward(request, response);
-		}catch (NumberFormatException e) {
-			logger.debug("id not long");
-			response.sendRedirect("");
-		}
+		Computer comp=computerService.getOne(id);	
+		model.addAttribute("computer", comp);
+		List<Company> companyList=companyService.getAll(); 
+		model.addAttribute("companyList", companyList);
+		return "addComputer";
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+    @RequestMapping(method=RequestMethod.POST)
+	public String doPost(
+			@RequestParam(value="id",required=false) String id,
+			@RequestParam(value="name",required=false) String name,
+			@RequestParam(value="introducedDate",required=false) String introducedDate,
+			@RequestParam(value="discontinuedDate",required=false) String discontinuedDate,
+			@RequestParam(value="company",required=false) String company,
+			ModelMap model) {
 		// TODO Auto-generated method stub
-		if (request.getParameter("id")==null || request.getParameter("name")==null || request.getParameter("introducedDate")==null
-				|| request.getParameter("discontinuedDate")==null || request.getParameter("company")==null) {
-			response.sendRedirect("AddComputer");
-			return;
+		
+		
+		if (id==null || name==null || introducedDate==null
+				|| discontinuedDate==null || company==null) {
+			return "redirect:/AddComputer";
 		}
-		boolean succeed=false;
 		CompanyDto compDto=CompanyDto.build().
-				id(request.getParameter("company")).
+				id(company).
 				name("a").build();
 		ComputerDto cdto=ComputerDto.build().
-			id(request.getParameter("id")).
-			name(request.getParameter("name")).
-			introduced(request.getParameter("introducedDate")).
-			discontinued(request.getParameter("discontinuedDate")).
+			id(id).
+			name(name).
+			introduced(introducedDate).
+			discontinued(discontinuedDate).
 			company(compDto).build();
 		/*
 		if (request.getParameter("id")!=null && request.getParameter("name")!=null 
 				&& ! request.getParameter("name").equals("") &&request.getParameter("introducedDate")!=null
 				&& request.getParameter("discontinuedDate")!=null && request.getParameter("company")!=null) {
 			*/
-		request.setAttribute("computer", cdto);
+		model.addAttribute("computer", cdto);
 		List<String> error=ComputerValidator.valide(cdto);
-		request.setAttribute("error", error);
+		model.addAttribute("error", error);
 		if ( error.size()==0 ) {
 			Computer comp=computerMapper.convertDtoToComputer(cdto);
 			if (comp!=null) {
 				logger.debug(comp.toString());
 				computerService.updateOne(comp);
-				succeed=true;
-				response.sendRedirect("");
+				return "redirect:/";
 			}
 		}
-		if (!succeed) {
-			this.doGet(request, response);
-		}
+		return "addComputer";
 	}
 
 }
