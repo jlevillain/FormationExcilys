@@ -45,5 +45,10 @@ public class CompanyDto {
 	public static Builder build() {
 		return new Builder();
 	}
+
+	@Override
+	public String toString() {
+		return "CompanyDto [id=" + id + ", name=" + name + "]";
+	}
 	
 }

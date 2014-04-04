@@ -7,10 +7,10 @@ import com.excilys.dto.ComputerDto;
 
 public class Computer {
 	private long id;
-	private String name=null;
+	private String name="";
 	private Date introduced=null;
 	private Date discontinued=null;
-	private Company company=null;
+	private Company company=new Company();
 	
 	public Computer() {
 		super();

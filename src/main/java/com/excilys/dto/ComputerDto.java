@@ -8,10 +8,10 @@ import com.excilys.om.Computer;
 import com.excilys.om.Company.Builder;
 
 public class ComputerDto {
-	private String id=null;
-	private String name=null;
-	private String introduced=null;
-	private String discontinued=null;
+	private String id="";
+	private String name="";
+	private String introduced="";
+	private String discontinued="";
 	private CompanyDto company=null;
 	public String getIntroduced() {
 		return introduced;
@@ -99,5 +99,11 @@ public class ComputerDto {
 		comp.setIntroduced(format.parse(introduced));
 		
 		return comp;
+	}
+	@Override
+	public String toString() {
+		return "ComputerDto [id=" + id + ", name=" + name + ", introduced="
+				+ introduced + ", discontinued=" + discontinued + ", company="
+				+ company + "]";
 	}
 }

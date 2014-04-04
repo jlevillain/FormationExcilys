@@ -2,6 +2,8 @@ package com.excilys.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,11 +23,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
@@ -64,41 +68,46 @@ public class AddComputerServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
    
+    
+    @ModelAttribute("companyList")
+    Map<String,String> populateComputerList() {
+    	List<Company> companyList=companyService.getAll();
+    	Map<String,String> list=new HashMap<String,String>();
+    	for (Company comp: companyList) {
+    		list.put(""+comp.getId(), comp.getName());
+    	}
+		return list;
+    }
+    
 	@RequestMapping(method=RequestMethod.GET)
-	public String doGet(ModelMap model) {
+	public ModelAndView doGet(ModelMap model) {
 		// TODO Auto-generated method stub
-		
-		List<Company> companyList=companyService.getAll();
-		logger.debug(""+companyList);
-		model.addAttribute("companyList", companyList);
-		return "addComputer";
+		return new ModelAndView("addComputer","computer",new Computer());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public String doPost(@RequestParam(value="name",required=false) String name,
-			@RequestParam(value="introducedDate",required=false) String introducedDate,
-			@RequestParam(value="discontinuedDate",required=false) String discontinuedDate,
-			@RequestParam(value="company",required=false) String company,
+	public String doPost(@ModelAttribute("computer") ComputerDto cdto,
 			ModelMap model) {
 		// TODO Auto-generated method stub
+		logger.debug(""+cdto);
 		
-		
-		if (name==null || introducedDate==null
-				|| discontinuedDate==null || company==null) {
+		if (cdto.getName()==null || cdto.getIntroduced()==null
+				|| cdto.getDiscontinued() ==null || cdto.getCompany()==null) {
 			return "redirect:/AddComputer";
 		}
+		/*
 		CompanyDto compDto=CompanyDto.build().
-				id(company).
+				id(computer.getCompany().getId()).
 				name("a").build();
 		ComputerDto cdto=ComputerDto.build().id("0").
-			name(name).
-			introduced(introducedDate).
-			discontinued(discontinuedDate).
+			name(computer.getname).
+			introduced(computer.getintroducedDate).
+			discontinued(computer.getDiscontinued()).
 			company(compDto).build();
-		
+		*/
 		List<String> error=ComputerValidator.valide(cdto);
 		model.addAttribute("error", error);
 		model.addAttribute("computer", cdto);

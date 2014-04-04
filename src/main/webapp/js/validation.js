@@ -15,10 +15,10 @@ $().ready(function() {
 	$("#signupForm").validate({
 		rules: {
 			name : "required",
-			introducedDate : {
+			introduced : {
 				dateControl: true
 			},
-			discontinuedDate : {
+			discontinued : {
 				dateControl: true
 			}
 		},
