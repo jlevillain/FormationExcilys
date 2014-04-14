@@ -3,12 +3,17 @@ package com.excilys.dto;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import com.excilys.om.Company;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import com.excilys.om.Computer;
-import com.excilys.om.Company.Builder;
 
 public class ComputerDto {
 	private String id="";
+	
 	private String name="";
 	private String introduced="";
 	private String discontinued="";

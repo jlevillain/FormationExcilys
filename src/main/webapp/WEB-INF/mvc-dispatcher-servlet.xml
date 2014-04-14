@@ -9,8 +9,7 @@
 
 	<!-- Dependency Injection with annotations -->
 	<context:component-scan base-package="com.excilys" />
-	<mvc:annotation-driven />  
-	
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
@@ -20,10 +19,15 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
-	<mvc:resources location="/" mapping="/ressources/**"/>
-	<!-- Dependency Injection without annotations -->
-	<!-- <bean id="wild" class="com.javapapers.spring.ioc.Wolf" /> <bean id="zoo" 
-		class="com.javapapers.spring.ioc.Zoo"> <property name="wild" ref="wild" /> 
-		</bean> -->
+	<mvc:annotation-driven validator="validator"/>
+	<mvc:resources location="/" mapping="/ressources/**" />
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages" />
+	</bean>
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
 
 </beans>

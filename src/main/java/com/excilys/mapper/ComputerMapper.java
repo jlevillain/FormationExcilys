@@ -1,7 +1,6 @@
 package com.excilys.mapper;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -9,7 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.controller.UpdateComputerServlet;
+import com.excilys.utils.*;
+
 import com.excilys.dto.ComputerDto;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
@@ -30,14 +30,14 @@ public class ComputerMapper {
 		Date introduced, discontinued;
 		
 		try {
-			introduced = convertStringToDate(computerDto.getIntroduced());
+			introduced = DateConverter.convertStringToDate(computerDto.getIntroduced());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
 			return null;
 		}
 		try {
-			discontinued = convertStringToDate(computerDto.getDiscontinued());
+			discontinued = DateConverter.convertStringToDate(computerDto.getDiscontinued());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
@@ -51,14 +51,5 @@ public class ComputerMapper {
 		return computer;
 	}
 	
-	public Date convertStringToDate(String str) throws ParseException {
-		if ("".equals(str)) {
-			return null;
-		}
-		Date date;
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-		format.setLenient(false);
-		date = format.parse(str);
-		return date;
-	}
+	
 }

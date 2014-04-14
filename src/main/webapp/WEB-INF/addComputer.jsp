@@ -57,20 +57,21 @@
 			<div class="form-group has-feedback">
 				<label class="control-label" for="name">Computer name:</label>
 				<form:input id="name" cssClass="form-control" type="text"
-					path="name" placeholder="name" />
+					path="name" placeholder="name" /><form:errors path="name" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
 				<label class="control-label" for="introduced">Introduced
 					date:</label>
 				<form:input id="introduced" class="form-control" type="text"
 					path="introduced" placeholder="YYYY-MM-DD" />
+					<form:errors path="introduced" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
 				<label class="control-label" for="discontinued">Discontinued
 					date:</label>
 				<form:input id="discontinued" class="form-control" type="text"
 					path="discontinued" placeholder="YYYY-MM-DD" />
-
+				<form:errors path="discontinued" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
 				<label for="company">Company Name:</label>

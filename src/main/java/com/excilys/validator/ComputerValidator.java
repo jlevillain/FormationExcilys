@@ -3,10 +3,13 @@ package com.excilys.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
 import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
 
-public class ComputerValidator {
+public class ComputerValidator implements Validator{
 	
 	public static List<String> valide(ComputerDto computer) {
 		List<String> list=new ArrayList<String>();
@@ -62,5 +65,17 @@ public class ComputerValidator {
 	
 	public static List<String> valideCompany(CompanyDto company) {
 		return CompanyValidator.valide(company);
+	}
+
+	@Override
+	public boolean supports(Class<?> clazz) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		// TODO Auto-generated method stub
+		
 	}
 }

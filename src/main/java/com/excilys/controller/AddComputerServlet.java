@@ -1,43 +1,35 @@
 package com.excilys.controller;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.Utilities;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
+import com.excilys.validator.ComputerDtoValidator;
 import com.excilys.validator.ComputerValidator;
 
 /**
@@ -50,7 +42,13 @@ public class AddComputerServlet extends HttpServlet {
 	Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
 	
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	private ComputerDtoValidator computerValidator;
 	
+	@InitBinder
+	private void initBinder(WebDataBinder binder) {
+		binder.setValidator(computerValidator);
+	}
 	@Autowired
     private ComputerService computerService;
     
@@ -67,7 +65,12 @@ public class AddComputerServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-   
+   /*
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(new ComputerValidator());
+    }
+*/
     
     @ModelAttribute("companyList")
     Map<String,String> populateComputerList() {
@@ -89,8 +92,8 @@ public class AddComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public String doPost(@ModelAttribute("computer") ComputerDto cdto,
-			ModelMap model) {
+	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto,
+			BindingResult result, ModelMap model) {
 		// TODO Auto-generated method stub
 		logger.debug(""+cdto);
 		
@@ -98,20 +101,14 @@ public class AddComputerServlet extends HttpServlet {
 				|| cdto.getDiscontinued() ==null || cdto.getCompany()==null) {
 			return "redirect:/AddComputer";
 		}
-		/*
-		CompanyDto compDto=CompanyDto.build().
-				id(computer.getCompany().getId()).
-				name("a").build();
-		ComputerDto cdto=ComputerDto.build().id("0").
-			name(computer.getname).
-			introduced(computer.getintroducedDate).
-			discontinued(computer.getDiscontinued()).
-			company(compDto).build();
-		*/
-		List<String> error=ComputerValidator.valide(cdto);
-		model.addAttribute("error", error);
-		model.addAttribute("computer", cdto);
-		if ( error.size()==0 ) {
+
+		//List<String> error=ComputerValidator.valide(cdto);
+		//model.addAttribute("error", error);
+		if (result.hasErrors()) {
+			model.addAttribute("computer", cdto);
+			return "addComputer";
+		}else {
+		//if ( error.size()==0 ) {
 			Computer comp=computerMapper.convertDtoToComputer(cdto);
 			if (comp!=null) {
 				logger.debug(comp.toString());
@@ -119,9 +116,11 @@ public class AddComputerServlet extends HttpServlet {
 				return "redirect:/";
 			}
 		}
-		
+		//}
 		return "addComputer";
 		
+		
+		
 	}
-
+	
 }

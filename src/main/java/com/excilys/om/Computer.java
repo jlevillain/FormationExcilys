@@ -70,7 +70,7 @@ public class Computer {
 		if (!(obj instanceof Computer))
 			return false;
 		Computer other = (Computer) obj;
-		if (id==other.id)
+		if (id!=other.id)
 			return false;
 		return true;
 	}
