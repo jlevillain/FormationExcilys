@@ -1,12 +1,15 @@
 <jsp:include page="include/header.jsp" />
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <script src="<c:url value="/ressources/js/validation.js"/>"></script>
 <script>
 	$(function() {
 		$("#introduced").datepicker();
-		$("#introduced").datepicker("option", "dateFormat", "yy-mm-dd");
+		$("#introduced").datepicker("option", "dateFormat", '<spring:message code="Date.pattern.javascript" text="default"/>');
 		$("#introduced").datepicker("setDate", "${computer.introduced}");
 		$("#introduced").datepicker({
 			onClose : function(selectedDate) {
@@ -18,7 +21,7 @@
 	$(function() {
 
 		$("#discontinued").datepicker();
-		$("#discontinued").datepicker("option", "dateFormat", "yy-mm-dd");
+		$("#discontinued").datepicker("option", "dateFormat", '<spring:message code="Date.pattern.javascript" text="default"/>');
 		$("#discontinued")
 				.datepicker("setDate", "${computer.discontinued}");
 		$("#discontinued").datepicker({
@@ -56,26 +59,27 @@
 
 		<fieldset>
 			<div class="form-group has-feedback">
-				<label class="control-label" for="name">Computer name:</label>
+				<label class="control-label" for="name"><spring:message code="Computer.input.name" text="default"/></label>
+				<spring:message code="Computer.label.name" var="placeholderName"/>
 				<form:input id="name" cssClass="form-control" type="text"
-					path="name" placeholder="name" /><form:errors path="name" cssClass="bg-danger" />
+					path="name" placeholder='${placeholderName}'/><form:errors path="name" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
-				<label class="control-label" for="introduced">Introduced
-					date:</label>
+				<label class="control-label" for="introduced"><spring:message code="Computer.input.introduced" text="default"/></label>
+				<spring:message code="Date.pattern" var="placeholderIntroduced"/>
 				<form:input id="introduced" class="form-control" type="text"
-					path="introduced" placeholder="YYYY-MM-DD" />
+					path="introduced" placeholder="${placeholderIntroduced}" />
 					<form:errors path="introduced" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
-				<label class="control-label" for="discontinued">Discontinued
-					date:</label>
+				<label class="control-label" for="discontinued"><spring:message code="Computer.input.discontinued" text="default"/></label>
+				<spring:message code="Date.pattern" var="placeholderDiscontinued"/>
 				<form:input id="discontinued" class="form-control" type="text"
-					path="discontinued" placeholder="YYYY-MM-DD" />
+					path="discontinued" placeholder="${placeholderDiscontinued}" />
 				<form:errors path="discontinued" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
-				<label for="company">Company Name:</label>
+				<label for="company"><spring:message code="Computer.input.company" text="default"/></label>
 				<form:select path="company.id" valueItem="company.id" class="form-control">
 					<form:option value="0" label="--"></form:option>
 					<form:options items="${companyList}"></form:options>
@@ -95,13 +99,13 @@
 			<div class="actions">
 				<c:choose>
 					<c:when test="${computer!=null && computer.id!=0}">
-						<input type="submit" value='<spring:message code="editComputer.input.text" text="default"/>' class="btn btn-primary"/>
+						<input type="submit" value='<spring:message code="editComputer.input.submit" text="default"/>' class="btn btn-primary"/>
 					</c:when>
 					<c:otherwise>
-						<input type="submit" value='<spring:message code="addComputer.input.text" text="default"/>' class="btn btn-primary"/>
+						<input type="submit" value='<spring:message code="addComputer.input.submit" text="default"/>' class="btn btn-primary"/>
 					</c:otherwise>
 				</c:choose>
-				or <a onclick="history.back()" class="btn btn-default">Cancel</a>
+				or <a onclick="history.back()" class="btn btn-default"><spring:message code="Cancel.button.text" text="default"/></a>
 			</div>
 		</fieldset>
 		</form:form>

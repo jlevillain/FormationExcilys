@@ -26,6 +26,8 @@ public class ComputerMapper {
 	private ComputerService computerService;
 	@Autowired
 	private CompanyMapper companyMapper;
+	@Autowired
+	private DateConverter dateConverter;
 	
 	public Computer convertDtoToComputer(ComputerDto computerDto) {
 		long id=Long.parseLong(computerDto.getId());
@@ -34,14 +36,14 @@ public class ComputerMapper {
 		
 		try {
 			//introduced = DateConverter.convertStringToDate(computerDto.getIntroduced());
-			introduced=DateConverter.convertStringToDateTime(computerDto.getIntroduced());
+			introduced=dateConverter.convertStringToDateTime(computerDto.getIntroduced());
 		} catch (IllegalFieldValueException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
 			return null;
 		}
 		try {
-			discontinued = DateConverter.convertStringToDateTime(computerDto.getDiscontinued());
+			discontinued = dateConverter.convertStringToDateTime(computerDto.getDiscontinued());
 		} catch (IllegalFieldValueException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
@@ -60,14 +62,14 @@ public class ComputerMapper {
 		String discontinued="";
 		try {
 			//introduced = DateConverter.convertStringToDate(computerDto.getIntroduced());
-			introduced=DateConverter.convertDateTimeToString(computer.getIntroduced());
+			introduced=dateConverter.convertDateTimeToString(computer.getIntroduced());
 		} catch (IllegalFieldValueException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
 			return null;
 		}
 		try {
-			discontinued = DateConverter.convertDateTimeToString(computer.getDiscontinued());
+			discontinued = dateConverter.convertDateTimeToString(computer.getDiscontinued());
 		} catch (IllegalFieldValueException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());

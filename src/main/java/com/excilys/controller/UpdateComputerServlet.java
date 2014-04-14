@@ -85,13 +85,17 @@ public class UpdateComputerServlet extends HttpServlet {
     }
     
     @RequestMapping(method=RequestMethod.GET)
-	public String doGet(@RequestParam("id") int id, ModelMap model) {
+	public String doGet(@RequestParam(value="id",required=false) Integer id, ModelMap model) {
 		// TODO Auto-generated method stub
+    	
+    	if (id==null) {
+    		return "redirect:/";
+    	}
 		Computer comp=computerService.getOne(id);	
 		model.addAttribute("computer", computerMapper.convertComputerToDto(comp));
 		return "addComputer";
 	}
-
+   
 	
     @RequestMapping(method=RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto, 

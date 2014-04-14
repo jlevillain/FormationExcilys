@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,11 +64,21 @@ public class DashBordServlet {
 			@RequestParam(value="page",required=false) String pageParam, 
 			@RequestParam(value="orderBy",required=false) String orderByParam,
 			@RequestParam(value="isDesc",required=false) String isDescParam,
-			@RequestParam(value="nbPage",required=false) String nbPageParam, 
-			ModelMap model) throws ServletException, IOException {
+			@RequestParam(value="nbPage",required=false) String nbPageParam,
+			@RequestParam(value="lang",required=false) String lang, 
+			@CookieValue(value="org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",defaultValue="en",required=false) String langCookie
+			, ModelMap model, HttpServletRequest request) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		logger.debug("start doGet DashBoard");
-		
+		logger.debug("start doGet DashBoard "+lang+" "+langCookie);
+		if (lang==null) {
+			lang=langCookie;
+		}
+		/*
+		Cookie[] cook=request.getCookies();
+		for(Cookie c:cook) {
+			System.out.println(c.getName()+" "+c.getValue());
+		}
+		*/
 		List<Computer> computerList=null;
 		Integer computerSize;
 		

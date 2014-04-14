@@ -8,22 +8,27 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 	<!-- Dependency Injection with annotations -->
-	<context:component-scan base-package="com.excilys" />
-	<bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-		<property name="defaultLocale" value="en" />
-	</bean>
- 
+	
 	<bean id="localeChangeInterceptor"
 		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-		<property name="paramName" value="language" />
+		<property name="paramName" value="lang" />
 	</bean>
- 
+
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en"/>
+	</bean>
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
 		<property name="interceptors">
 		   <list>
 			<ref bean="localeChangeInterceptor" />
-		   </list>
+		    </list>
+		</property>
+	</bean>
+	<bean id="handlerMapping"
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<ref bean="localeChangeInterceptor" />
 		</property>
 	</bean>
 	<bean
@@ -36,14 +41,21 @@
 		</property>
 	</bean>
 	<mvc:annotation-driven validator="validator"/>
+	<mvc:interceptors>
+	    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	        <property name="paramName" value="lang" />
+	    </bean>
+	</mvc:interceptors>
+	
 	<mvc:resources location="/" mapping="/ressources/**" />
 	
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="messages" />
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages" />
+		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="validationMessageSource" ref="messageSource" />
 	</bean>
-
+	<context:component-scan base-package="com.excilys" />
 </beans>
