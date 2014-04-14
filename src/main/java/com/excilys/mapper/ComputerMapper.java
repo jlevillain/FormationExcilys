@@ -3,13 +3,15 @@ package com.excilys.mapper;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.IllegalFieldValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.utils.*;
-
+import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
@@ -27,18 +29,20 @@ public class ComputerMapper {
 	
 	public Computer convertDtoToComputer(ComputerDto computerDto) {
 		long id=Long.parseLong(computerDto.getId());
-		Date introduced, discontinued;
+		DateTime introduced;
+		DateTime discontinued;
 		
 		try {
-			introduced = DateConverter.convertStringToDate(computerDto.getIntroduced());
-		} catch (ParseException e) {
+			//introduced = DateConverter.convertStringToDate(computerDto.getIntroduced());
+			introduced=DateConverter.convertStringToDateTime(computerDto.getIntroduced());
+		} catch (IllegalFieldValueException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
 			return null;
 		}
 		try {
-			discontinued = DateConverter.convertStringToDate(computerDto.getDiscontinued());
-		} catch (ParseException e) {
+			discontinued = DateConverter.convertStringToDateTime(computerDto.getDiscontinued());
+		} catch (IllegalFieldValueException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.getMessage());
 			return null;
@@ -51,5 +55,31 @@ public class ComputerMapper {
 		return computer;
 	}
 	
+	public ComputerDto convertComputerToDto(Computer computer) {
+		String introduced="";
+		String discontinued="";
+		try {
+			//introduced = DateConverter.convertStringToDate(computerDto.getIntroduced());
+			introduced=DateConverter.convertDateTimeToString(computer.getIntroduced());
+		} catch (IllegalFieldValueException e) {
+			// TODO Auto-generated catch block
+			logger.debug(e.getMessage());
+			return null;
+		}
+		try {
+			discontinued = DateConverter.convertDateTimeToString(computer.getDiscontinued());
+		} catch (IllegalFieldValueException e) {
+			// TODO Auto-generated catch block
+			logger.debug(e.getMessage());
+			return null;
+		}
+		CompanyDto company=companyMapper.convertCompanyToDto(computer.getCompany());
+		ComputerDto comp=ComputerDto.build().id(""+computer.getId()).
+				name(computer.getName()).
+				introduced(introduced).
+				discontinued(discontinued).
+				company(company).build();
+		return comp;
+	}
 	
 }

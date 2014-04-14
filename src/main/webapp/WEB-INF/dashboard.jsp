@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <section id="main">
 	<h1 id="homeTitle"><!--  456-->${page.computerSize} Computers found 
 	<c:if test="${page.search!=''}">with "${page.search}"</c:if></h1>
@@ -18,7 +19,7 @@
 					class="btn btn-primary">
 			
 		</form>
-		<a class="btn btn-success" id="add" href="AddComputer">Add Computer</a>
+		<a class="btn btn-success" id="add" href="AddComputer"><spring:message code="addComputer.title" text="default"/></a>
 	</div>
 
 		<table class="table table-striped">
@@ -37,7 +38,7 @@
 			<tbody>
 			
 				<c:forEach var="item" items="${page.computerList}">
-   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td><fmt:formatDate value="${item.introduced}" pattern="yyyy-MM-dd" /> </td><td><fmt:formatDate value="${item.discontinued}" pattern="yyyy-MM-dd" /></td><td>${item.company.name }</td><td><a class="btn btn-danger" onclick="deleteComputer('DeleteComputer?delete=${item.id}')">Delete</a></td></tr>
+   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td>${item.introduced} </td><td>${item.discontinued}</td><td>${item.company.name }</td><td><a class="btn btn-danger" onclick="deleteComputer('DeleteComputer?delete=${item.id}')">Delete</a></td></tr>
  				</c:forEach>
  				<!--  
 				<tr>

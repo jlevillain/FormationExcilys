@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.excilys.om.Computer;
+import com.excilys.utils.DateConverter;
 
 public class ComputerDto {
 	private String id="";
@@ -92,19 +93,18 @@ public class ComputerDto {
 		return new Builder();
 	}
 
-	
+	/*
 	public Computer convertToComputer() throws ParseException {
 		Computer comp=null;
 		comp=new Computer();
 		
 		comp.setName(name);
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-		format.setLenient(false);
-		comp.setDiscontinued(format.parse(discontinued));
-		comp.setIntroduced(format.parse(introduced));
+		comp.setDiscontinued(DateConverter.convertStringToDateTime(discontinued));
+		comp.setIntroduced(DateConverter.convertStringToDateTime(introduced));
 		
 		return comp;
 	}
+	*/
 	@Override
 	public String toString() {
 		return "ComputerDto [id=" + id + ", name=" + name + ", introduced="

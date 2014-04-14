@@ -10,6 +10,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,17 @@ public class ComputerDao {
 			while (rs.next()) {
 				comp=new Computer();
 				comp.setId(rs.getLong(1));
-				comp.setName(rs.getString(2));
-				comp.setIntroduced(rs.getDate(3));
-				comp.setDiscontinued(rs.getDate(4));
+				comp.setName(rs.getString(2));			
+				if (rs.getDate(3)==null) {
+					comp.setIntroduced(null);
+				}else {
+					comp.setIntroduced(new DateTime(rs.getDate(3).getTime()));
+				}
+				if (rs.getDate(4)==null) {
+					comp.setDiscontinued(null);
+				}else {
+					comp.setDiscontinued(new DateTime(rs.getDate(4).getTime()));
+				}
 				Company company=new Company();
 				company.setId(rs.getLong(5));
 				company.setName(rs.getString(6));
@@ -75,8 +84,16 @@ public class ComputerDao {
 				Computer comp=new Computer();
 				comp.setId(rs.getLong(1));
 				comp.setName(rs.getString(2));
-				comp.setIntroduced(rs.getDate(3));
-				comp.setDiscontinued(rs.getDate(4));
+				if (rs.getDate(3)==null) {
+					comp.setIntroduced(null);
+				}else {
+					comp.setIntroduced(new DateTime(rs.getDate(3).getTime()));
+				}
+				if (rs.getDate(4)==null) {
+					comp.setDiscontinued(null);
+				}else {
+					comp.setDiscontinued(new DateTime(rs.getDate(4).getTime()));
+				}
 				Company company=new Company();
 				company.setId(rs.getLong(5));
 				company.setName(rs.getString(6));
@@ -138,8 +155,16 @@ public class ComputerDao {
 				Computer comp=new Computer();
 				comp.setId(rs.getLong(1));
 				comp.setName(rs.getString(2));
-				comp.setIntroduced(rs.getDate(3));
-				comp.setDiscontinued(rs.getDate(4));
+				if (rs.getDate(3)==null) {
+					comp.setIntroduced(null);
+				}else {
+					comp.setIntroduced(new DateTime(rs.getDate(3).getTime()));
+				}
+				if (rs.getDate(4)==null) {
+					comp.setDiscontinued(null);
+				}else {
+					comp.setDiscontinued(new DateTime(rs.getDate(4).getTime()));
+				}
 				Company company=new Company();
 				company.setId(rs.getLong(5));
 				company.setName(rs.getString(6));
@@ -168,13 +193,13 @@ public class ComputerDao {
 			if(comp.getIntroduced()==null) {
 				stmt.setObject(2, Types.NULL);
 			}else {
-				introduced=new Date(comp.getIntroduced().getTime());
+				introduced=new Date(comp.getIntroduced().getMillis());
 				stmt.setObject(2, introduced);
 			}
 			if (comp.getDiscontinued()==null) {
 				stmt.setObject(3, Types.NULL);
 			}else {
-				discontinued=new Date(comp.getDiscontinued().getTime());
+				discontinued=new Date(comp.getDiscontinued().getMillis());
 				stmt.setDate(3, discontinued);
 				
 			}
@@ -208,13 +233,13 @@ public class ComputerDao {
 			if(comp.getIntroduced()==null) {
 				stmt.setObject(2, Types.NULL);
 			}else {
-				introduced=new Date(comp.getIntroduced().getTime());
+				introduced=new Date(comp.getIntroduced().getMillis());
 				stmt.setObject(2, introduced);
 			}
 			if (comp.getDiscontinued()==null) {
 				stmt.setObject(3, Types.NULL);
 			}else {
-				discontinued=new Date(comp.getDiscontinued().getTime());
+				discontinued=new Date(comp.getDiscontinued().getMillis());
 				stmt.setDate(3, discontinued);
 				
 			}		

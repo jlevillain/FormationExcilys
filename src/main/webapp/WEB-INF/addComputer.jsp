@@ -1,6 +1,7 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script src="<c:url value="/ressources/js/validation.js"/>"></script>
 <script>
 	$(function() {
@@ -33,8 +34,8 @@
 
 	<h1>
 		<c:choose>
-			<c:when test="${computer!=null && computer.id!=0}">Edit Computer</c:when>
-			<c:otherwise>Add Computer</c:otherwise>
+			<c:when test="${computer!=null && computer.id!=0}"><spring:message code="editComputer.title" text="default"/></c:when>
+			<c:otherwise><spring:message code="addComputer.title" text="default"/></c:otherwise>
 		</c:choose>
 	</h1>
 
@@ -94,10 +95,10 @@
 			<div class="actions">
 				<c:choose>
 					<c:when test="${computer!=null && computer.id!=0}">
-						<input type="submit" value="Edit" class="btn btn-primary"/>
+						<input type="submit" value='<spring:message code="editComputer.input.text" text="default"/>' class="btn btn-primary"/>
 					</c:when>
 					<c:otherwise>
-						<input type="submit" path="Add" class="btn btn-primary"/>
+						<input type="submit" value='<spring:message code="addComputer.input.text" text="default"/>' class="btn btn-primary"/>
 					</c:otherwise>
 				</c:choose>
 				or <a onclick="history.back()" class="btn btn-default">Cancel</a>

@@ -85,7 +85,7 @@ public class AddComputerServlet extends HttpServlet {
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView doGet(ModelMap model) {
 		// TODO Auto-generated method stub
-		return new ModelAndView("addComputer","computer",new Computer());
+		return new ModelAndView("addComputer","computer",computerMapper.convertComputerToDto(new Computer()));
 	}
 
 	/**

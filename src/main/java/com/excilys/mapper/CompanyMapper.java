@@ -21,4 +21,12 @@ public class CompanyMapper {
 		Company company = Company.build().id(id).name(companyDto.getName()).build();
 		return company;
 	}
+	
+	public CompanyDto convertCompanyToDto(Company company) {
+		if (company==null)
+			return null;
+		CompanyDto comp=CompanyDto.build().id(""+company.getId()).
+				name(company.getName()).build();
+		return comp;
+	}
 }

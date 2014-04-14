@@ -2,6 +2,7 @@ package com.excilys.wrapper;
 
 import java.util.List;
 
+import com.excilys.dto.ComputerDto;
 import com.excilys.om.Computer;
 
 public class Page {
@@ -9,7 +10,7 @@ public class Page {
 	private int interval=5;
 	private boolean desc=false;
 	private String search="";
-	private List<Computer> computerList;
+	private List<ComputerDto> computerList;
 	private int computerSize;
 	private int orderBy=2;
 	private int nbPage=10;
@@ -60,10 +61,10 @@ public class Page {
 	public void setSearch(String search) {
 		this.search = search;
 	}
-	public List<Computer> getComputerList() {
+	public List<ComputerDto> getComputerList() {
 		return computerList;
 	}
-	public void setComputerList(List<Computer> computerList) {
+	public void setComputerList(List<ComputerDto> computerList) {
 		this.computerList = computerList;
 	}
 	public int getComputerSize() {
@@ -88,7 +89,7 @@ public class Page {
 			return this;
 		}
 		
-		public Builder computerList(List<Computer> computerList) {
+		public Builder computerList(List<ComputerDto> computerList) {
 			this.page.setComputerList(computerList);
 			return this;
 		}

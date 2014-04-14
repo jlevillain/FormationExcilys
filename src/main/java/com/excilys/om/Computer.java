@@ -3,19 +3,21 @@ package com.excilys.om;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import com.excilys.dto.ComputerDto;
 
 public class Computer {
 	private long id;
 	private String name="";
-	private Date introduced=null;
-	private Date discontinued=null;
+	private DateTime introduced=null;
+	private DateTime discontinued=null;
 	private Company company=new Company();
 	
 	public Computer() {
 		super();
 	}
-	public Computer(long id, String name, Date introduced, Date discontinued,
+	public Computer(long id, String name, DateTime introduced, DateTime discontinued,
 			Company company) {
 		super();
 		this.id = id;
@@ -36,16 +38,16 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public DateTime getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(DateTime introduced) {
 		this.introduced = introduced;
 	}
-	public Date getDiscontinued() {
+	public DateTime getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(DateTime discontinued) {
 		this.discontinued = discontinued;
 	}
 	public Company getCompany() {
@@ -107,12 +109,12 @@ public class Computer {
 			return this;
 		}
 		
-		public Builder introduced(Date introduced) {
+		public Builder introduced(DateTime introduced) {
 			this.computer.setIntroduced(introduced);
 			return this;
 		}
 		
-		public Builder discontinued(Date discontinued) {
+		public Builder discontinued(DateTime discontinued) {
 			this.computer.setDiscontinued(discontinued);
 			return this;
 		}

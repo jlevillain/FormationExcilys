@@ -88,7 +88,7 @@ public class UpdateComputerServlet extends HttpServlet {
 	public String doGet(@RequestParam("id") int id, ModelMap model) {
 		// TODO Auto-generated method stub
 		Computer comp=computerService.getOne(id);	
-		model.addAttribute("computer", comp);
+		model.addAttribute("computer", computerMapper.convertComputerToDto(comp));
 		return "addComputer";
 	}
 
@@ -111,7 +111,7 @@ public class UpdateComputerServlet extends HttpServlet {
 			Computer comp=computerMapper.convertDtoToComputer(cdto);
 			if (comp!=null) {
 				logger.debug(comp.toString());
-				computerService.insertOne(comp);
+				computerService.updateOne(comp);
 				return "redirect:/";
 			}
 		}

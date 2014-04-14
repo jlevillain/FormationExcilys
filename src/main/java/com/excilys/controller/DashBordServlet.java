@@ -1,6 +1,7 @@
 package com.excilys.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.excilys.dto.ComputerDto;
+import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
@@ -35,6 +38,8 @@ public class DashBordServlet {
 	private ApplicationContext context=null;
 	private static final long serialVersionUID = 1L;
        
+	@Autowired
+	ComputerMapper computerMapper;
 	@Autowired
 	ComputerService computerService;
 	
@@ -73,10 +78,14 @@ public class DashBordServlet {
 		
 		computerList=computerService.getAll(search, ((page-1)*nbPage), nbPage,orderBy,desc);
 		computerSize=computerService.getSize(search);
+		List<ComputerDto> computerDtoList=new ArrayList<ComputerDto>();
+		for(Computer comp : computerList) {
+			computerDtoList.add(computerMapper.convertComputerToDto(comp));
+		}
 		
 		Page pageWrapper=Page.build().search(search).page(page).isDesc(desc).
 				orderBy(orderBy).nbPage(nbPage).
-				computerList(computerList).computerSize(computerSize).build();
+				computerList(computerDtoList).computerSize(computerSize).build();
 		
 		
 		model.addAttribute("page", pageWrapper);
