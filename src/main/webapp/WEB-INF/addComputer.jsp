@@ -7,8 +7,41 @@
 
 <script src="<c:url value="/ressources/js/validation.js"/>"></script>
 <script>
+	$.validator.addMethod(
+	        "dateControl",
+	        function(value, element) {
+	        	try {
+	        		$.datepicker.parseDate( '<spring:message code="Date.pattern.javascript" text="default"/>', value );
+	        		return true;
+	        	}catch(e) {
+	        		return false;
+	        	}
+	        }, 'Please enter a date in the format <spring:message code="Date.pattern.text" text="default"/>.');
+	
+	$().ready(function() {
+		$("#signupForm").validate({
+			rules: {
+				name : "required",
+				introduced : {
+					dateControl: true
+				},
+				discontinued : {
+					dateControl: true
+				}
+			},
+			highlight: function(element) {
+				 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			success: function(element) {
+				 $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+			}
+		});
+	});
+
 	$(function() {
 		$("#introduced").datepicker();
+		
+		$("#introduced").datepicker( "option",$.datepicker.regional['<spring:message code="DatePicker.lang" text="default"/>'] );
 		$("#introduced").datepicker("option", "dateFormat", '<spring:message code="Date.pattern.javascript" text="default"/>');
 		$("#introduced").datepicker("setDate", "${computer.introduced}");
 		$("#introduced").datepicker({
@@ -21,9 +54,11 @@
 	$(function() {
 
 		$("#discontinued").datepicker();
+	
+		
+		$("#discontinued").datepicker( "option",$.datepicker.regional['<spring:message code="DatePicker.lang" text="default"/>'] );
 		$("#discontinued").datepicker("option", "dateFormat", '<spring:message code="Date.pattern.javascript" text="default"/>');
-		$("#discontinued")
-				.datepicker("setDate", "${computer.discontinued}");
+		$("#discontinued").datepicker("setDate", "${computer.discontinued}");
 		$("#discontinued").datepicker({
 			onClose : function(selectedDate) {
 				$('#discontinued').trigger('change');
@@ -66,14 +101,14 @@
 			</div>
 			<div class="form-group has-feedback">
 				<label class="control-label" for="introduced"><spring:message code="Computer.input.introduced" text="default"/></label>
-				<spring:message code="Date.pattern" var="placeholderIntroduced"/>
+				<spring:message code="Date.pattern.text" var="placeholderIntroduced"/>
 				<form:input id="introduced" class="form-control" type="text"
 					path="introduced" placeholder="${placeholderIntroduced}" />
 					<form:errors path="introduced" cssClass="bg-danger" />
 			</div>
 			<div class="form-group has-feedback">
 				<label class="control-label" for="discontinued"><spring:message code="Computer.input.discontinued" text="default"/></label>
-				<spring:message code="Date.pattern" var="placeholderDiscontinued"/>
+				<spring:message code="Date.pattern.text" var="placeholderDiscontinued"/>
 				<form:input id="discontinued" class="form-control" type="text"
 					path="discontinued" placeholder="${placeholderDiscontinued}" />
 				<form:errors path="discontinued" cssClass="bg-danger" />

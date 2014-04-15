@@ -25,6 +25,8 @@
 <script src="<c:url value="/ressources/js/additional-methods.js"/>"></script>
 <script src="<c:url value="/ressources/js/jquery-ui-1.10.4.custom.js"/>"></script>
 <script src="<c:url value="/ressources/js/main.js"/>"></script>
+<script src="<c:url value="/ressources/development-bundle/ui/i18n/jquery-ui-i18n.js"/>"></script>
+<script src="<c:url value="/ressources/development-bundle/ui/i18n/jquery.ui.datepicker-fr.js"/>"></script>
 </head>
 <body>
 	<noscript>

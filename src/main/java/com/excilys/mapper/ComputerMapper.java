@@ -53,7 +53,7 @@ public class ComputerMapper {
 		
 		Computer computer=Computer.build().id(id).name(computerDto.getName()).
 		introduced(introduced).discontinued(discontinued).company(company).build();
-		
+		logger.debug(""+computer);
 		return computer;
 	}
 	

@@ -3,15 +3,26 @@ package com.excilys.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
 
-public class ComputerValidator implements Validator{
+@Component
+public class ComputerValidator {
+	Logger logger = LoggerFactory.getLogger(ComputerDtoValidator.class);
 	
-	public static List<String> valide(ComputerDto computer) {
+	@Autowired
+	ReloadableResourceBundleMessageSource source;
+	
+	public List<String> valide(ComputerDto computer) {
 		List<String> list=new ArrayList<String>();
 		list.addAll(valideId(computer.getId()));
 		list.addAll(valideName(computer.getName()));
@@ -22,7 +33,7 @@ public class ComputerValidator implements Validator{
 		
 	}
 	
-	public static List<String> valideId(String id) {
+	public List<String> valideId(String id) {
 		List<String> list=new ArrayList<String>();
 		if (id.matches("[0-9]+")){
 			return list;
@@ -32,7 +43,7 @@ public class ComputerValidator implements Validator{
 		return list;
 	}
 	
-	public static List<String> valideName(String name) {
+	public List<String> valideName(String name) {
 		List<String> list=new ArrayList<String>();
 		if (name.matches(".+")) {
 			return list;
@@ -42,9 +53,10 @@ public class ComputerValidator implements Validator{
 		return list;
 	}
 	
-	public static List<String> valideIntroduced(String introduced) {
+	public List<String> valideIntroduced(String introduced) {
 		List<String> list=new ArrayList<String>();
-		if (introduced.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$") || "".equals(introduced)) {
+		logger.debug(source.getMessage("Date.pattern.java", null, LocaleContextHolder.getLocale()));
+		if (introduced.matches(source.getMessage("Date.pattern.java", null, LocaleContextHolder.getLocale())) || "".equals(introduced)) {
 			return list;
 		}
 		
@@ -53,9 +65,9 @@ public class ComputerValidator implements Validator{
 		
 	}
 	
-	public static List<String> valideDiscontinued(String discontinued) {
+	public List<String> valideDiscontinued(String discontinued) {
 		List<String> list=new ArrayList<String>();
-		if (discontinued.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$") || "".equals(discontinued)) {
+		if (discontinued.matches(source.getMessage("Date.pattern.java", null, LocaleContextHolder.getLocale())) || "".equals(discontinued)) {
 			return list;
 		}
 		list.add("invalidComputerDiscontinued");
@@ -63,19 +75,7 @@ public class ComputerValidator implements Validator{
 		
 	}
 	
-	public static List<String> valideCompany(CompanyDto company) {
+	public List<String> valideCompany(CompanyDto company) {
 		return CompanyValidator.valide(company);
-	}
-
-	@Override
-	public boolean supports(Class<?> clazz) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void validate(Object target, Errors errors) {
-		// TODO Auto-generated method stub
-		
 	}
 }
