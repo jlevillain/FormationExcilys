@@ -41,7 +41,7 @@
 			<tbody>
 			
 				<c:forEach var="item" items="${page.computerList}">
-   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td>${item.introduced} </td><td>${item.discontinued}</td><td>${item.company.name }</td><td><a class="btn btn-danger" onclick="deleteComputer('DeleteComputer?delete=${item.id}')"><spring:message code="deleteComputer.title" text="default"/></a></td></tr>
+   					<tr><td><a href="UpdateComputer?id=${item.id}">${item.name}</a></td><td>${item.introduced} </td><td>${item.discontinued}</td><td>${item.company.name }</td><td><a class="btn btn-danger" onclick="deleteComputer('DeleteComputer?delete=${item.id}','<spring:message code="Delete.message" text="default"/>')"><spring:message code="deleteComputer.title" text="default"/></a></td></tr>
  				</c:forEach>
  				<!--  
 				<tr>
