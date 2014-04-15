@@ -39,7 +39,9 @@
 			<tags:url servlet="DashBoard">
 				<spring:message code="Application.name" text="default" />
 			</tags:url>
-			<span style="float: right"> <a href="?lang=en">en</a> | <a href="?lang=fr">fr</a>
+			<span style="float: right"> 
+			<a href="?lang=en"><img src='<c:url value="/ressources/images/anglais.png"/>'/></a> | 
+			<a href="?lang=fr"><img src='<c:url value="/ressources/images/francais.png"/>'/></a>
 			</span>
 			<!-- <a href="DashBoard?search=&page=1"> Application - Computer Database </a> -->
 		</h1>

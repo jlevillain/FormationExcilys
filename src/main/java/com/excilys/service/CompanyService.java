@@ -10,6 +10,10 @@ import com.excilys.om.Company;
 import com.excilys.om.Computer;
 
 public interface CompanyService {
+	/**
+	 * get all company
+	 * @return list of company
+	 */
 	public List<Company> getAll();
 	
 }

@@ -24,6 +24,11 @@ import  com.excilys.exception.SQLRuntimeException;
 
 import java.sql.Date;
 
+/**
+ * class managing the database for computer
+ * @author jlevillain
+ *
+ */
 @Repository("computerDao")
 public class ComputerDao {
 	Logger logger = LoggerFactory.getLogger(ComputerDao.class);
@@ -31,6 +36,12 @@ public class ComputerDao {
 	@Autowired
 	DaoFactory daoFactory;
 	
+	/**
+	 * get one computer from the database
+	 * @param id id of computer
+	 * @return computer 
+	 * @throws SQLRuntimeException
+	 */
 	public Computer getOne(long id) throws SQLRuntimeException {
 		Computer comp=null;
 		ResultSet rs = null;
@@ -72,6 +83,11 @@ public class ComputerDao {
 	
 	}
 	
+	/**
+	 * get all computer from the database
+	 * @return list of computer
+	 * @throws SQLRuntimeException
+	 */
 	public List<Computer> getAll() throws SQLRuntimeException {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
@@ -108,7 +124,12 @@ public class ComputerDao {
 		return liste;
 	
 	}
-	
+	/**
+	 * get the size of list of computer
+	 * @param search search parameter 
+	 * @return size of list of computer
+	 * @throws SQLRuntimeException
+	 */
 	public int getSize(String search) throws SQLRuntimeException {
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -130,6 +151,16 @@ public class ComputerDao {
 		return size;
 	}
 	
+	/**
+	 * get the list of computer with the good parameter
+	 * @param search search parameter
+	 * @param begin 
+	 * @param number number of page
+	 * @param order sort by order
+	 * @param desc descendant sort
+	 * @return list of computer
+	 * @throws SQLRuntimeException
+	 */
 	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws SQLRuntimeException {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
@@ -178,6 +209,13 @@ public class ComputerDao {
 		}
 		return liste;
 	}
+	
+	/**
+	 * update a computer
+	 * @param comp a computer to update
+	 * @return the success of the method
+	 * @throws SQLRuntimeException
+	 */
 	public boolean updateOne(Computer comp) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
@@ -219,6 +257,12 @@ public class ComputerDao {
 		return (rs!=0);
 	}
 	
+	/**
+	 * insert a computer
+	 * @param comp computer
+	 * @return the success of the method
+	 * @throws SQLRuntimeException
+	 */
 	public boolean insertOne(Computer comp) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
@@ -259,6 +303,12 @@ public class ComputerDao {
 		return (rs!=0);
 	}
 	
+	/**
+	 * delete one computer 
+	 * @param id id of the computer
+	 * @return success of the method
+	 * @throws SQLRuntimeException
+	 */
 	public boolean deleteOne(long id) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;

@@ -14,7 +14,11 @@ import org.springframework.stereotype.Repository;
 import com.excilys.om.Computer;
 import com.excilys.om.Log;
 import  com.excilys.exception.SQLRuntimeException;
-
+/**
+ * class managing with the database for log
+ * @author jlevillain
+ *
+ */
 @Repository("logDao")
 public class LogDao {
 	Logger logger = LoggerFactory.getLogger(LogDao.class);
@@ -22,6 +26,12 @@ public class LogDao {
 	@Autowired
 	DaoFactory daoFactory;
 	
+	/**
+	 * insert a log in the database
+	 * @param request request effectuated
+	 * @return success of the method
+	 * @throws SQLRuntimeException
+	 */
 	public boolean insertOne( Log request) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;

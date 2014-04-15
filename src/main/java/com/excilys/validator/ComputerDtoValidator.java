@@ -23,6 +23,11 @@ import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Computer;
 import com.excilys.utils.*;
 
+/**
+ * class validating a computerDto
+ * @author jlevillain
+ *
+ */
 @Component
 public class ComputerDtoValidator implements Validator {
 	Logger logger = LoggerFactory.getLogger(ComputerDtoValidator.class);

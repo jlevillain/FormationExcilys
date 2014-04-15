@@ -24,12 +24,20 @@ import com.excilys.exception.NamingRuntimeException;
 import com.excilys.exception.SQLRuntimeException;
 import com.excilys.om.Computer;
 
+/**
+ * class managing the connection with the database
+ * @author jlevillain
+ *
+ */
 @Component("ConnectionManagement")
 public class DaoFactory {
 	private Logger logger = LoggerFactory.getLogger(DaoFactory.class);
 	private BoneCPDataSource bcpds=null;
 	private ThreadLocal<Connection> threadLocalConnection=null;
 	
+	/**
+	 * constructor of the dao factory
+	 */
 	public DaoFactory() {
 		try{
 			Context initContext = new InitialContext();
@@ -45,7 +53,9 @@ public class DaoFactory {
 			
 		}
 	}
-	
+	/**
+	 * start a transaction
+	 */
 	public void startTransaction() {
 		try {
 			threadLocalConnection.get().setAutoCommit(false);;
@@ -57,6 +67,9 @@ public class DaoFactory {
 		
 	}
 	
+	/**
+	 * validate a transaction
+	 */
 	public void commit() {
 		try {
 			threadLocalConnection.get().commit();
@@ -67,6 +80,9 @@ public class DaoFactory {
 		}
 	}
 	
+	/**
+	 * cancel a transaction
+	 */
 	public void rollback() {
 		try {
 			threadLocalConnection.get().rollback();
@@ -78,6 +94,10 @@ public class DaoFactory {
 		
 	}
 	
+	/**
+	 * get the pool connection of the database
+	 * @return pool connection
+	 */
 	public Connection getConnectionPool() {
 		
 		if (threadLocalConnection.get()==null) {
@@ -93,7 +113,9 @@ public class DaoFactory {
 		return threadLocalConnection.get();
 	}
 	
-	
+	/**
+	 * close the connection with the database
+	 */
 	public void closeConnection() {
 		try {
 		
@@ -105,6 +127,11 @@ public class DaoFactory {
 		threadLocalConnection.remove();
 	}
 	
+	/**
+	 * close the connection with the database
+	 * @param rs resultset to close
+	 * @param stmt statement to close
+	 */
 	public void closeConnection(ResultSet rs,Statement stmt) {
 		try {
 			if (rs!=null)

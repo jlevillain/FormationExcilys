@@ -15,6 +15,11 @@ import org.springframework.validation.Validator;
 import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
 
+/**
+ * class validating a computer 
+ * @author jlevillain
+ *
+ */
 @Component
 public class ComputerValidator {
 	Logger logger = LoggerFactory.getLogger(ComputerDtoValidator.class);
@@ -22,6 +27,11 @@ public class ComputerValidator {
 	@Autowired
 	ReloadableResourceBundleMessageSource source;
 	
+	/**
+	 * validate a computer
+	 * @param computer computer to validate
+	 * @return list of error
+	 */
 	public List<String> valide(ComputerDto computer) {
 		List<String> list=new ArrayList<String>();
 		list.addAll(valideId(computer.getId()));
@@ -33,6 +43,11 @@ public class ComputerValidator {
 		
 	}
 	
+	/**
+	 * validate the id of computer
+	 * @param id id of computer
+	 * @return list of error
+	 */
 	public List<String> valideId(String id) {
 		List<String> list=new ArrayList<String>();
 		if (id.matches("[0-9]+")){
@@ -43,6 +58,11 @@ public class ComputerValidator {
 		return list;
 	}
 	
+	/**
+	 * validate the name of computer
+	 * @param name name of computer
+	 * @return list of error
+	 */
 	public List<String> valideName(String name) {
 		List<String> list=new ArrayList<String>();
 		if (name.matches(".+")) {
@@ -52,7 +72,11 @@ public class ComputerValidator {
 		list.add("invalidComputerName");
 		return list;
 	}
-	
+	/**
+	 * validate the introduced date of computer
+	 * @param introduced introduced date of computer
+	 * @return list of error
+	 */
 	public List<String> valideIntroduced(String introduced) {
 		List<String> list=new ArrayList<String>();
 		logger.debug(source.getMessage("Date.pattern.java", null, LocaleContextHolder.getLocale()));
@@ -64,7 +88,11 @@ public class ComputerValidator {
 		return list;
 		
 	}
-	
+	/**
+	 * validate the discontinued date of computer
+	 * @param discontinued discontinued date of computer
+	 * @return list of error
+	 */
 	public List<String> valideDiscontinued(String discontinued) {
 		List<String> list=new ArrayList<String>();
 		if (discontinued.matches(source.getMessage("Date.pattern.java", null, LocaleContextHolder.getLocale())) || "".equals(discontinued)) {
@@ -74,7 +102,11 @@ public class ComputerValidator {
 		return list;
 		
 	}
-	
+	/**
+	 * validate a company
+	 * @param company company to validate
+	 * @return list of error
+	 */
 	public List<String> valideCompany(CompanyDto company) {
 		return CompanyValidator.valide(company);
 	}

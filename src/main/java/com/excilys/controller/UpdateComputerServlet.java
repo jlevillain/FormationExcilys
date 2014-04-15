@@ -73,7 +73,10 @@ public class UpdateComputerServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-   
+   /**
+    * get a list of company
+    * @return list of company
+    */
     @ModelAttribute("companyList")
     Map<String,String> populateComputerList() {
     	List<Company> companyList=companyService.getAll();
@@ -84,6 +87,12 @@ public class UpdateComputerServlet extends HttpServlet {
 		return list;
     }
     
+    /**
+     * method doGet of the controller
+     * @param id id of the computer
+     * @param model model 
+     * @return page
+     */
     @RequestMapping(method=RequestMethod.GET)
 	public String doGet(@RequestParam(value="id",required=false) Integer id, ModelMap model) {
 		// TODO Auto-generated method stub
@@ -96,7 +105,13 @@ public class UpdateComputerServlet extends HttpServlet {
 		return "addComputer";
 	}
    
-	
+	/**
+	 * method doGet of the controller
+	 * @param cdto computer to update
+	 * @param result result
+	 * @param model model
+	 * @return page
+	 */
     @RequestMapping(method=RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto, 
 			BindingResult result, ModelMap model) {

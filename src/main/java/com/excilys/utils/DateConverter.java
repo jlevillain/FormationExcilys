@@ -28,6 +28,12 @@ public class DateConverter {
 	@Autowired
 	ReloadableResourceBundleMessageSource messageSource;
 	
+	/**
+	 * convert a string into date
+	 * @param str string to convert
+	 * @return date
+	 * @throws ParseException
+	 */
 	public Date convertStringToDate(String str) throws ParseException {
 		if ("".equals(str)) {
 			return null;
@@ -39,6 +45,12 @@ public class DateConverter {
 		return date;
 	}
 	
+	/**
+	 * convert a string into datetime
+	 * @param str string to convert
+	 * @return datetime
+	 * @throws IllegalFieldValueException
+	 */
 	public DateTime convertStringToDateTime(String str) throws IllegalFieldValueException {
 		if ("".equals(str)) {
 			return null;
@@ -51,6 +63,11 @@ public class DateConverter {
 		return date;
 	}
 	
+	/**
+	 * convert a datetime into string
+	 * @param date date to convert
+	 * @return string
+	 */
 	public String convertDateTimeToString(DateTime date) {
 		if (date==null) {
 			return "";

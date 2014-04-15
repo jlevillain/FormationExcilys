@@ -1,6 +1,16 @@
 package com.excilys.validator;
 
+/**
+ * class validating a page
+ * @author jlevillain
+ *
+ */
 public class PageValidator {
+	/**
+	 * validate search parameter
+	 * @param search search parameter
+	 * @return valid search 
+	 */
 	public static String validSearch(String search) {
 		if (search==null) {
 			return "";
@@ -8,6 +18,11 @@ public class PageValidator {
 		return search;
 	}
 	
+	/**
+	 * validate the orderBy parameter
+	 * @param orderBy orderBy parameter
+	 * @return valid order by
+	 */
 	public static int validOrderBy(String orderBy) {
 		if (orderBy==null)
 			return 2;
@@ -22,6 +37,11 @@ public class PageValidator {
 		}
 	}
 	
+	/**
+	 * validate the number of page
+	 * @param nbPage number of page
+	 * @return valid number of page
+	 */
 	public static int validNbPage(String nbPage) {
 		if (nbPage==null) {
 			return 10;
@@ -37,6 +57,11 @@ public class PageValidator {
 		}
 	}
 	
+	/**
+	 * validate isDesc parameter
+	 * @param isDesc isDesc parameter
+	 * @return valid isDesc
+	 */
 	public static boolean validIsDesc(String isDesc) {
 		if ("true".equals(isDesc)) {
 			return true;
@@ -45,6 +70,11 @@ public class PageValidator {
 		}
 	}
 	
+	/**
+	 * validate the actual page
+	 * @param page actual page 
+	 * @return valid actual page
+	 */
 	public static int validPage(String page) {
 		if (page==null) {
 			return 1;

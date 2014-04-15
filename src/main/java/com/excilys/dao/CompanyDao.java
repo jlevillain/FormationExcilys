@@ -16,7 +16,11 @@ import org.springframework.stereotype.Repository;
 import com.excilys.om.Company;
 import com.excilys.exception.SQLRuntimeException;
 
-
+/**
+ * class managing the database for company
+ * @author jlevillain
+ *
+ */
 @Repository("companyDao")
 public class CompanyDao {
 	Logger logger = LoggerFactory.getLogger(CompanyDao.class);
@@ -24,6 +28,12 @@ public class CompanyDao {
 	@Autowired
 	DaoFactory daoFactory;
 	
+	/**
+	 * get one company
+	 * @param id id of the company
+	 * @return a company
+	 * @throws SQLRuntimeException
+	 */
 	public Company getOne(long id) throws SQLRuntimeException {
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -47,7 +57,11 @@ public class CompanyDao {
 		return comp;
 	}
 
-	
+	/**
+	 * get a list of company
+	 * @return the list of company
+	 * @throws SQLRuntimeException
+	 */
 	public List<Company> getAll() throws SQLRuntimeException {
 		List<Company> liste = new ArrayList<Company>();
 		ResultSet rs = null;

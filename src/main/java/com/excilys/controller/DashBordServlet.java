@@ -56,9 +56,20 @@ public class DashBordServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * method doGet of dashboard controller
+     * @param searchParam search parameter
+     * @param pageParam actual page parameter
+     * @param orderByParam orderBy parameter
+     * @param isDescParam isDesc parameter
+     * @param nbPageParam nbPage parameter
+     * @param lang lang parameter
+     * @param langCookie cookie
+     * @param model model
+     * @return name of page 
+     * @throws ServletException
+     * @throws IOException
+     */
     @RequestMapping(method=RequestMethod.GET)
 	public String doGet(@RequestParam(value="search",required=false) String searchParam,
 			@RequestParam(value="page",required=false) String pageParam, 
@@ -67,7 +78,7 @@ public class DashBordServlet {
 			@RequestParam(value="nbPage",required=false) String nbPageParam,
 			@RequestParam(value="lang",required=false) String lang, 
 			@CookieValue(value="org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",defaultValue="en",required=false) String langCookie
-			, ModelMap model, HttpServletRequest request) throws ServletException, IOException {
+			, ModelMap model) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		logger.debug("start doGet DashBoard "+lang+" "+langCookie);
 		if (lang==null) {

@@ -71,7 +71,10 @@ public class AddComputerServlet extends HttpServlet {
         binder.addValidators(new ComputerValidator());
     }
 */
-    
+    /**
+     * get the list of company
+     * @return list of company
+     */
     @ModelAttribute("companyList")
     Map<String,String> populateComputerList() {
     	List<Company> companyList=companyService.getAll();
@@ -82,6 +85,11 @@ public class AddComputerServlet extends HttpServlet {
 		return list;
     }
     
+    /**
+     * method doGet of servlet
+     * @param model 
+     * @return page
+     */
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView doGet(ModelMap model) {
 		// TODO Auto-generated method stub
@@ -89,7 +97,11 @@ public class AddComputerServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * method doPost of servlet
+	 * @param cdto computer to add
+	 * @param result result
+	 * @param model model
+	 * @return page
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto,

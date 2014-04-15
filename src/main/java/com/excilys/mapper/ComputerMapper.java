@@ -18,6 +18,11 @@ import com.excilys.om.Computer;
 import com.excilys.service.ComputerService;
 
 
+/**
+ * class mapping a computerDto in computer
+ * @author excilys
+ *
+ */
 @Component
 public class ComputerMapper {
 	
@@ -29,6 +34,11 @@ public class ComputerMapper {
 	@Autowired
 	private DateConverter dateConverter;
 	
+	/**
+	 * convert a computerDto in computer
+	 * @param computerDto computerDto to convert
+	 * @return computer
+	 */
 	public Computer convertDtoToComputer(ComputerDto computerDto) {
 		long id=Long.parseLong(computerDto.getId());
 		DateTime introduced;
@@ -57,6 +67,11 @@ public class ComputerMapper {
 		return computer;
 	}
 	
+	/**
+	 * convert a computer in computerDto
+	 * @param computer computer to convert
+	 * @return computerDto
+	 */
 	public ComputerDto convertComputerToDto(Computer computer) {
 		String introduced="";
 		String discontinued="";

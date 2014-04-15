@@ -32,7 +32,11 @@ public class DeleteComputerServlet {
         // TODO Auto-generated constructor stub
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-	
+	/**
+	 * method doGet of controller
+	 * @param id id to delete
+	 * @return page
+	 */
     @RequestMapping(method=RequestMethod.GET)
 	public String doGet( @RequestParam("delete") int id) {
 		// TODO Auto-generated method stub
