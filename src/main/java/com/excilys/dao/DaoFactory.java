@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,31 +33,24 @@ import com.excilys.om.Computer;
 @Component("ConnectionManagement")
 public class DaoFactory {
 	private Logger logger = LoggerFactory.getLogger(DaoFactory.class);
-	private BoneCPDataSource bcpds=null;
 	private ThreadLocal<Connection> threadLocalConnection=null;
+	
+	@Autowired
+	@Qualifier("dataSource")
+	private BoneCPDataSource dataSource;
 	
 	/**
 	 * constructor of the dao factory
 	 */
 	public DaoFactory() {
-		try{
-			Context initContext = new InitialContext();
-				
-			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			DataSource ds = (DataSource)envContext.lookup("jdbc/ComputerPool");
-			bcpds=new BoneCPDataSource();
-			bcpds.setDatasourceBean(ds);
-			threadLocalConnection=new ThreadLocal<Connection>();
-		} catch (NamingException e) {
-			logger.debug(""+e.getMessage());
-			throw new NamingRuntimeException(e.getMessage(), e.getStackTrace());
-			
-		}
+		threadLocalConnection=new ThreadLocal<Connection>();
 	}
+
 	/**
 	 * start a transaction
 	 */
 	public void startTransaction() {
+		
 		try {
 			threadLocalConnection.get().setAutoCommit(false);;
 		} catch (SQLException e) {
@@ -99,10 +93,9 @@ public class DaoFactory {
 	 * @return pool connection
 	 */
 	public Connection getConnectionPool() {
-		
 		if (threadLocalConnection.get()==null) {
 			try {
-				threadLocalConnection.set(bcpds.getConnection());
+				threadLocalConnection.set(dataSource.getConnection());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				logger.debug("getConnection error s"+e.getMessage());
