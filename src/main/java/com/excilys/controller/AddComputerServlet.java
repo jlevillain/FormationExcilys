@@ -76,13 +76,9 @@ public class AddComputerServlet extends HttpServlet {
      * @return list of company
      */
     @ModelAttribute("companyList")
-    Map<String,String> populateComputerList() {
+    List<Company> populateComputerList() {
     	List<Company> companyList=companyService.getAll();
-    	Map<String,String> list=new HashMap<String,String>();
-    	for (Company comp: companyList) {
-    		list.put(""+comp.getId(), comp.getName());
-    	}
-		return list;
+		return companyList;
     }
     
     /**

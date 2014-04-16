@@ -117,7 +117,8 @@
 				<label for="company"><spring:message code="Computer.input.company" text="default"/></label>
 				<form:select path="company.id" valueItem="company.id" class="form-control">
 					<form:option value="0" label="--"></form:option>
-					<form:options items="${companyList}"></form:options>
+					
+					<form:options items="${companyList}" itemValue="id" itemLabel="name" ></form:options>
 					
 						<!--  
 						<option value="0">--</option>

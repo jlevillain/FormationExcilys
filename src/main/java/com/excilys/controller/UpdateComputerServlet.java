@@ -73,19 +73,16 @@ public class UpdateComputerServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-   /**
-    * get a list of company
-    * @return list of company
-    */
+    /**
+     * get the list of company
+     * @return list of company
+     */
     @ModelAttribute("companyList")
-    Map<String,String> populateComputerList() {
+    List<Company> populateComputerList() {
     	List<Company> companyList=companyService.getAll();
-    	Map<String,String> list=new HashMap<String,String>();
-    	for (Company comp: companyList) {
-    		list.put(""+comp.getId(), comp.getName());
-    	}
-		return list;
+		return companyList;
     }
+    
     
     /**
      * method doGet of the controller

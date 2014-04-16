@@ -69,7 +69,7 @@ public class CompanyDao {
 		try {
 			Connection cn=daoFactory.getConnectionPool();
 			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT id, name FROM company;");
+			rs = stmt.executeQuery("SELECT id, name FROM company order by name;");
 			while (rs.next()) {
 				Company comp = new Company();
 				comp.setId(rs.getLong(1));
