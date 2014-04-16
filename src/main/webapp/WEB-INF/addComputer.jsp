@@ -16,7 +16,7 @@
 	        	}catch(e) {
 	        		return false;
 	        	}
-	        }, 'Please enter a date in the format <spring:message code="Date.pattern.text" text="default"/>.');
+	        }, '<spring:message code="Datepicker.message.error" text="default"/> <spring:message code="Date.pattern.text" text="default"/>.');
 	
 	$().ready(function() {
 		$("#signupForm").validate({
