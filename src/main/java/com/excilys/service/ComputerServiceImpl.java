@@ -38,7 +38,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 	
 	@Transactional(readOnly=false)
-	public boolean insertOne(Computer comp) {
+	public boolean insertOne(Computer comp)throws SQLRuntimeException {
 		boolean result=false;
 		result = computerDao.insertOne(comp);
 		logDao.insertOne(Log.build().request("insertOne Computer "+comp).build());	
@@ -47,7 +47,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly=false)
-	public boolean deleteOne(long id) {
+	public boolean deleteOne(long id) throws SQLRuntimeException {
 		// TODO Auto-generated method stub
 		boolean result=false;
 		result = computerDao.deleteOne(id);
@@ -56,7 +56,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly=false)
-	public boolean updateOne(Computer comp) {
+	public boolean updateOne(Computer comp)throws SQLRuntimeException {
 		// TODO Auto-generated method stub
 		boolean result=false;
 		result = computerDao.updateOne(comp);

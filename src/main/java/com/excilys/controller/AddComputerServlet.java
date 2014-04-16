@@ -24,6 +24,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.dto.ComputerDto;
+import com.excilys.exception.SQLRuntimeException;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
@@ -101,7 +102,7 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto,
-			BindingResult result, ModelMap model) {
+			BindingResult result, ModelMap model)throws SQLRuntimeException {
 		// TODO Auto-generated method stub
 		logger.debug(""+cdto);
 		

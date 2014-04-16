@@ -34,6 +34,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.excilys.dao.DaoFactory;
 import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
+import com.excilys.exception.SQLRuntimeException;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
@@ -111,7 +112,7 @@ public class UpdateComputerServlet extends HttpServlet {
 	 */
     @RequestMapping(method=RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto, 
-			BindingResult result, ModelMap model) {
+			BindingResult result, ModelMap model) throws SQLRuntimeException{
 		// TODO Auto-generated method stub
 		
 		logger.debug(""+cdto);
