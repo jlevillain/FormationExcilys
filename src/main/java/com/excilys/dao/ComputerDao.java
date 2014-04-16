@@ -14,6 +14,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Company;
@@ -21,8 +23,11 @@ import com.excilys.om.Computer;
 import com.sun.jndi.cosnaming.CNCtx;
 import com.sun.org.apache.bcel.internal.generic.Type;
 import  com.excilys.exception.SQLRuntimeException;
+import com.jolbox.bonecp.BoneCPDataSource;
 
 import java.sql.Date;
+
+import javax.sql.DataSource;
 
 /**
  * class managing the database for computer
@@ -36,6 +41,10 @@ public class ComputerDao {
 	@Autowired
 	DaoFactory daoFactory;
 	
+	@Autowired
+	@Qualifier("dataSource")
+	BoneCPDataSource dataSource;
+	
 	/**
 	 * get one computer from the database
 	 * @param id id of computer
@@ -46,7 +55,7 @@ public class ComputerDao {
 		Computer comp=null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			stmt = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id where c.id=?");
 			stmt.setLong(1, id);
@@ -92,7 +101,7 @@ public class ComputerDao {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
 		Statement stmt = null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			stmt = cn.createStatement();
 			rs = stmt.executeQuery("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id order by c.name;");
@@ -135,7 +144,7 @@ public class ComputerDao {
 		PreparedStatement stmt = null;
 		int size=0;
 		
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {			
 			stmt = cn.prepareStatement("SELECT COUNT(*) FROM computer WHERE name LIKE ?");
 			stmt.setString(1,new StringBuilder("%").append(search).append("%").toString());
@@ -165,7 +174,7 @@ public class ComputerDao {
 		List<Computer> liste = new ArrayList<Computer>();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			StringBuilder request=new StringBuilder("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c ");
 			request.append("LEFT JOIN company ON c.company_id=company.id where c.name LIKE ? order by ?");
@@ -219,7 +228,7 @@ public class ComputerDao {
 	public boolean updateOne(Computer comp) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			
 			stmt = cn.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? where id=?");
@@ -266,7 +275,7 @@ public class ComputerDao {
 	public boolean insertOne(Computer comp) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			stmt = cn.prepareStatement("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?);");
 			//stmt.setLong(1, comp.getId());
@@ -312,7 +321,7 @@ public class ComputerDao {
 	public boolean deleteOne(long id) throws SQLRuntimeException {
 		int rs=0;
 		PreparedStatement stmt = null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			stmt = cn.prepareStatement("DELETE FROM computer WHERE id=?;");
 			stmt.setLong(1, id);

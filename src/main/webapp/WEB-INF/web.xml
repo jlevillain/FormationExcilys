@@ -10,11 +10,12 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <!-- Configuration du listener pour Spring -->
+  <!-- Configuration du listener pour Spring
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>
   </context-param>
+   -->
   <listener>
 	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>

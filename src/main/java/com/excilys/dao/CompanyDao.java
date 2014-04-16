@@ -11,10 +11,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Company;
 import com.excilys.exception.SQLRuntimeException;
+import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
  * class managing the database for company
@@ -28,6 +31,10 @@ public class CompanyDao {
 	@Autowired
 	DaoFactory daoFactory;
 	
+	@Autowired
+	@Qualifier("dataSource")
+	BoneCPDataSource dataSource;
+	
 	/**
 	 * get one company
 	 * @param id id of the company
@@ -38,7 +45,7 @@ public class CompanyDao {
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		Company comp =null;
-		Connection cn=daoFactory.getConnectionPool();
+		Connection cn=DataSourceUtils.getConnection(dataSource);
 		try {
 			stmt =cn.prepareStatement("SELECT id,name FROM company where id=?;");
 			stmt.setLong(1, id);
@@ -67,7 +74,7 @@ public class CompanyDao {
 		ResultSet rs = null;
 		Statement stmt = null;
 		try {
-			Connection cn=daoFactory.getConnectionPool();
+			Connection cn=DataSourceUtils.getConnection(dataSource);
 			stmt = cn.createStatement();
 			rs = stmt.executeQuery("SELECT id, name FROM company order by name;");
 			while (rs.next()) {
