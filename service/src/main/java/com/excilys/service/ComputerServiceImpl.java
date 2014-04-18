@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ import com.excilys.dao.DaoFactory;
 import com.excilys.dao.LogDao;
 import com.excilys.om.Computer;
 import com.excilys.om.Log;
-import  com.excilys.exception.SQLRuntimeException;
+
 
 @Service
 @Transactional(readOnly=true)
@@ -38,7 +39,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 	
 	@Transactional(readOnly=false)
-	public boolean insertOne(Computer comp)throws SQLRuntimeException {
+	public boolean insertOne(Computer comp)throws DataAccessException {
 		boolean result=false;
 		result = computerDao.insertOne(comp);
 		logDao.insertOne(Log.build().request("insertOne Computer "+comp).build());	
@@ -47,7 +48,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly=false)
-	public boolean deleteOne(long id) throws SQLRuntimeException {
+	public boolean deleteOne(long id) throws DataAccessException {
 		// TODO Auto-generated method stub
 		boolean result=false;
 		result = computerDao.deleteOne(id);
@@ -56,7 +57,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly=false)
-	public boolean updateOne(Computer comp)throws SQLRuntimeException {
+	public boolean updateOne(Computer comp)throws DataAccessException {
 		// TODO Auto-generated method stub
 		boolean result=false;
 		result = computerDao.updateOne(comp);

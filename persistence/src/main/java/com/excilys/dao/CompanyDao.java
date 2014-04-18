@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -42,26 +44,10 @@ public class CompanyDao {
 	 * @throws SQLRuntimeException
 	 */
 	public Company getOne(long id) throws SQLRuntimeException {
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-		Company comp =null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			stmt =cn.prepareStatement("SELECT id,name FROM company where id=?;");
-			stmt.setLong(1, id);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				comp = new Company();
-				comp.setId(rs.getLong(1));
-				comp.setName(rs.getString(2));
-				
-			}
-		}catch(SQLException e) {
-			throw new SQLRuntimeException("getOneCompany "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(rs, stmt);
-		}
-		return comp;
+		Company company =null;	
+		JdbcTemplate select=new JdbcTemplate(dataSource);
+		company=select.queryForObject("SELECT id,name FROM company where id=?", new Object[] {id}, new BeanPropertyRowMapper<Company>(Company.class));
+		return company;
 	}
 
 	/**
@@ -70,24 +56,9 @@ public class CompanyDao {
 	 * @throws SQLRuntimeException
 	 */
 	public List<Company> getAll() throws SQLRuntimeException {
-		List<Company> liste = new ArrayList<Company>();
-		ResultSet rs = null;
-		Statement stmt = null;
-		try {
-			Connection cn=DataSourceUtils.getConnection(dataSource);
-			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT id, name FROM company order by name;");
-			while (rs.next()) {
-				Company comp = new Company();
-				comp.setId(rs.getLong(1));
-				comp.setName(rs.getString(2));
-				liste.add(comp);
-			}
-		}catch (SQLException e) {
-			throw new SQLRuntimeException("getAllCompany "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(rs, stmt);
-		}
+		List<Company> liste = null;
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		liste=select.query("SELECT id, name FROM company order by name", new BeanPropertyRowMapper<Company>(Company.class));
 		return liste;
 	}
 	

@@ -15,14 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
-import com.sun.jndi.cosnaming.CNCtx;
-import com.sun.org.apache.bcel.internal.generic.Type;
-import  com.excilys.exception.SQLRuntimeException;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 import java.sql.Date;
@@ -49,114 +48,39 @@ public class ComputerDao {
 	 * get one computer from the database
 	 * @param id id of computer
 	 * @return computer 
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public Computer getOne(long id) throws SQLRuntimeException {
+	public Computer getOne(long id) throws DataAccessException {
 		Computer comp=null;
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			stmt = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id where c.id=?");
-			stmt.setLong(1, id);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				comp=new Computer();
-				comp.setId(rs.getLong(1));
-				comp.setName(rs.getString(2));			
-				if (rs.getDate(3)==null) {
-					comp.setIntroduced(null);
-				}else {
-					comp.setIntroduced(new DateTime(rs.getDate(3).getTime()));
-				}
-				if (rs.getDate(4)==null) {
-					comp.setDiscontinued(null);
-				}else {
-					comp.setDiscontinued(new DateTime(rs.getDate(4).getTime()));
-				}
-				Company company=new Company();
-				company.setId(rs.getLong(5));
-				company.setName(rs.getString(6));
-				comp.setCompany(company);
-				
-			}
-	
-			rs.close();
-			stmt.close();
-		}catch(SQLException e) {
-			throw new SQLRuntimeException("getOne "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(rs, stmt);
-		}
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		comp=select.queryForObject("SELECT c.id, c.name, c.introduced, c.discontinued, company.id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id where c.id=?",
+				new Object[] {id}, new ComputerRowMapper());
 		return comp;
-	
 	}
 	
 	/**
 	 * get all computer from the database
 	 * @return list of computer
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public List<Computer> getAll() throws SQLRuntimeException {
-		List<Computer> liste = new ArrayList<Computer>();
-		ResultSet rs = null;
-		Statement stmt = null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id order by c.name;");
-			while (rs.next()) {
-				Computer comp=new Computer();
-				comp.setId(rs.getLong(1));
-				comp.setName(rs.getString(2));
-				if (rs.getDate(3)==null) {
-					comp.setIntroduced(null);
-				}else {
-					comp.setIntroduced(new DateTime(rs.getDate(3).getTime()));
-				}
-				if (rs.getDate(4)==null) {
-					comp.setDiscontinued(null);
-				}else {
-					comp.setDiscontinued(new DateTime(rs.getDate(4).getTime()));
-				}
-				Company company=new Company();
-				company.setId(rs.getLong(5));
-				company.setName(rs.getString(6));
-				comp.setCompany(company);
-				liste.add(comp);
-			}
-		}catch(SQLException e) {
-			throw new SQLRuntimeException("getAll() "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(rs, stmt);
-		}
+	public List<Computer> getAll() throws DataAccessException {
+		List<Computer> liste = null;
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		liste=select.query("SELECT c.id, c.name, c.introduced, c.discontinued, company.id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id order by c.name"
+				, new ComputerRowMapper());
 		return liste;
-	
 	}
 	/**
 	 * get the size of list of computer
 	 * @param search search parameter 
 	 * @return size of list of computer
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public int getSize(String search) throws SQLRuntimeException {
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
+	public int getSize(String search) throws DataAccessException {
 		int size=0;
-		
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {			
-			stmt = cn.prepareStatement("SELECT COUNT(*) FROM computer WHERE name LIKE ?");
-			stmt.setString(1,new StringBuilder("%").append(search).append("%").toString());
-			rs = stmt.executeQuery();
-			rs.next();
-			size=rs.getInt(1);
-		} catch ( SQLException e) {
-			// TODO: handle exception
-			throw new SQLRuntimeException("getSize "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(rs, stmt);
-		}
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		size=select.queryForObject("SELECT COUNT(*) FROM computer WHERE name LIKE ?",new Object[]{new StringBuilder("%").append(search).append("%")},Integer.class);
+		logger.debug("getSize : "+size);
 		return size;
 	}
 	
@@ -168,54 +92,22 @@ public class ComputerDao {
 	 * @param order sort by order
 	 * @param desc descendant sort
 	 * @return list of computer
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws SQLRuntimeException {
-		List<Computer> liste = new ArrayList<Computer>();
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			StringBuilder request=new StringBuilder("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name FROM computer as c ");
-			request.append("LEFT JOIN company ON c.company_id=company.id where c.name LIKE ? order by ?");
-		    if (desc) {
-		    	request.append(" DESC");
-		    }
-		    request.append(" LIMIT ? OFFSET ?");
-		    logger.debug(request.toString());
-			stmt = cn.prepareStatement(request.toString());
-			stmt.setString(1,new StringBuilder("%").append(search).append("%").toString());
-			stmt.setInt(2, order);
-			stmt.setInt(3, number);
-			stmt.setInt(4, begin);
-			
-			rs = stmt.executeQuery();
-			
-			while (rs.next()) {
-				Computer comp=new Computer();
-				comp.setId(rs.getLong(1));
-				comp.setName(rs.getString(2));
-				if (rs.getDate(3)==null) {
-					comp.setIntroduced(null);
-				}else {
-					comp.setIntroduced(new DateTime(rs.getDate(3).getTime()));
-				}
-				if (rs.getDate(4)==null) {
-					comp.setDiscontinued(null);
-				}else {
-					comp.setDiscontinued(new DateTime(rs.getDate(4).getTime()));
-				}
-				Company company=new Company();
-				company.setId(rs.getLong(5));
-				company.setName(rs.getString(6));
-				comp.setCompany(company);
-				liste.add(comp);
-			}
-		}catch(SQLException e) {
-			throw new SQLRuntimeException("getAll "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(rs, stmt);
-		}
+	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws DataAccessException {
+		List<Computer> liste = null;
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		StringBuilder request=new StringBuilder("SELECT c.id, c.name, c.introduced, c.discontinued, company.id, company.name FROM computer as c ");
+		request.append("LEFT JOIN company ON c.company_id=company.id where c.name LIKE ? order by ?");
+	    if (desc) {
+	    	request.append(" DESC");
+	    }
+	    request.append(" LIMIT ? OFFSET ?");
+	    logger.debug(request.toString());
+		liste=select.query(request.toString(), 
+				new Object[] {new StringBuilder("%").append(search).append("%").toString(),order,number,begin}, 
+				new ComputerRowMapper());
+		
 		return liste;
 	}
 	
@@ -223,46 +115,26 @@ public class ComputerDao {
 	 * update a computer
 	 * @param comp a computer to update
 	 * @return the success of the method
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public boolean updateOne(Computer comp) throws SQLRuntimeException {
+	public boolean updateOne(Computer comp) throws DataAccessException {
 		int rs=0;
-		PreparedStatement stmt = null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			
-			stmt = cn.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? where id=?");
-			//stmt.setLong(1, comp.getId());
-			stmt.setString(1, comp.getName());
-			Date introduced=null;
-			Date discontinued=null;
-	
-			if(comp.getIntroduced()==null) {
-				stmt.setObject(2, Types.NULL);
-			}else {
-				introduced=new Date(comp.getIntroduced().getMillis());
-				stmt.setObject(2, introduced);
-			}
-			if (comp.getDiscontinued()==null) {
-				stmt.setObject(3, Types.NULL);
-			}else {
-				discontinued=new Date(comp.getDiscontinued().getMillis());
-				stmt.setDate(3, discontinued);
-				
-			}
-			if (comp.getCompany()!=null) {
-				stmt.setLong(4, comp.getCompany().getId());
-			}else {
-				stmt.setNull(4, java.sql.Types.NULL);
-			}
-			stmt.setLong(5, comp.getId());
-			rs= stmt.executeUpdate();
-			logger.debug("updateone nbLigne modify"+rs);
-		} catch (SQLException e) {
-			throw new SQLRuntimeException("updateOne "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(null, stmt);
+		Date introduced=null;
+		Date discontinued=null;
+		Long company=null;
+		if(comp.getIntroduced()!=null) {
+			introduced=new Date(comp.getIntroduced().getMillis());
 		}
+		if (comp.getDiscontinued()!=null) {
+			discontinued=new Date(comp.getDiscontinued().getMillis());
+		}		
+		if (comp.getCompany()!=null) {
+			company=comp.getCompany().getId();
+		}
+		JdbcTemplate insert=new JdbcTemplate(dataSource);
+		Object[] parameter=new Object[]{comp.getName(),introduced,discontinued,company,comp.getId()};
+		logger.debug("parameter : "+introduced+" "+discontinued);
+		rs=insert.update("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? where id=?", parameter);
 		return (rs!=0);
 	}
 	
@@ -270,45 +142,30 @@ public class ComputerDao {
 	 * insert a computer
 	 * @param comp computer
 	 * @return the success of the method
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public boolean insertOne(Computer comp) throws SQLRuntimeException {
+	public boolean insertOne(Computer comp) throws DataAccessException {
 		int rs=0;
-		PreparedStatement stmt = null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			stmt = cn.prepareStatement("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?);");
-			//stmt.setLong(1, comp.getId());
-			stmt.setString(1, comp.getName());
-			Date introduced=null;
-			Date discontinued=null;
-			
-			if(comp.getIntroduced()==null) {
-				stmt.setObject(2, Types.NULL);
-			}else {
-				introduced=new Date(comp.getIntroduced().getMillis());
-				stmt.setObject(2, introduced);
-			}
-			if (comp.getDiscontinued()==null) {
-				stmt.setObject(3, Types.NULL);
-			}else {
-				discontinued=new Date(comp.getDiscontinued().getMillis());
-				stmt.setDate(3, discontinued);
-				
-			}		
-			
-			if (comp.getCompany()!=null) {
-				stmt.setLong(4, comp.getCompany().getId());
-			}else {
-				stmt.setNull(4, java.sql.Types.NULL);
-			}
-			rs= stmt.executeUpdate();
-			logger.debug("insertOne nbLigne modify"+rs);
-		}catch(SQLException e) {
-			throw new SQLRuntimeException("insertOne "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(null, stmt);
+		Object introduced=null;
+		Object discontinued=null;
+		Long company=null;
+		if(comp.getIntroduced()!=null) {
+			introduced=new Date(comp.getIntroduced().getMillis());
+		}else{
+			introduced=Types.NULL;
 		}
+		if (comp.getDiscontinued()!=null) {
+			discontinued=new Date(comp.getDiscontinued().getMillis());
+		}else {
+			discontinued=Types.NULL;
+		}	
+		if (comp.getCompany()!=null) {
+			company=comp.getCompany().getId();
+		}
+		JdbcTemplate insert=new JdbcTemplate(dataSource);
+		Object[] parameter=new Object[]{comp.getName(),introduced,discontinued,company};
+		logger.debug("parameter : "+introduced+" "+discontinued);
+		rs=insert.update("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)", parameter);
 		return (rs!=0);
 	}
 	
@@ -316,22 +173,12 @@ public class ComputerDao {
 	 * delete one computer 
 	 * @param id id of the computer
 	 * @return success of the method
-	 * @throws SQLRuntimeException
+	 * @throws DataAccessException
 	 */
-	public boolean deleteOne(long id) throws SQLRuntimeException {
+	public boolean deleteOne(long id) throws DataAccessException {
 		int rs=0;
-		PreparedStatement stmt = null;
-		Connection cn=DataSourceUtils.getConnection(dataSource);
-		try {
-			stmt = cn.prepareStatement("DELETE FROM computer WHERE id=?;");
-			stmt.setLong(1, id);
-			//stmt.setLong(1, comp.getId());
-			rs= stmt.executeUpdate();
-		}catch(SQLException e) {
-			throw new SQLRuntimeException("deleteOne "+e.getMessage(),e.getStackTrace());
-		}finally {
-			daoFactory.closeConnection(null, stmt);
-		}
+		JdbcTemplate delete=new JdbcTemplate(dataSource);
+		rs=delete.update("DELETE FROM computer WHERE id=?", new Object[] {id});
 		return (rs!=0);
 	}
 	

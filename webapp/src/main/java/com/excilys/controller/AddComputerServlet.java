@@ -1,12 +1,15 @@
 package com.excilys.controller;
 
 import javax.servlet.*;
+
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -96,7 +99,7 @@ public class AddComputerServlet {
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute("computer") ComputerDto cdto,
-			BindingResult result, ModelMap model)throws SQLRuntimeException {
+			BindingResult result, ModelMap model)throws DataAccessException {
 		// TODO Auto-generated method stub
 		logger.debug(""+cdto);
 		
