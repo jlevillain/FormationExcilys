@@ -11,20 +11,6 @@
 	<packaging>war</packaging>
 	<name>webapp</name>
 	<dependencies>
-		<!-- core dependence -->
-		<dependency>
-			<groupId>com.excilys</groupId>
-			<artifactId>core</artifactId>
-			<version>2.1.1-RELEASE</version>
-			<scope>compile</scope>
-		</dependency>
-		<!-- service dependence -->
-		<dependency>
-			<groupId>com.excilys</groupId>
-			<artifactId>service</artifactId>
-			<version>2.1.1-RELEASE</version>
-			<scope>compile</scope>
-		</dependency>
 		<!-- binding dependence -->
 		<dependency>
 			<groupId>com.excilys</groupId>
@@ -36,7 +22,7 @@
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>
 			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
-			<scope>compile</scope>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
@@ -68,7 +54,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
-				<scope>compile</scope>
+				<scope>runtime</scope>
 			</dependency>
 		<!-- valid annotation dependence -->
 		<dependency>

@@ -27,6 +27,7 @@ public class DateConverter {
 	 * @return date
 	 * @throws ParseException
 	 */
+	@Deprecated
 	public Date convertStringToDate(String str) throws ParseException {
 		if ("".equals(str)) {
 			return null;
