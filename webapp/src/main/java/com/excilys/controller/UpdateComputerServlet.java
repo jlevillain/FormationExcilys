@@ -53,14 +53,6 @@ public class UpdateComputerServlet {
 	private ComputerMapper computerMapper;
 	
     /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdateComputerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-    /**
      * get the list of company
      * @return list of company
      */

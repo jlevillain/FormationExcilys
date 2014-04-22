@@ -57,11 +57,6 @@
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="validationMessageSource" ref="messageSource" />
 	</bean>
-	
-	<!-- 
-	<context:component-scan base-package="com.excilys.service"/>
-	<context:component-scan base-package="com.excilys.mapper"/>
-	 -->
 	<context:component-scan base-package="com.excilys.controller"/>
 	
 </beans>

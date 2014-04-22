@@ -55,20 +55,7 @@ public class AddComputerServlet {
 	
 	@Autowired
 	private ComputerMapper computerMapper;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddComputerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-   /*
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(new ComputerValidator());
-    }
-*/
+ 
     /**
      * get the list of company
      * @return list of company

@@ -10,16 +10,7 @@
          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 	<!-- Dependency Injection with annotations -->
-
-	<bean id="messageSource"
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:messages" />
-		<property name="defaultEncoding" value="UTF-8"></property>
-	</bean>
- 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:comp/env/jdbc/BoneCpPool" />
-	</bean>
-	
+	<import resource="classpath:applicationContext-binding.xml"/>	
 	<mvc:annotation-driven /> 
-	<import resource="classpath:applicationContext-binding.xml"/>
+	
 </beans>

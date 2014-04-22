@@ -48,6 +48,7 @@ public class ComputerDtoValidator implements Validator {
 		ComputerDto comp=(ComputerDto)target;
 		ValidationUtils.rejectIfEmpty(errors, "name", "NotEmpty.computerDto.name");
 		List<String> er=computerValidator.valideIntroduced(comp.getIntroduced());
+		
 		/*
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
 		fmt.withLocale(Locale.FRENCH);
@@ -76,6 +77,10 @@ public class ComputerDtoValidator implements Validator {
 				logger.debug(""+e.getMessage());
 				errors.rejectValue("discontinued", "FailDate.computerDto.discontinued");
 			}
+		}
+		er=(computerValidator.valideCompany(comp.getCompany()));
+		if (er.size()!=0) {
+			errors.rejectValue("company", "FailCompany.number");
 		}
 	}
 

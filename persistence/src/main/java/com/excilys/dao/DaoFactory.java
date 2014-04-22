@@ -5,25 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
-import com.jolbox.bonecp.BoneCPDataSource;
-import com.google.common.base.*;
-import com.excilys.exception.NamingRuntimeException;
 import com.excilys.exception.SQLRuntimeException;
-import com.excilys.om.Computer;
+import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
  * class managing the connection with the database

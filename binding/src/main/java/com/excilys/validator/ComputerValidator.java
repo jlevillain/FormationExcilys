@@ -7,10 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
 import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
@@ -25,7 +23,7 @@ public class ComputerValidator {
 	Logger logger = LoggerFactory.getLogger(ComputerDtoValidator.class);
 	
 	@Autowired
-	ReloadableResourceBundleMessageSource source;
+	ResourceBundleMessageSource source;
 	
 	/**
 	 * validate a computer

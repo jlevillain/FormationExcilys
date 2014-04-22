@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.format.DateTimeFormat;
@@ -13,14 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DateConverter {
 	Logger logger = LoggerFactory.getLogger(DateConverter.class);
 	@Autowired
-	ReloadableResourceBundleMessageSource messageSource;
+	ResourceBundleMessageSource messageSource;
 	
 	/**
 	 * convert a string into date

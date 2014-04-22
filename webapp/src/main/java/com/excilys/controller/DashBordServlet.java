@@ -41,15 +41,7 @@ public class DashBordServlet {
 	
 	@Autowired
 	CompanyService companyService;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DashBordServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-
+  
     /**
      * method doGet of dashboard controller
      * @param searchParam search parameter

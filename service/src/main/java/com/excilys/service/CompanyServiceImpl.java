@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.dao.CompanyDao;
+import com.excilys.dao.CompanyDaoImpl;
 import com.excilys.dao.DaoFactory;
 import com.excilys.om.Company;
 import  com.excilys.exception.SQLRuntimeException;
