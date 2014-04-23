@@ -1,5 +1,8 @@
 package com.excilys.dao;
 
+import javax.websocket.Session;
+
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 public class LogDaoImpl implements LogDao{
 	Logger logger = LoggerFactory.getLogger(LogDaoImpl.class);
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private SessionFactory sessionFactory;
 	@Autowired
 	DaoFactory daoFactory;
 	
@@ -31,8 +34,7 @@ public class LogDaoImpl implements LogDao{
 	 */
 	public boolean insertOne( Log request) throws SQLRuntimeException {
 		int rs=0;
-		JdbcTemplate insert=this.jdbcTemplate;
-		rs=insert.update("INSERT INTO log_table (request) VALUES (?)", new Object[] {request.getRequest()});
+		sessionFactory.getCurrentSession().save(request);
 		return (rs!=0);
 	}
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import  com.excilys.exception.SQLRuntimeException;
 @Transactional(readOnly=true)
 public class CompanyServiceImpl implements CompanyService{
 	
+	@Autowired
+	private SessionFactory sessionFactory;
 	Logger logger = LoggerFactory.getLogger(ComputerService.class);
 	@Autowired
 	CompanyDao companyDao;

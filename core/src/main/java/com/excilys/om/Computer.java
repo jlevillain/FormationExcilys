@@ -1,11 +1,17 @@
 package com.excilys.om;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-
-import com.excilys.dto.ComputerDto;
 
 /**
  * Class containing the computer in the database
@@ -13,11 +19,24 @@ import com.excilys.dto.ComputerDto;
  * @author jlevillain
  *
  */
+
+@Entity
+@Table(name="computer")
 public class Computer {
+	@Id 
+	@Column(name="id",unique=true,nullable=false) 
+	@GeneratedValue
 	private long id;
+	@Column(name="name",nullable=false)
 	private String name="";
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name="introduced")
 	private DateTime introduced=null;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name="discontinued")
 	private DateTime discontinued=null;
+	@ManyToOne(fetch= FetchType.EAGER)
+	@JoinColumn(name="company_id")
 	private Company company=new Company();
 	
 	/**

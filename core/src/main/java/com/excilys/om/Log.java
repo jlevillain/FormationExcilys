@@ -1,6 +1,10 @@
 package com.excilys.om;
 
-import com.excilys.wrapper.Page.Builder;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Class containing the log of database
@@ -9,8 +13,14 @@ import com.excilys.wrapper.Page.Builder;
  *
  *
  */
+@Entity
+@Table(name="log_table")
 public class Log {
+	@Id
+	@Column(name="id",nullable=false,unique=true)
+	@GeneratedValue
 	long id=0;;
+	@Column(name="request",nullable=false)
 	String request=null;
 	
 	/**

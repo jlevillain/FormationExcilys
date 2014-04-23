@@ -1,8 +1,10 @@
 package com.excilys.om;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
-import com.excilys.om.Computer.Builder;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Class containing the company in the database
@@ -10,8 +12,14 @@ import com.excilys.om.Computer.Builder;
  * @author jlevillain
  *
  */
+@Entity
+@Table(name="company")
 public class Company {
+	@Id 
+	@Column(name="id",nullable=false,unique=true) 
+	@GeneratedValue
 	private long id=0;
+	@Column(name="name",nullable=false)
 	private String name="";
 	/**
 	 * Default constructor of company

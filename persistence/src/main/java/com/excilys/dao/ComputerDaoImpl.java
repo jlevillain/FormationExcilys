@@ -2,8 +2,10 @@ package com.excilys.dao;
 
 import java.sql.Date;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,8 @@ import com.jolbox.bonecp.BoneCPDataSource;
 public class ComputerDaoImpl implements ComputerDao {
 	Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	SessionFactory sessionFactory;
+	
 	@Autowired
 	DaoFactory daoFactory;
 	
@@ -36,9 +39,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	public Computer getOne(long id) throws DataAccessException {
 		Computer comp=null;
-		JdbcTemplate select = this.jdbcTemplate;
-		comp=select.queryForObject("SELECT c.id, c.name, c.introduced, c.discontinued, company.id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id where c.id=?",
-				new Object[] {id}, new ComputerRowMapper());
+		comp=(Computer)sessionFactory.getCurrentSession().get(Computer.class, id);
 		return comp;
 	}
 	
@@ -47,11 +48,10 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @return list of computer
 	 * @throws DataAccessException
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Computer> getAll() throws DataAccessException {
 		List<Computer> liste = null;
-		JdbcTemplate select = this.jdbcTemplate;
-		liste=select.query("SELECT c.id, c.name, c.introduced, c.discontinued, company.id, company.name FROM computer as c LEFT JOIN company ON c.company_id=company.id order by c.name"
-				, new ComputerRowMapper());
+		liste=sessionFactory.getCurrentSession().createQuery("from Computer").list();
 		return liste;
 	}
 	/**
@@ -62,8 +62,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	public int getSize(String search) throws DataAccessException {
 		int size=0;
-		JdbcTemplate select = this.jdbcTemplate;
-		size=select.queryForObject("SELECT COUNT(*) FROM computer WHERE name LIKE ?",new Object[]{new StringBuilder("%").append(search).append("%")},Integer.class);
+		size=((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from Computer as c where c.name like ?")
+				.setString(0, "%"+search+"%").uniqueResult()).intValue();
 		logger.debug("getSize : "+size);
 		return size;
 	}
@@ -78,20 +78,20 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @return list of computer
 	 * @throws DataAccessException
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws DataAccessException {
 		List<Computer> liste = null;
-		JdbcTemplate select = this.jdbcTemplate;
-		StringBuilder request=new StringBuilder("SELECT c.id, c.name, c.introduced, c.discontinued, company.id, company.name FROM computer as c ");
-		request.append("LEFT JOIN company ON c.company_id=company.id where c.name LIKE ? order by ?");
+		String[] name={"c.id","c.name","c.introduced","c.discontinued","c.company.id","c.company.name"};
+		StringBuilder request=new StringBuilder("FROM Computer as c ");
+		request.append("where c.name LIKE ? order by ?");
 	    if (desc) {
 	    	request.append(" DESC");
 	    }
-	    request.append(" LIMIT ? OFFSET ?");
 	    logger.debug(request.toString());
-		liste=select.query(request.toString(), 
-				new Object[] {new StringBuilder("%").append(search).append("%").toString(),order,number,begin}, 
-				new ComputerRowMapper());
-		
+		liste =(ArrayList<Computer>)sessionFactory.getCurrentSession().createQuery(request.toString()).
+				setString(0, new StringBuilder("%").append(search).append("%").toString())
+				.setString(1, name[order])
+				.setFirstResult(begin).setMaxResults(number).list();
 		return liste;
 	}
 	
@@ -102,28 +102,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @throws DataAccessException
 	 */
 	public boolean updateOne(Computer comp) throws DataAccessException {
-		int rs=0;
-		Object introduced=null;
-		Object discontinued=null;
-		Long company=null;	
-		if(comp.getIntroduced()!=null) {
-			introduced=new Date(comp.getIntroduced().getMillis());
-		}else{
-			introduced=Types.NULL;
-		}
-		if (comp.getDiscontinued()!=null) {
-			discontinued=new Date(comp.getDiscontinued().getMillis());
-		}else {
-			discontinued=Types.NULL;
-		}	
-		if (comp.getCompany()!=null) {
-			company=comp.getCompany().getId();
-		}
-		JdbcTemplate insert  = this.jdbcTemplate;
-		Object[] parameter=new Object[]{comp.getName(),introduced,discontinued,company,comp.getId()};
-		logger.debug("parameter : "+introduced+" "+discontinued);
-		rs=insert.update("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? where id=?", parameter);
-		return (rs!=0);
+		sessionFactory.getCurrentSession().update(comp);
+		return true;
 	}
 	
 	/**
@@ -133,28 +113,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @throws DataAccessException
 	 */
 	public boolean insertOne(Computer comp) throws DataAccessException {
-		int rs=0;
-		Object introduced=null;
-		Object discontinued=null;
-		Long company=null;
-		if(comp.getIntroduced()!=null) {
-			introduced=new Date(comp.getIntroduced().getMillis());
-		}else{
-			introduced=Types.NULL;
-		}
-		if (comp.getDiscontinued()!=null) {
-			discontinued=new Date(comp.getDiscontinued().getMillis());
-		}else {
-			discontinued=Types.NULL;
-		}	
-		if (comp.getCompany()!=null) {
-			company=comp.getCompany().getId();
-		}
-		JdbcTemplate insert  = this.jdbcTemplate;
-		Object[] parameter=new Object[]{comp.getName(),introduced,discontinued,company};
-		logger.debug("parameter : "+introduced+" "+discontinued);
-		rs=insert.update("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)", parameter);
-		return (rs!=0);
+		sessionFactory.getCurrentSession().save(comp);
+		return true;
 	}
 	
 	/**
@@ -164,10 +124,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @throws DataAccessException
 	 */
 	public boolean deleteOne(long id) throws DataAccessException {
-		int rs=0;
-		JdbcTemplate delete=this.jdbcTemplate;
-		rs=delete.update("DELETE FROM computer WHERE id=?", new Object[] {id});
-		return (rs!=0);
+		Computer comp=null;
+		comp=(Computer)sessionFactory.getCurrentSession().get(Computer.class,id);
+		if (comp!=null) {
+			sessionFactory.getCurrentSession().delete(comp);
+		}
+		return true;
 	}
 	
 	

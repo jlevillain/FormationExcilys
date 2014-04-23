@@ -88,8 +88,9 @@ public class DashBordServlet {
 		computerList=computerService.getAll(search, ((page-1)*nbPage), nbPage,orderBy,desc);
 		computerSize=computerService.getSize(search);
 		List<ComputerDto> computerDtoList=new ArrayList<ComputerDto>();
-		for(Computer comp : computerList) {
-			computerDtoList.add(computerMapper.convertComputerToDto(comp));
+		logger.debug(""+computerList.get(0));
+		for (Object comp : computerList) {
+			computerDtoList.add(computerMapper.convertComputerToDto((Computer)comp));
 		}
 		
 		Page pageWrapper=Page.build().search(search).page(page).isDesc(desc).
