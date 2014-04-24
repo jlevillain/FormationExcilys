@@ -30,12 +30,12 @@
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
 					
-					<th><tags:url servlet="DashBoard" page="${page.page}" search="${page.search}" orderBy="2" isDesc="${(page.desc == 'false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.name"/></tags:url></th>
-					<th><tags:url servlet="DashBoard" page="${page.page}" search="${page.search}" orderBy="3" isDesc="${(page.desc =='false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.introduced"/></tags:url></th>
+					<th><tags:url servlet="DashBoard" pageNumber="${page.page}" search="${page.search}" orderBy="2" isDesc="${(page.desc == 'false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.name"/></tags:url></th>
+					<th><tags:url servlet="DashBoard" pageNumber="${page.page}" search="${page.search}" orderBy="3" isDesc="${(page.desc =='false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.introduced"/></tags:url></th>
 					<!-- Table header for Discontinued Date -->
-					<th><tags:url servlet="DashBoard" page="${page.page}" search="${page.search}" orderBy="4" isDesc="${(page.desc =='false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.discontinued"/></tags:url></th>
+					<th><tags:url servlet="DashBoard" pageNumber="${page.page}" search="${page.search}" orderBy="4" isDesc="${(page.desc =='false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.discontinued"/></tags:url></th>
 					<!-- Table header for Company -->
-					<th><tags:url servlet="DashBoard" page="${page.page}" search="${page.search}" orderBy="6" isDesc="${(page.desc =='false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.company"/></tags:url></th>
+					<th><tags:url servlet="DashBoard" pageNumber="${page.page}" search="${page.search}" orderBy="6" isDesc="${(page.desc =='false')?'true':'false'}" nbPage="${nbPage}"><spring:message code="Computer.title.company"/></tags:url></th>
 				</tr>
 			</thead>
 			<tbody>

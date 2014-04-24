@@ -5,7 +5,12 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.jolbox.bonecp.BoneCPDataSource;
 
@@ -51,7 +57,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@SuppressWarnings("unchecked")
 	public List<Computer> getAll() throws DataAccessException {
 		List<Computer> liste = null;
-		liste=sessionFactory.getCurrentSession().createQuery("from Computer").list();
+		liste=sessionFactory.getCurrentSession().createCriteria(Computer.class).list();
 		return liste;
 	}
 	/**
@@ -62,8 +68,18 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	public int getSize(String search) throws DataAccessException {
 		int size=0;
-		size=((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from Computer as c where c.name like ?")
-				.setString(0, "%"+search+"%").uniqueResult()).intValue();
+		@SuppressWarnings("unchecked")
+		List<Long> compList=sessionFactory.getCurrentSession().createCriteria(Company.class)
+				.add(Restrictions.like("name", new StringBuilder("%").append(search).append("%").toString()))
+				.setProjection(Projections.id()).list();
+		if (compList.size()==0) {
+			compList.add(new Long(0));
+		}
+		size=((Long)sessionFactory.getCurrentSession().createCriteria(Computer.class)
+				.add(Restrictions.or(Restrictions.like("name", 
+						new StringBuilder("%").append(search).append("%").toString()),
+						Restrictions.in("company.id",compList)))
+		.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		logger.debug("getSize : "+size);
 		return size;
 	}
@@ -81,19 +97,24 @@ public class ComputerDaoImpl implements ComputerDao {
 	@SuppressWarnings("unchecked")
 	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws DataAccessException {
 		List<Computer> liste = null;
-		String[] name={"","c.id","c.name","c.introduced","c.discontinued","c.company.id","c.company.id"};
-		StringBuilder request=new StringBuilder("FROM Computer as c ");
-		request.append("where c.name LIKE ? or c.company.id IN")
-		.append("( SELECT co.id FROM Company as co where co.name LIKE ? ) order by ")
-		.append(name[order]);
-	    if (desc) {
-	    	request.append(" DESC");
-	    }
-	    logger.debug(request.toString());
-		liste =(ArrayList<Computer>)sessionFactory.getCurrentSession().createQuery(request.toString())
-				.setString(0, new StringBuilder("%").append(search).append("%").toString())
-				.setString(1, new StringBuilder("%").append(search).append("%").toString())
-				.setFirstResult(begin).setMaxResults(number).list();
+		String[] name={"","c.id","name","introduced","discontinued","company.id","company.id"};
+		List<Long> compList=sessionFactory.getCurrentSession().createCriteria(Company.class)
+		.add(Restrictions.like("name", new StringBuilder("%").append(search).append("%").toString()))
+		.setProjection(Projections.id()).list();
+		if (compList.size()==0) {
+			compList.add(new Long(0));
+		}
+		logger.debug(""+compList);
+		Criteria request=sessionFactory.getCurrentSession().createCriteria(Computer.class)
+		.add(Restrictions.or(Restrictions.like("name", 
+				new StringBuilder("%").append(search).append("%").toString()),
+				Restrictions.in("company.id",compList)));
+		if(desc) {
+			request=request.addOrder(Order.desc(name[order]));
+		}else {
+			request=request.addOrder(Order.asc(name[order]));
+		}
+		liste=request.setFirstResult(begin).setMaxResults(number).list();
 		return liste;
 	}
 	

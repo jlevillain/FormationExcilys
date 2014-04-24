@@ -6,6 +6,7 @@ import java.util.List;
 import javax.websocket.Session;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	@SuppressWarnings("unchecked")
 	public List<Company> getAll() throws SQLRuntimeException {
 		List<Company> liste = null;
-		liste=this.sessionFactory.getCurrentSession().createQuery("from Company").list();
+		liste=this.sessionFactory.getCurrentSession().createCriteria(Company.class).addOrder(Order.asc("name")).list();
 		return liste;
 	}
 

@@ -12,14 +12,14 @@
 <c:if test="${page+0>end}"><c:set var="page" value="${end}"></c:set></c:if>
 <div align="center">
 	<ul class="pagination">
-		<li><tags:url servlet="DashBoard" page="${(page-1<begin)?begin:page-1}" search="${search}" orderBy="${orderBy}" isDesc="${isDesc}" nbPage="${nbPage}">&laquo;</tags:url></li>
+		<li><tags:url servlet="DashBoard" pageNumber="${(page-1<begin)?begin:page-1}" search="${search}" orderBy="${orderBy}" isDesc="${isDesc}" nbPage="${nbPage}">&laquo;</tags:url></li>
 			<c:forEach var="nombre" begin="${(page-interval)<begin?begin:page-interval}" end="${(page+interval)>end?end:page+interval}">
 				<li>
 				
-				<tags:url servlet="DashBoard" page="${nombre}" search="${search}" orderBy="${orderBy}" isDesc="${isDesc}"  nbPage="${nbPage}">${nombre}</tags:url></li>
+				<tags:url servlet="DashBoard" pageNumber="${nombre}" search="${search}" orderBy="${orderBy}" isDesc="${isDesc}"  nbPage="${nbPage}">${nombre}</tags:url></li>
 				
 				<!-- <a href="?search=${search}&page=${nombre}&orderBy=&="></a></li>  -->
 			</c:forEach>
-	  	<li><tags:url servlet="DashBoard" page="${(page+1>end)?end:page+1}" search="${search}" orderBy="${orderBy}" isDesc="${isDesc}" nbPage="${nbPage}">&raquo;</tags:url></li>
+	  	<li><tags:url servlet="DashBoard" pageNumber="${(page+1>end)?end:page+1}" search="${search}" orderBy="${orderBy}" isDesc="${isDesc}" nbPage="${nbPage}">&raquo;</tags:url></li>
 	</ul>
 </div>
