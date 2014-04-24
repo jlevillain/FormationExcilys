@@ -1,18 +1,13 @@
 package com.excilys.dao;
 
-import javax.websocket.Session;
-
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.exception.SQLRuntimeException;
 import com.excilys.om.Log;
-import com.jolbox.bonecp.BoneCPDataSource;
 /**
  * class managing with the database for log
  * @author jlevillain
@@ -34,7 +29,7 @@ public class LogDaoImpl implements LogDao{
 	 */
 	public boolean insertOne( Log request) throws SQLRuntimeException {
 		int rs=0;
-		sessionFactory.getCurrentSession().save(request);
+		sessionFactory.getCurrentSession().save(request);	
 		return (rs!=0);
 	}
 }

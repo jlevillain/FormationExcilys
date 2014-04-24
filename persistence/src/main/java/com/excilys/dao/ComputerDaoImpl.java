@@ -81,16 +81,18 @@ public class ComputerDaoImpl implements ComputerDao {
 	@SuppressWarnings("unchecked")
 	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws DataAccessException {
 		List<Computer> liste = null;
-		String[] name={"c.id","c.name","c.introduced","c.discontinued","c.company.id","c.company.name"};
+		String[] name={"","c.id","c.name","c.introduced","c.discontinued","c.company.id","c.company.id"};
 		StringBuilder request=new StringBuilder("FROM Computer as c ");
-		request.append("where c.name LIKE ? order by ?");
+		request.append("where c.name LIKE ? or c.company.id IN")
+		.append("( SELECT co.id FROM Company as co where co.name LIKE ? ) order by ")
+		.append(name[order]);
 	    if (desc) {
 	    	request.append(" DESC");
 	    }
 	    logger.debug(request.toString());
-		liste =(ArrayList<Computer>)sessionFactory.getCurrentSession().createQuery(request.toString()).
-				setString(0, new StringBuilder("%").append(search).append("%").toString())
-				.setString(1, name[order])
+		liste =(ArrayList<Computer>)sessionFactory.getCurrentSession().createQuery(request.toString())
+				.setString(0, new StringBuilder("%").append(search).append("%").toString())
+				.setString(1, new StringBuilder("%").append(search).append("%").toString())
 				.setFirstResult(begin).setMaxResults(number).list();
 		return liste;
 	}
