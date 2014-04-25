@@ -16,32 +16,23 @@
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg type="javax.sql.DataSource" ref="dataSource" />
 	</bean>
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-
-		<property name="dataSource">
-			<ref bean="dataSource" />
+	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
+		id="transactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
 		</property>
-		<property name="annotatedClasses">
-			<list>
-				<value>com.excilys.om.Company</value>
-				<value>com.excilys.om.Computer</value>
-				<value>com.excilys.om.Log</value>
-			</list>
-		</property>
-<!-- 		<property name="configLocation"> -->
-<!-- 			<value>classpath:hibernate.cfg.xml</value> -->
-<!-- 		</property> -->
-<!-- 		<property name="configurationClass"> -->
-<!-- 			<value>org.hibernate.cfg.AnnotationConfiguration</value> -->
-<!-- 		</property> -->
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
-			</props>
-		</property>
-
 	</bean>
 
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="database" value="MYSQL" />
+			</bean>
+		</property>
+		<property name="persistenceXmlLocation" value="classpath:persistence.xml"/>
+	</bean>
 </beans>

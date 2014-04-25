@@ -10,16 +10,7 @@
 
 	<!-- Dependency Injection with annotations -->
 	<import resource="classpath:applicationContext-persistence.xml" />
-	<!-- <bean id="txManager" -->
-	<!-- class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
-	<!-- <property name="dataSource" ref="dataSource" /> -->
-	<!-- </bean> -->
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
-
-	<tx:annotation-driven />
+	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<context:component-scan base-package="com.excilys.service" />

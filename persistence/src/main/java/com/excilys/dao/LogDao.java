@@ -1,8 +1,8 @@
 package com.excilys.dao;
 
-import com.excilys.exception.SQLRuntimeException;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.excilys.om.Log;
 
-public interface LogDao {
-	public boolean insertOne( Log request) throws SQLRuntimeException;
+public interface LogDao extends JpaRepository<Log, Long>{
 }

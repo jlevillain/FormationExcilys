@@ -85,7 +85,7 @@ public class DashBordServlet {
 		boolean desc=PageValidator.validIsDesc(isDescParam);
 		int nbPage = PageValidator.validNbPage(nbPageParam);
 		
-		computerList=computerService.getAll(search, ((page-1)*nbPage), nbPage,orderBy,desc);
+		computerList=computerService.getAll(search, page-1, nbPage,orderBy,desc);
 		computerSize=computerService.getSize(search);
 		List<ComputerDto> computerDtoList=new ArrayList<ComputerDto>();
 		for (Computer comp : computerList) {
