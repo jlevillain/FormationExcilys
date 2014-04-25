@@ -1,27 +1,26 @@
 package com.excilys.dao;
 
-import java.sql.Date;
-import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.excilys.om.QCompany;
+import com.excilys.om.QComputer;
+import com.mysema.query.hql.HQLQuery;
+import com.mysema.query.hql.hibernate.HibernateQuery;
+import com.mysema.query.types.OrderSpecifier;
 
 /**
  * class managing the database for computer
@@ -54,10 +53,11 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @return list of computer
 	 * @throws DataAccessException
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Computer> getAll() throws DataAccessException {
 		List<Computer> liste = null;
-		liste=sessionFactory.getCurrentSession().createCriteria(Computer.class).list();
+		QComputer computer = QComputer.computer;
+		HQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		liste = query.from(computer).orderBy(computer.name.asc()).list(computer);
 		return liste;
 	}
 	/**
@@ -68,19 +68,21 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	public int getSize(String search) throws DataAccessException {
 		int size=0;
-		@SuppressWarnings("unchecked")
-		List<Long> compList=sessionFactory.getCurrentSession().createCriteria(Company.class)
-				.add(Restrictions.like("name", new StringBuilder("%").append(search).append("%").toString()))
-				.setProjection(Projections.id()).list();
+		QCompany company=QCompany.company;
+		HQLQuery subQuery = new HibernateQuery(sessionFactory.getCurrentSession());
+		List<Long> compList=subQuery.from(company)
+				.where(company.name.like(new StringBuilder("%").append(search).append("%").toString()))
+				.list(company.id);
 		if (compList.size()==0) {
 			compList.add(new Long(0));
 		}
-		size=((Long)sessionFactory.getCurrentSession().createCriteria(Computer.class)
-				.add(Restrictions.or(Restrictions.like("name", 
-						new StringBuilder("%").append(search).append("%").toString()),
-						Restrictions.in("company.id",compList)))
-		.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		logger.debug("getSize : "+size);
+		QComputer computer=QComputer.computer;
+		HQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		size=(int)query.from(computer)
+				.where(computer.name.like(new StringBuilder("%").append(search).append("%").toString())
+						.or(computer.company.id.in(compList)))
+				.count();
 		return size;
 	}
 	
@@ -94,27 +96,34 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @return list of computer
 	 * @throws DataAccessException
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Computer> getAll(String search, int begin, int number, int order, boolean desc) throws DataAccessException {
 		List<Computer> liste = null;
-		String[] name={"","c.id","name","introduced","discontinued","company.id","company.id"};
-		List<Long> compList=sessionFactory.getCurrentSession().createCriteria(Company.class)
-		.add(Restrictions.like("name", new StringBuilder("%").append(search).append("%").toString()))
-		.setProjection(Projections.id()).list();
+		QComputer computer=QComputer.computer;
+		QCompany company=QCompany.company;
+		OrderSpecifier[] nameAsc={computer.id.asc(),computer.id.asc(),computer.name.asc(),
+				computer.introduced.asc(),computer.discontinued.asc(),computer.company.id.asc(),computer.company.name.asc()};
+		OrderSpecifier[] nameDesc={computer.id.desc(),computer.id.desc(),computer.name.desc(),
+				computer.introduced.desc(),computer.discontinued.desc(),computer.company.id.desc(),computer.company.name.desc()};
+		
+		HQLQuery subQuery = new HibernateQuery(sessionFactory.getCurrentSession());
+		List<Long> compList=subQuery.from(company)
+				.where(company.name.like(new StringBuilder("%").append(search).append("%").toString()))
+				.list(company.id);
 		if (compList.size()==0) {
 			compList.add(new Long(0));
 		}
 		logger.debug(""+compList);
-		Criteria request=sessionFactory.getCurrentSession().createCriteria(Computer.class)
-		.add(Restrictions.or(Restrictions.like("name", 
-				new StringBuilder("%").append(search).append("%").toString()),
-				Restrictions.in("company.id",compList)));
+		
+		HQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		query=query.from(computer)
+				.where(computer.name.like(new StringBuilder("%").append(search).append("%").toString())
+						.or(computer.company.id.in(compList)));
 		if(desc) {
-			request=request.addOrder(Order.desc(name[order]));
+			query=query.orderBy(nameDesc[order]);
 		}else {
-			request=request.addOrder(Order.asc(name[order]));
+			query=query.orderBy(nameAsc[order]);
 		}
-		liste=request.setFirstResult(begin).setMaxResults(number).list();
+		liste=query.offset(begin).limit(number).list(computer);
 		return liste;
 	}
 	
