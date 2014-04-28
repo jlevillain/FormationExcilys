@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,9 +26,10 @@ public class LoginServlet {
 			if (error != null) {
 				model.addObject("error",context.getMessage("Login.error",null,  LocaleContextHolder.getLocale()));
 			}
+//			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//	        String hashedPassword = passwordEncoder.encode("user");
+//	        System.out.println(">>> "+hashedPassword);
 			model.setViewName("login");
-	 
 			return model;
-	 
 		}
 }

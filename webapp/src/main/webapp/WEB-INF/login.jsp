@@ -29,8 +29,9 @@
 
 		<input class="btn btn-lg btn-primary btn-block" name="submit"
 			type="submit"
-			value='<spring:message code="Login.submit" text="default"/>' /> <input
-			type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			value='<spring:message code="Login.submit" text="default"/>' />
+			
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 	</form>
 </div>
