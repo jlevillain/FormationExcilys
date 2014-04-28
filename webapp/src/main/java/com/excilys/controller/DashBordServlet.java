@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -31,9 +33,9 @@ import com.excilys.wrapper.Page;
 @RequestMapping("/DashBoard")
 public class DashBordServlet {
 	Logger logger = LoggerFactory.getLogger(DashBordServlet.class);
-	private ApplicationContext context=null;
 	private static final long serialVersionUID = 1L;
-       
+	@Autowired
+	ApplicationContext context;
 	@Autowired
 	ComputerMapper computerMapper;
 	@Autowired
@@ -63,12 +65,16 @@ public class DashBordServlet {
 			@RequestParam(value="isDesc",required=false) String isDescParam,
 			@RequestParam(value="nbPage",required=false) String nbPageParam,
 			@RequestParam(value="lang",required=false) String lang, 
+			@RequestParam(value="logout",required=false) String logout,
 			@CookieValue(value="org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",defaultValue="en",required=false) String langCookie
 			, ModelMap model) throws IOException {
 		// TODO Auto-generated method stub
 		logger.debug("start doGet DashBoard "+lang+" "+langCookie);
 		if (lang==null) {
 			lang=langCookie;
+		}
+		if (logout != null) {
+			model.addAttribute("msg",context.getMessage("Login.success",null,  LocaleContextHolder.getLocale()));
 		}
 		/*
 		Cookie[] cook=request.getCookies();

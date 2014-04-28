@@ -80,7 +80,7 @@
 						<input type="submit" value='<spring:message code="addComputer.input.submit" text="default"/>' class="btn btn-primary"/>
 					</c:otherwise>
 				</c:choose>
-				or <a onclick="history.back()" class="btn btn-default"><spring:message code="Cancel.button.text" text="default"/></a>
+				or <a href="DashBoard" class="btn btn-default"><spring:message code="Cancel.button.text" text="default"/></a>
 			</div>
 		</fieldset>
 		</form:form>
