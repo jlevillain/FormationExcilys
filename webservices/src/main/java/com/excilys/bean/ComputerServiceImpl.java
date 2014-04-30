@@ -10,8 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.wrapper.ComputerWrapper;
 
-@WebService
-@SOAPBinding(style = Style.RPC)
+
 @Component(value="computerS")
 public class ComputerServiceImpl implements ComputerService {
 	
@@ -19,7 +18,6 @@ public class ComputerServiceImpl implements ComputerService {
 	com.excilys.service.ComputerService service;
 	
 	@Override
-	@WebMethod
 	public ComputerWrapper getAll() {
 		// TODO Auto-generated method stub
 		ComputerWrapper compWrapper=new ComputerWrapper();

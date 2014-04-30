@@ -13,10 +13,5 @@
 	<import resource="classpath:applicationContext-binding.xml" />
 	<!-- Web service methods -->
 	<context:component-scan base-package="com.excilys.bean" />
-	<context:component-scan base-package="com.excilys.ws" />
-	<wss:binding url="/getAll">
-		<wss:service>
-			<ws:service bean="#computerWS"></ws:service>
-		</wss:service>
-	</wss:binding>
+	<context:component-scan base-package="com.excilys.rest" />
 </beans>

@@ -7,8 +7,6 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import com.excilys.wrapper.ComputerWrapper;
 
-@WebService
-@SOAPBinding(style= Style.RPC)
 public interface ComputerService {
-	@WebMethod ComputerWrapper getAll();
+	ComputerWrapper getAll();
 }

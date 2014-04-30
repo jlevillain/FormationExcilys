@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class containing the company in the database
@@ -14,6 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="company")
+@XmlRootElement(name="company")
 public class Company {
 	@Id 
 	@Column(name="id",nullable=false,unique=true) 
@@ -41,6 +44,7 @@ public class Company {
 	 * get the id of company
 	 * @return id of company
 	 */
+	@XmlElement
 	public long getId() {
 		return id;
 	}
@@ -55,6 +59,7 @@ public class Company {
 	 * get the name of company
 	 * @return name of company
 	 */
+	@XmlElement
 	public String getName() {
 		return name;
 	}

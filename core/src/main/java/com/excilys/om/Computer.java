@@ -8,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -22,6 +23,7 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table(name="computer")
+@XmlRootElement(name="computer")
 public class Computer {
 	@Id 
 	@Column(name="id",unique=true,nullable=false) 
@@ -70,6 +72,7 @@ public class Computer {
 	 * 
 	 * @return id of computer
 	 */
+	@XmlElement
 	public long getId() {
 		return id;
 	}
@@ -89,6 +92,7 @@ public class Computer {
 	 * 
 	 * @return name of computer
 	 */
+	@XmlElement
 	public String getName() {
 		return name;
 	}
@@ -107,6 +111,8 @@ public class Computer {
 	 * 
 	 * @return introduced date of computer
 	 */
+	@XmlElement
+	
 	public DateTime getIntroduced() {
 		return introduced;
 	}
@@ -125,6 +131,7 @@ public class Computer {
 	 * 
 	 * @return discontinued date of computer
 	 */
+	@XmlElement
 	public DateTime getDiscontinued() {
 		return discontinued;
 	}
@@ -143,6 +150,7 @@ public class Computer {
 	 * 
 	 * @return company of computer
 	 */
+	@XmlElement
 	public Company getCompany() {
 		return company;
 	}

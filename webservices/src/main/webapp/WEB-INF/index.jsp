@@ -3,6 +3,6 @@
 <html>
 <body>
 Hello
-<c:redirect url="/getAll?wsdl"></c:redirect>
+<c:redirect url="/computer/getAll"></c:redirect>
 </body>
 </html>
