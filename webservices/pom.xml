@@ -29,6 +29,12 @@
 			<artifactId>usertype.core</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<!-- Jackson JSON Mapper -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>compile</scope>
+		</dependency>
 		<!-- hibernate orm -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

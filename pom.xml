@@ -40,9 +40,16 @@
 		<jaxWS.version>2.2.3</jaxWS.version>
 		<jaxWSSpring.version>1.8</jaxWSSpring.version>
 		<jersey.version>1.8</jersey.version>
+		<jackson.version>1.9.10</jackson.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+			<!-- Jackson JSON Mapper -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
 			<!-- Jersey -->
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
