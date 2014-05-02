@@ -10,8 +10,13 @@
  	</welcome-file-list>
  	<context-param>
 	    <param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext.xml, /WEB-INF/mvc-dispatcher-servlet.xml</param-value>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
+	<listener>
+   		<listener-class>
+    		org.springframework.web.context.ContextLoaderListener
+    	</listener-class>
+  	</listener>
  	<!-- Servlet dispatcher (servlet principale spring MVC) -->
 	  <servlet>
 			<servlet-name>mvc-dispatcher</servlet-name>
@@ -25,11 +30,7 @@
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
- 	<listener>
-   		<listener-class>
-    		org.springframework.web.context.ContextLoaderListener
-    	</listener-class>
-  	</listener>
+ 	
   	<resource-ref>
         <description>DB connection Pool</description>
         <res-ref-name>jdbc/BoneCpPool</res-ref-name>

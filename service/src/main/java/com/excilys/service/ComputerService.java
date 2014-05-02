@@ -21,19 +21,19 @@ public interface ComputerService {
 	 * @param comp computer to insert
 	 * @return success of the method
 	 */
-	public boolean insertOne(Computer comp);
+	public void insertOne(Computer comp);
 	/**
 	 * delete one computer
 	 * @param id id of computer
 	 * @return success of the method
 	 */
-	public boolean deleteOne(long id);
+	public void deleteOne(long id);
 	/**
 	 * update one computer
 	 * @param comp computer to update
 	 * @return success of computer
 	 */
-	public boolean updateOne(Computer comp);
+	public void updateOne(Computer comp);
 	/**
 	 * get one computer
 	 * @param id id of the computer

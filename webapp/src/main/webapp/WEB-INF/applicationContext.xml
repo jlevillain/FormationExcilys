@@ -11,6 +11,5 @@
 
 	<!-- Dependency Injection with annotations -->
 	<import resource="classpath:applicationContext-binding.xml"/>	
-	<mvc:annotation-driven /> 
 	
 </beans>
