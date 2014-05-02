@@ -7,7 +7,6 @@
 	<packaging>pom</packaging>
 	<name>computer-database</name>
 	<description>gestion d'ordinateur</description>
-
 	<modules>
 		<module>core</module>
 		<module>persistence</module>
@@ -16,106 +15,97 @@
 		<module>webapp</module>
 		<module>webservices</module>
 	</modules>
-
 	<properties>
-		<spring.version>4.0.3.RELEASE</spring.version>
-		<slf4j.version>1.7.6</slf4j.version>
-		<logback.version>1.1.1</logback.version>
-		<guava.version>16.0.1</guava.version>
-		<bonecp.version>0.8.0.RELEASE</bonecp.version>
-		<jstl.version>1.2.1</jstl.version>
-		<maven.version>2.2</maven.version>
-		<jodatime.version>2.3</jodatime.version>
-		<jadira.version>3.0.0.CR3</jadira.version>
+		<springVersion>4.0.3.RELEASE</springVersion>
+		<slf4jVersion>1.7.6</slf4jVersion>
+		<logbackVersion>1.1.1</logbackVersion>
+		<guavaVersion>16.0.1</guavaVersion>
+		<bonecpVersion>0.8.0.RELEASE</bonecpVersion>
+		<jstlVersion>1.2.1</jstlVersion>
+		<mavenVersion>2.2</mavenVersion>
+		<jodatimeVersion>2.3</jodatimeVersion>
+		<jadiraVersion>3.0.0.CR3</jadiraVersion>
 		<hibernateValidator.version>5.1.0.Final</hibernateValidator.version>
-		<hibernate.version>4.3.5.Final</hibernate.version>
-		<project.version>2.1.1-RELEASE</project.version>
-		<servlet.version>3.1.0</servlet.version>
-		<validation.version>1.1.0.Final</validation.version>
-		<jclOverSfl4j.version>1.7.7</jclOverSfl4j.version>
-		<queryDSL.version>1.8.2</queryDSL.version>
-		<springData.version>1.5.2.RELEASE</springData.version>
-		<hibernateEjb.version>3.3.2.Beta1</hibernateEjb.version>
-		<springSecurity.version>3.2.3.RELEASE</springSecurity.version>
-		<jaxWS.version>2.2.3</jaxWS.version>
-		<jaxWSSpring.version>1.8</jaxWSSpring.version>
-		<jersey.version>1.8</jersey.version>
-		<jackson.version>1.9.10</jackson.version>
+		<hibernateVersion>4.3.5.Final</hibernateVersion>
+		<projectVersion>2.1.1-RELEASE</projectVersion>
+		<servletVersion>3.1.0</servletVersion>
+		<validationVersion>1.1.0.Final</validationVersion>
+		<jclOverSfl4jVersion>1.7.7</jclOverSfl4jVersion>
+		<queryDSLVersion>1.8.2</queryDSLVersion>
+		<springDataVersion>1.5.2.RELEASE</springDataVersion>
+		<hibernateEjbVersion>3.3.2.Beta1</hibernateEjbVersion>
+		<springSecurityVersion>3.2.3.RELEASE</springSecurityVersion>
+		<jaxWSVersion>2.2.3</jaxWSVersion>
+		<jaxWSspringVersion>1.8</jaxWSspringVersion>
+		<jerseyVersion>1.8</jerseyVersion>
+		<projectVersion>2.1.1-RELEASE</projectVersion>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
-			<!-- Jackson JSON Mapper -->
+			<!-- core dependence -->
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-				<version>${jackson.version}</version>
+				<groupId>com.excilys</groupId>
+				<artifactId>core</artifactId>
+				<version>${projectVersion}</version>
+			</dependency>
+			<!-- dao dependence -->
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>persistence</artifactId>
+				<version>${projectVersion}</version>
+			</dependency>
+			<!-- service dependence -->
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>service</artifactId>
+				<version>${projectVersion}</version>
+			</dependency>
+			<!-- binding dependence -->
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>binding</artifactId>
+				<version>${projectVersion}</version>
 			</dependency>
 			<!-- Jersey -->
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>${jersey.version}</version>
+				<version>${jerseyVersion}</version>
 			</dependency>
 			<!-- Jersey + Spring -->
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-spring</artifactId>
-				<version>${jersey.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-core</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-web</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-beans</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-context</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-aop</artifactId>
-					</exclusion>
-				</exclusions>
+				<version>${jerseyVersion}</version>
 			</dependency>
 			<!-- Spring Data JPA -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
-				<version>${springData.version}</version>
+				<version>${springDataVersion}</version>
 			</dependency>
 			<!-- QueryDSL -->
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-apt</artifactId>
-				<version>${queryDSL.version}</version>
+				<version>${queryDSLVersion}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-hql</artifactId>
-				<version>${queryDSL.version}</version>
+				<version>${queryDSLVersion}</version>
 			</dependency>
 			<!-- hibernate orm -->
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.version}</version>
+				<version>${hibernateVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate.version}</version>
+				<version>${hibernateVersion}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>cglib</groupId>
@@ -130,44 +120,44 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
-				<version>${spring.version}</version>
+				<version>${springVersion}</version>
 			</dependency>
 			<!-- bone CP -->
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
+				<version>${guavaVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.jolbox</groupId>
 				<artifactId>bonecp</artifactId>
-				<version>${bonecp.version}</version>
+				<version>${bonecpVersion}</version>
 			</dependency>
 
 			<!-- JSTL -->
 			<dependency>
 				<groupId>javax.servlet.jsp.jstl</groupId>
 				<artifactId>javax.servlet.jsp.jstl-api</artifactId>
-				<version>${jstl.version}</version>
+				<version>${jstlVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.web</groupId>
 				<artifactId>javax.servlet.jsp.jstl</artifactId>
-				<version>${jstl.version}</version>
+				<version>${jstlVersion}</version>
 			</dependency>
 
 			<!-- plugin war maven -->
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven.version}</version>
+				<version>${mavenVersion}</version>
 			</dependency>
 
 			<!-- Spring MVC -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
+				<version>${springVersion}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>
@@ -178,29 +168,29 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
+				<version>${springVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
-				<version>${spring.version}</version>
+				<version>${springVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
+				<version>${springVersion}</version>
 			</dependency>
 			<!-- Spring Security -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>${springSecurity.version}</version>
+				<version>${springSecurityVersion}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>${springSecurity.version}</version>
+				<version>${springSecurityVersion}</version>
 			</dependency>
 			<!-- Hibernate Validator -->
 			<dependency>
@@ -212,61 +202,35 @@
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
-				<version>${jodatime.version}</version>
+				<version>${jodatimeVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jadira.usertype</groupId>
 				<artifactId>usertype.core</artifactId>
-				<version>${jadira.version}</version>
+				<version>${jadiraVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
-				<version>${validation.version}</version>
+				<version>${validationVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
-				<version>${servlet.version}</version>
+				<version>${servletVersion}</version>
 			</dependency>
 			<!-- JAX-WS -->
 			<dependency>
 				<groupId>com.sun.xml.ws</groupId>
 				<artifactId>jaxws-rt</artifactId>
-				<version>${jaxWS.version}</version>
+				<version>${jaxWSVersion}</version>
 			</dependency>
 
 			<!-- Library from java.net, integrate Spring with JAX-WS -->
 			<dependency>
 				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
 				<artifactId>jaxws-spring</artifactId>
-				<version>${jaxWSSpring.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-core</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-context</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.xml.stream.buffer</groupId>
-						<artifactId>streambuffer</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.jvnet.staxex</groupId>
-						<artifactId>stax-ex</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.xml.ws</groupId>
-						<artifactId>jaxws-rt</artifactId>
-					</exclusion>
-				</exclusions>
+				<version>${jaxWSspringVersion}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -275,61 +239,34 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${jclOverSfl4j.version}</version>
+			<version>${jclOverSfl4jVersion}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
+			<version>${slf4jVersion}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
+			<version>${slf4jVersion}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
+			<version>${logbackVersion}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-access</artifactId>
-			<version>${logback.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+
 
 
 	</dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>com.mysema.maven</groupId>
-					<artifactId>maven-apt-plugin</artifactId>
-					<version>1.0</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>target/generated-sources/java</outputDirectory>
-								<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>

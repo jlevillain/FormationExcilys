@@ -16,7 +16,6 @@
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>service</artifactId>
-			<version>2.1.1-RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
     	<!-- Date with Joda Time -->
@@ -47,19 +46,4 @@
 				<scope>compile</scope>
 			</dependency>
     </dependencies>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
-                    <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>
