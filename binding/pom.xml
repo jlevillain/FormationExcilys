@@ -11,6 +11,9 @@
     <artifactId>binding</artifactId>
     <packaging>jar</packaging>
     <name>binding</name>
+    <properties>
+	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
     <dependencies>
 		<!-- service dependence -->
 		<dependency>

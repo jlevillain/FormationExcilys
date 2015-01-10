@@ -13,7 +13,6 @@
 		<module>service</module>
 		<module>binding</module>
 		<module>webapp</module>
-		<module>webservices</module>
 	</modules>
 	<properties>
 		<springVersion>4.0.3.RELEASE</springVersion>
@@ -24,7 +23,7 @@
 		<jstlVersion>1.2.1</jstlVersion>
 		<mavenVersion>2.2</mavenVersion>
 		<jodatimeVersion>2.3</jodatimeVersion>
-		<jadiraVersion>3.0.0.CR3</jadiraVersion>
+		<jadiraVersion>3.2.0.GA</jadiraVersion>
 		<hibernateValidator.version>5.1.0.Final</hibernateValidator.version>
 		<hibernateVersion>4.3.5.Final</hibernateVersion>
 		<projectVersion>2.1.1-RELEASE</projectVersion>
@@ -40,6 +39,7 @@
 		<jerseyVersion>1.8</jerseyVersion>
 		<projectVersion>2.1.1-RELEASE</projectVersion>
 		<jackson.version>1.9.10</jackson.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -73,18 +73,19 @@
 				<artifactId>binding</artifactId>
 				<version>${projectVersion}</version>
 			</dependency>
-			<!-- Jersey -->
+			<!-- Jersey
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-server</artifactId>
 				<version>${jerseyVersion}</version>
 			</dependency>
-			<!-- Jersey + Spring -->
+			 Jersey + Spring 
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-spring</artifactId>
 				<version>${jerseyVersion}</version>
 			</dependency>
+			-->
 			<!-- Spring Data JPA -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
