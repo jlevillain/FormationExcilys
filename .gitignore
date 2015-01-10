@@ -8,3 +8,8 @@ target/
 /target
 /target
 *~
+.idea/**
+.idea/artifacts/**
+.idea/artifacts/webapp_war.xml
+.idea/artifacts/webapp_war_exploded.xml
+*.iml
