@@ -5,11 +5,11 @@ Ext.define('MyApp.Application', {
 
     stores: [
         // TODO: add global/shared stores here
-        'User'
+        'User','CompanyStore', 'ComputerStore'
     ],
 
     models : [
-       'User'
+       'User', 'Company', 'Computer'
     ],
     controllers : [
         'MyApp.controller.MainController'
