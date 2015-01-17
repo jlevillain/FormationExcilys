@@ -8,6 +8,7 @@ Ext.define('MyApp.model.Computer', {
         {name: 'name',   type: 'string'},
         {name: 'introduced',   type: 'date', dateFormat:'Y-m-d H:i:s'},
         {name: 'discontinued',   type: 'date',dateFormat:'Y-m-d H:i:s'},
-        {name: 'company_id',   type: 'int'}
+        {name: 'company', reference:{type:'Company',associations:'ComputersByCompany',role:'company',inverse:'computers'}, sortType:function(data) {return data.name}}
+
     ]
 });

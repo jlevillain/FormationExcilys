@@ -8,9 +8,9 @@ Ext.define('MyApp.store.ComputerStore', {
     ],
     model: 'MyApp.model.Computer',
     data : [
-        {id: '1',    name: 'MacBook Pro 15.4 inch',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company_id:'1'},
-        {id: '2',    name: 'CM-2a',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company_id:'2'},
-        {id: '3',    name: 'CM-200',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company_id:'2'},
-        {id: '4',    name: 'CM-5e',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company_id:'2'}
+        {id: '1',    name: 'MacBook Pro 15.4 inch',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company:{id:'1',name:'Apple Inc.'}},
+        {id: '2',    name: 'CM-2a',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company:{id:'2',name:'Thinking Machine'}},
+        {id: '3',    name: 'CM-200',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company:{id:'2',name:'Thinking Machine'}},
+        {id: '4',    name: 'CM-5e',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company:{id:'2',name:'Thinking Machine'}}
     ]
 });

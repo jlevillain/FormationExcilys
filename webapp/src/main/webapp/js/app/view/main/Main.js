@@ -36,7 +36,7 @@ Ext.define('MyApp.view.main.Main', {
             {text:'Name',dataIndex:'name', hideable:false, flex:1},
             {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1},
             {text:'Discontinued', dataIndex:'discontinued', hideable:false, flex:1},
-            {text:'Company', dataIndex:'company_id', hideable:false,flex:1}
+            {text:'Company', dataIndex:'company', hideable:false,flex:1,renderer:function(data) {return data.name}}
         ]
     }]
 });
