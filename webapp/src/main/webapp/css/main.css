@@ -71,3 +71,20 @@ table.computers .header a {
 .col5 {
 	width: 30%;
 }
+
+#titleLink{
+    color: #428BCA;
+    text-decoration: none;
+}
+
+#titleLink:focus {
+    outline: thin dotted;
+    outline-offset: -2px;
+    color: #2A6496;
+    text-decoration: underline;
+}
+
+#titleLink:hover {
+    color: #2A6496;
+    text-decoration: underline;
+}

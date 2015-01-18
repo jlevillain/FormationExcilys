@@ -33,6 +33,12 @@ public class ComputerServiceImpl implements ComputerService {
 		String search2=new StringBuilder("%").append(search).append("%").toString();
 		return (int)computerDao.countByNameLikeOrCompanyNameLike(search2,search2 );
 	}
+
+    public int getSize(String computer, String company) {
+        String computer2=new StringBuilder("%").append(computer).append("%").toString();
+        String company2=new StringBuilder("%").append(company).append("%").toString();
+		return (int)computerDao.countByNameLikeAndCompanyNameLike(computer2,company2 );
+	}
 	
 	@Transactional(readOnly=false)
 	public void insertOne(Computer comp)throws DataAccessException {
@@ -63,6 +69,16 @@ public class ComputerServiceImpl implements ComputerService {
 		String search2=new StringBuilder("%").append(search).append("%").toString();
 		Page<Computer> pageComputer;
 			pageComputer=computerDao.findByNameLikeOrCompanyNameLike(search2, search2,
+					new PageRequest(begin, number, new Sort((desc)?Sort.Direction.DESC:Sort.Direction.ASC, name[order])));
+		return pageComputer.getContent();
+	}
+
+    public List<Computer> getAll(String computer,String company, int begin,int number, int order, boolean desc) {
+
+		String computer2=new StringBuilder("%").append(computer).append("%").toString();
+        String company2=new StringBuilder("%").append(company).append("%").toString();
+		Page<Computer> pageComputer;
+			pageComputer=computerDao.findByNameLikeAndCompanyNameLike(computer2, company2,
 					new PageRequest(begin, number, new Sort((desc)?Sort.Direction.DESC:Sort.Direction.ASC, name[order])));
 		return pageComputer.getContent();
 	}

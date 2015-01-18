@@ -1,12 +1,10 @@
 package com.excilys.controller;
 
 import com.excilys.dto.ComputerDto;
-import com.excilys.mapper.ListSortMapper;
-import com.excilys.mapper.SortMapper;
+import com.excilys.mapper.*;
 import com.excilys.wrapper.PageWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.excilys.mapper.ComputerMapper;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class AllComputerServlet {
 
     @RequestMapping(method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public PageWrapper doGet(@RequestParam("start") int start, @RequestParam("page") int page, @RequestParam("limit") int limit, @RequestParam("sort") String sort) throws IOException{
+    public PageWrapper doGet(@RequestParam("start") int start, @RequestParam("page") int page, @RequestParam("limit") int limit, @RequestParam(value = "sort") String sort, @RequestParam(value="filter", required=false) String filter) throws IOException{
         List<Computer> computerList=null;
         Integer computerSize;
         Map<String, Integer> map=new HashMap<String, Integer>();
@@ -56,9 +54,28 @@ public class AllComputerServlet {
         map.put("company", 6);
         logger.info(sort);
         ListSortMapper sortMapper = new ObjectMapper().readValue("{\"sortMappers\":"+sort+"}", ListSortMapper.class);
+        logger.info(filter);
+        ListFilterMapper filterMapper = new ObjectMapper().readValue("{\"filterMappers\":"+filter+"}",ListFilterMapper.class);
 
-        computerList=computerService.getAll("",page-1,limit,map.get(sortMapper.getSortMappers().get(0).getProperty()).intValue(),("ASC".equals(sortMapper.getSortMappers().get(0).getDirection()))?false:true);
-        computerSize = computerService.getSize("");
+        String company="";
+        String computer="";
+        for(int i=0;filterMapper.getFilterMappers()!=null&&i<filterMapper.getFilterMappers().size();i++) {
+            FilterMapper fm = filterMapper.getFilterMappers().get(i);
+            if("company".equals(fm.getProperty())) {
+                company = fm.getValue();
+            }
+            if("name".equals(fm.getProperty())) {
+                computer = fm.getValue();
+            }
+        }
+        logger.info(computer+"#"+company);
+        if("".equals(company) || company==null) {
+            computerList = computerService.getAll(computer, page - 1, limit, map.get(sortMapper.getSortMappers().get(0).getProperty()).intValue(), ("ASC".equals(sortMapper.getSortMappers().get(0).getDirection())) ? false : true);
+            computerSize = computerService.getSize(computer);
+        }else {
+            computerList = computerService.getAll(computer, company, page - 1, limit, map.get(sortMapper.getSortMappers().get(0).getProperty()).intValue(), ("ASC".equals(sortMapper.getSortMappers().get(0).getDirection())) ? false : true);
+            computerSize = computerService.getSize(computer, company);
+        }
         List<ComputerDto> computerDtoList=new ArrayList<ComputerDto>();
         for (Computer comp : computerList) {
             computerDtoList.add(computerMapper.convertComputerToDto(comp));

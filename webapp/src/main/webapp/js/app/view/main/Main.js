@@ -10,7 +10,7 @@ Ext.define('MyApp.view.main.Main', {
     items: [{
         xtype: 'panel',
         region: 'north',
-        html: '<h1><a href="/webapp-2.1.1-RELEASE/">Application - Computer Database</a></h1>',
+        html: '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/">Application - Computer Database</a></h1>',
         bodyStyle:{
             marginTop:'20px',
             marginBottom:'30px',
@@ -27,25 +27,23 @@ Ext.define('MyApp.view.main.Main', {
     },{
         region: 'center',
         xtype: 'gridpanel',
-//        items:[{
-//            title: 'Tab 1',
-//            html: '<h2>Content ...</h2>'
-//        }]
-        title:'Computer found',
+        title:'Computers found',
         store:'ComputerStore',
         width:'100%',
         height:'100%',
+        plugins:'gridfilters',
         columns:[
-            {text:'Name',dataIndex:'name', hideable:false, flex:1},
+            {text:'Name',dataIndex:'name', hideable:false, flex:1,filter:'string'},
             {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1},
             {text:'Discontinued', dataIndex:'discontinued', hideable:false, flex:1},
-            {text:'Company', dataIndex:'company', hideable:false,flex:1,renderer:function(data) {return data.name}}
+            {text:'Company', dataIndex:'company', hideable:false,flex:1,renderer:function(data) {return data.name},filter:'string'}
         ],
         dockedItems: [{
             xtype: 'pagingtoolbar',
             store: 'ComputerStore',   // same store GridPanel is using
             dock: 'bottom',
-            displayInfo: true
+            displayInfo: true,
+            displayMsg:'Displaying {0} - {1} of {2} computers'
         }]
     }]
 });

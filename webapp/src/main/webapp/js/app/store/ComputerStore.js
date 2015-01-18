@@ -11,7 +11,8 @@ Ext.define('MyApp.store.ComputerStore', {
     remoteSort:true,
     sorters:[
         {property:'name'}
-    ]
+    ],
+    remoteFilter:true
 //    data : ["[{"property":"name","direction":"ASC"},{"property":"introduced","direction":"ASC"},{"property":"discontinued","direction":"ASC"},{"property":"company","direction":"ASC"}]"
 //        {id: '1',    name: 'MacBook Pro 15.4 inch',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company:{id:'1',name:'Apple Inc.'}},
 //        {id: '2',    name: 'CM-2a',introduced:'2015-01-04 18:35:09', discontinued:'2015-01-04 18:35:09',company:{id:'2',name:'Thinking Machine'}},

@@ -16,6 +16,7 @@ public interface ComputerService {
 	 * @return the size of list of computer
 	 */
 	public int getSize(String search);
+	public int getSize(String computer, String company);
 	/**
 	 * insert one computer
 	 * @param comp computer to insert
@@ -50,4 +51,5 @@ public interface ComputerService {
 	 * @return list of computer
 	 */
 	public List<Computer> getAll(String search, int begin,int number, int order, boolean asc);
+	public List<Computer> getAll(String computer, String company, int begin,int number, int order, boolean asc);
 }

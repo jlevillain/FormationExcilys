@@ -17,5 +17,7 @@ public interface ComputerDao extends JpaRepository<Computer, Long>{
 //	public boolean deleteOne(long id) throws DataAccessException;
 	public Page<Computer> findByNameLikeOrCompanyNameLike(String name, String companyName, Pageable page);
 	long countByNameLikeOrCompanyNameLike(String name, String companyName);
+    public Page<Computer> findByNameLikeAndCompanyNameLike(String name, String companyName, Pageable page);
+	long countByNameLikeAndCompanyNameLike(String name, String companyName);
 //	long countLikeNameOrLikeCompanyName(String name, String companyName);
 }
