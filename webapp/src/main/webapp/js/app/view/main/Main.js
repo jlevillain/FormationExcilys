@@ -32,6 +32,7 @@ Ext.define('MyApp.view.main.Main', {
         width:'100%',
         height:'100%',
         plugins:'gridfilters',
+
         columns:[
             {text:'Name',dataIndex:'name', hideable:false, flex:1,filter:'string'},
             {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1},
@@ -43,7 +44,9 @@ Ext.define('MyApp.view.main.Main', {
             store: 'ComputerStore',   // same store GridPanel is using
             dock: 'bottom',
             displayInfo: true,
-            displayMsg:'Displaying {0} - {1} of {2} computers'
+            displayMsg:'Displaying {0} - {1} of {2} computers',
+            items: ['->'],
+            prependButtons: true
         }]
     }]
 });
