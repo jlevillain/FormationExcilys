@@ -7,26 +7,26 @@ Ext.define('MyApp.controller.MainController', {
         'Ext.MessageBox'
     ],
     renderTo:Ext.getBody(),
-    alias: 'controller.main',
+    alias: 'controller.main'
 
-    onClickButton: function (button, e, eOpts) {
-        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
-    },
-
-    onConfirm: function (choice) {
-        if (choice === 'yes') {
-            //
-            console.log("coucou");
-            window.alert("Hello");
-        }
-    },
-
-    init: function(application) {
-        this.control({
-            "main button": {
-                click: this.onClickButton,
-                confirm: this.onConfirm
-            }
-        });
-    }
+//    onClickButton: function (button, e, eOpts) {
+//        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
+//    },
+//
+//    onConfirm: function (choice) {
+//        if (choice === 'yes') {
+//            //
+//            console.log("coucou");
+//            window.alert("Hello");
+//        }
+//    },
+//
+//    init: function(application) {
+//        this.control({
+//            "main button": {
+//                click: this.onClickButton,
+//                confirm: this.onConfirm
+//            }
+//        });
+//    }
 });

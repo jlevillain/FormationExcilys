@@ -37,6 +37,12 @@ Ext.define('MyApp.view.main.Main', {
             {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1},
             {text:'Discontinued', dataIndex:'discontinued', hideable:false, flex:1},
             {text:'Company', dataIndex:'company', hideable:false,flex:1,renderer:function(data) {return data.name}}
-        ]
+        ],
+        dockedItems: [{
+            xtype: 'pagingtoolbar',
+            store: 'ComputerStore',   // same store GridPanel is using
+            dock: 'bottom',
+            displayInfo: true
+        }]
     }]
 });

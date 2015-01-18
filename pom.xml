@@ -39,6 +39,9 @@
 		<jerseyVersion>1.8</jerseyVersion>
 		<projectVersion>2.1.1-RELEASE</projectVersion>
 		<jackson.version>1.9.10</jackson.version>
+        <jackson-core.version>2.3.3</jackson-core.version>
+        <jackson-datatype.version>2.3.3</jackson-datatype.version>
+        <jackson-codehaus.version>1.9.13</jackson-codehaus.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencyManagement>
@@ -73,19 +76,51 @@
 				<artifactId>binding</artifactId>
 				<version>${projectVersion}</version>
 			</dependency>
-			<!-- Jersey
-			<dependency>
-				<groupId>com.sun.jersey</groupId>
-				<artifactId>jersey-server</artifactId>
-				<version>${jerseyVersion}</version>
-			</dependency>
-			 Jersey + Spring 
-			<dependency>
-				<groupId>com.sun.jersey.contribs</groupId>
-				<artifactId>jersey-spring</artifactId>
-				<version>${jerseyVersion}</version>
-			</dependency>
-			-->
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-hibernate4</artifactId>
+                <version>${jackson-datatype.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-lgpl</artifactId>
+                <version>${jackson-codehaus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-lgpl</artifactId>
+                <version>${jackson-codehaus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson-codehaus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson-codehaus.version}</version>
+            </dependency>
+
+            <!-- Jersey
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jerseyVersion}</version>
+            </dependency>
+             Jersey + Spring
+            <dependency>
+                <groupId>com.sun.jersey.contribs</groupId>
+                <artifactId>jersey-spring</artifactId>
+                <version>${jerseyVersion}</version>
+            </dependency>
+            -->
 			<!-- Spring Data JPA -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
