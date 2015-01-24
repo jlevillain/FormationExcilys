@@ -7,10 +7,12 @@ Ext.define('MyApp.store.CompanyStore', {
         'MyApp.model.Company'
     ],
     model: 'MyApp.model.Company',
-    data : [
-        {id: '1',    name: 'Apple Inc.'},
-        {id: '2',    name: 'Thinking Machine'},
-        {id: '3',    name: 'RCA'},
-        {id: '4',    name: 'Netronics'}
-    ]
+    autoLoad:true,
+    listeners: {
+    load: function () {
+        //this sets the default value to USA after the store loads
+        var combo = Ext.getCmp('comboBox');
+        combo.setValue(this.first().data.id);
+    }
+}
 });

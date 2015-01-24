@@ -6,5 +6,15 @@ Ext.define('MyApp.model.Company', {
     fields: [
         {name: 'id',  type: 'int'},
         {name: 'name',   type: 'string'}
-    ]
+    ],proxy: {
+        type:'rest',
+        reader:{
+            type:'json',
+            rootProperty:'companies',
+            totalProperty:'total'
+        },
+        api:{
+            read:'/webapp-2.1.1-RELEASE/AllCompany'
+        }
+    }
 });
