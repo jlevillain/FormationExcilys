@@ -3,6 +3,10 @@ Ext.define('MyApp.Application', {
 
     name: 'MyApp',
 
+    defaultToken:'home',
+
+
+
     stores: [
         // TODO: add global/shared stores here
         'User','CompanyStore', 'ComputerStore'
@@ -14,8 +18,18 @@ Ext.define('MyApp.Application', {
     controllers : [
         'MyApp.controller.MainController'
     ],
+    views:[
+        'MyApp.view.home.HomeView','MyApp.view.home.HomeController','MyApp.view.computer.AddComputer','MyApp.view.computer.AddComputerController'
+    ],
 
     launch: function () {
         // TODO - Launch the application
     }
+    /*
+    onUser: function() {
+        //var main = Ext.getCmp('main');//('MyApp.view.computer.addComputer');
+        this.addContentToCenterRegion({
+            xtype: 'addcomputer'
+        });
+    }*/
 });
