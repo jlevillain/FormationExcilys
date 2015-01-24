@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.excilys.om.Company;
 import com.excilys.om.Computer;
@@ -25,6 +27,8 @@ import java.util.Map;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import javax.validation.Valid;
 
 /**
  * Created by eron on 17/01/15.
@@ -84,6 +88,26 @@ public class AllComputerServlet {
         pageWrapper.setComputers(computerDtoList);
         pageWrapper.setTotal(computerSize);
         return pageWrapper;
+    }
 
+    @RequestMapping(value="/add",method=RequestMethod.POST)
+    @ResponseBody
+    public String doPost(@RequestBody ComputerDto cdto)throws DataAccessException {
+        // TODO Auto-generated method stub
+        logger.debug(""+cdto);
+
+        if (cdto.getName()==null || cdto.getCompany()==null) {
+            return "";
+        }
+
+        //List<String> error=ComputerValidator.valide(cdto);
+        //model.addAttribute("error", error);
+        Computer comp=computerMapper.convertDtoToComputer(cdto);
+        if (comp!=null) {
+            logger.debug(comp.toString());
+            computerService.insertOne(comp);
+            return "true";
+        }
+        return "false";
     }
 }

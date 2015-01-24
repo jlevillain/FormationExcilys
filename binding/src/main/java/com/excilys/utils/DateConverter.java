@@ -29,7 +29,7 @@ public class DateConverter {
 	 */
 	@Deprecated
 	public Date convertStringToDate(String str) throws ParseException {
-		if ("".equals(str)) {
+		if (str==null || "".equals(str)) {
 			return null;
 		}
 		Date date;
@@ -46,7 +46,7 @@ public class DateConverter {
 	 * @throws IllegalFieldValueException
 	 */
 	public DateTime convertStringToDateTime(String str) throws IllegalFieldValueException {
-		if ("".equals(str)) {
+		if (str==null || "".equals(str)) {
 			return null;
 		}
 		DateTime date = null;

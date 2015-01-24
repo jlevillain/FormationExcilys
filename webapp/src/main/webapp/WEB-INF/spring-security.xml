@@ -12,7 +12,7 @@
 			username-parameter="username" password-parameter="password" />
 		<logout logout-success-url="/DashBoard?logout" />
 		<!-- enable csrf protection -->
-		<csrf />
+		<!--<csrf />-->
 		<!-- <intercept-url pattern="/DashBoard**" access="ROLE_USER, ROLE_ADMIN" 
 			/> -->
 	</http>

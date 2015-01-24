@@ -4,7 +4,7 @@
 Ext.define('MyApp.model.Company', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'id',  type: 'int'},
+        {name: 'id',  type: 'string'},
         {name: 'name',   type: 'string'}
     ],proxy: {
         type:'rest',

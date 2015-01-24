@@ -15,20 +15,39 @@ Ext.define('MyApp.view.computer.AddComputer', {
     },
     items: [{
         xtype:'form',
+        id:'form',
+        jsonSubmit:true,
         width:'40%',
+        url:'/webapp-2.1.1-RELEASE/AllComputer/add',
         items:[{
             xtype:'textfield',
             fieldLabel:'Computer Name',
+            name:'name',
             allowBlank:false,
-            width:'100%'
+            width:'100%',
+            labelWidth:200
         }, {
             xtype:'datefield',
             fieldLabel:'Introduced Date',
-            width:'100%'
+            id:'introduced',
+            name:'introduced',
+            format:'d/m/Y',
+            submitFormat:'Y-m-d',
+            submitValue:true,
+            width:'100%',
+            labelWidth:200,
+            submitValue:false
         },{
             xtype:'datefield',
+            id:'discontinued',
             fieldLabel:'Discountinued Date',
-            width:'100%'
+            name:'discontinued',
+            format:'d/m/Y',
+            submitFormat:'Y-m-d',
+            submitValue:true,
+            width:'100%',
+            labelWidth:200,
+            submitValue:false
         },{
             xtype:'combobox',
             id:'comboBox',
@@ -42,7 +61,9 @@ Ext.define('MyApp.view.computer.AddComputer', {
             allowBlank:false,
             forceSelection:true,
             autoLoadOnValue:true,
-            width:'100%'
+            width:'100%',
+            labelWidth:200,
+            submitValue:false
         },{
             xtype:'toolbar',
             width:'100%',
@@ -53,7 +74,9 @@ Ext.define('MyApp.view.computer.AddComputer', {
                 {
                 xtype:'button',
                 text:'Add',
-                handler:'AddComputer'
+                handler:'AddComputer',
+                formBind: true, //only enabled once the form is valid
+                disabled: true
             },{
                 xtype:'component',
                 html:'or'
