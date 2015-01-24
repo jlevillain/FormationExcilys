@@ -12,7 +12,9 @@ Ext.define('MyApp.store.CompanyStore', {
     load: function () {
         //this sets the default value to USA after the store loads
         var combo = Ext.getCmp('comboBox');
-        combo.setValue(this.first().data.id);
+        if (combo != null) {
+            combo.setValue(this.first().data.id);
+        }
     }
-}
+    }
 });

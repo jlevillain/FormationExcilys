@@ -15,17 +15,20 @@ Ext.define('MyApp.view.computer.AddComputer', {
     },
     items: [{
         xtype:'form',
-        width:300,
+        width:'40%',
         items:[{
             xtype:'textfield',
             fieldLabel:'Computer Name',
             allowBlank:false,
+            width:'100%'
         }, {
             xtype:'datefield',
-            fieldLabel:'Introduced Date'
+            fieldLabel:'Introduced Date',
+            width:'100%'
         },{
             xtype:'datefield',
-            fieldLabel:'Discountinued Date'
+            fieldLabel:'Discountinued Date',
+            width:'100%'
         },{
             xtype:'combobox',
             id:'comboBox',
@@ -37,7 +40,9 @@ Ext.define('MyApp.view.computer.AddComputer', {
             displayField:'name',
             editable:false,
             allowBlank:false,
-            forceSelection:true
+            forceSelection:true,
+            autoLoadOnValue:true,
+            width:'100%'
         },{
             xtype:'toolbar',
             width:'100%',
