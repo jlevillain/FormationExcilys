@@ -110,4 +110,21 @@ public class AllComputerServlet {
         }
         return "false";
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public PageWrapper getComputer(@PathVariable int id) {
+        if(id>0) {
+            Computer computer = computerService.getOne(id);
+            ComputerDto computerDto = computerMapper.convertComputerToDto(computer);
+            //return computerDto;
+            PageWrapper pageWrapper = new PageWrapper();
+            List<ComputerDto> computerDtoList=new ArrayList<ComputerDto>();
+            computerDtoList.add(computerDto);
+            pageWrapper.setComputers(computerDtoList);
+            pageWrapper.setTotal(1);
+            return pageWrapper;
+        }
+        return null;
+    }
 }

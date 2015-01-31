@@ -24,9 +24,9 @@ Ext.define('MyApp.view.home.HomeView', {
         height:'100%',
         plugins:'gridfilters',
         columns:[
-            {text:'Name',dataIndex:'name', hideable:false, flex:1,filter:'string'},
-            {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1},
-            {text:'Discontinued', dataIndex:'discontinued', hideable:false, flex:1},
+            {text:'Name', dataIndex:'name', hideable:false, flex:1,filter:'string',xtype:'templatecolumn', tpl:'<a href="/webapp-2.1.1-RELEASE/#user/{id}">{name}</a>'},
+            {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
+            {text:'Discontinued', dataIndex:'discontinued', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
             {text:'Company', dataIndex:'company', hideable:false,flex:1,renderer:function(data) {return data.name},filter:'string'}
         ],
         dockedItems: [{

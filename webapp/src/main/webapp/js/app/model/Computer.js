@@ -6,8 +6,8 @@ Ext.define('MyApp.model.Computer', {
     fields: [
         {name: 'id',  type: 'int'},
         {name: 'name',   type: 'string'},
-        {name: 'introduced',   type: 'date', dateFormat:'Y-m-d H:i:s'},
-        {name: 'discontinued',   type: 'date',dateFormat:'Y-m-d H:i:s'},
+        {name: 'introduced',   type: 'date', dateFormat:'Y-m-d'},
+        {name: 'discontinued',   type: 'date',dateFormat:'Y-m-d'},
         {name: 'company', reference:{type:'Company',associations:'ComputersByCompany',role:'company',inverse:'computers'}, sortType:function(data) {
             if(data==null) {
                 return '';

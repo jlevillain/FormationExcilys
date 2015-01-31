@@ -1,15 +1,11 @@
 /**
- * Created by eron on 24/01/15.
+ * Created by eron on 31/01/15.
  */
-Ext.define('MyApp.view.computer.AddComputerController', {
+Ext.define('MyApp.view.computer.UpdateComputerController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.addcomputer',
+    alias: 'controller.updatecomputer',
     init:function() {
-        var combo = Ext.getCmp("comboBox")
-        if(combo!=null && combo.getStore()!=null && combo.getStore().first()!=null) {
-            combo.setValue(combo.getStore().first().data.id);
-        }
-
+        console.log(Ext.getCmp("UpdateComputer").getViewModel().get('id'));
     },
     AddComputer:function() {
         var me = this;
@@ -37,5 +33,10 @@ Ext.define('MyApp.view.computer.AddComputerController', {
     },
     Cancel:function() {
         this.redirectTo('home');
+    },
+    Load: function () {
+        console.log(Ext.getCmp("UpdateComputer").getViewModel().get('id'));
+        var combo = Ext.getCmp('comboBox');
+        console.log(combo.getRawValue());
     }
 });
