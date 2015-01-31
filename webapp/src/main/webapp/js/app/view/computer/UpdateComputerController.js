@@ -38,5 +38,8 @@ Ext.define('MyApp.view.computer.UpdateComputerController', {
         console.log(Ext.getCmp("UpdateComputer").getViewModel().get('id'));
         var combo = Ext.getCmp('comboBox');
         console.log(combo.getRawValue());
+        if(combo.getRawValue()=="") {
+            this.redirectTo('home');
+        }
     }
 });
