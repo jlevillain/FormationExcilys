@@ -111,6 +111,27 @@ public class AllComputerServlet {
         return "false";
     }
 
+    @RequestMapping(value="/save",method=RequestMethod.POST)
+    @ResponseBody
+    public String save(@RequestBody ComputerDto cdto)throws DataAccessException {
+        // TODO Auto-generated method stub
+        logger.debug(""+cdto);
+
+        if (cdto.getName()==null || cdto.getCompany()==null) {
+            return "";
+        }
+
+        //List<String> error=ComputerValidator.valide(cdto);
+        //model.addAttribute("error", error);
+        Computer comp=computerMapper.convertDtoToComputer(cdto);
+        if (comp!=null) {
+            logger.debug(comp.toString());
+            computerService.updateOne(comp);
+            return "true";
+        }
+        return "false";
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public PageWrapper getComputer(@PathVariable int id) {
