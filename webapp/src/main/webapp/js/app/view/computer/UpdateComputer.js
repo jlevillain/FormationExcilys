@@ -1,6 +1,7 @@
 /**
  * Created by eron on 31/01/15.
  */
+/*
 Ext.form.field.ComboBox.override( {
     setValue: function(v) {
         v = (v && v.toString) ? v.toString() : v;
@@ -15,6 +16,7 @@ Ext.form.field.ComboBox.override( {
         }
     }
 });
+*/
 Ext.define('MyApp.view.computer.UpdateComputer', {
     extend: 'Ext.panel.Panel',
     width:'100%',
@@ -85,12 +87,7 @@ Ext.define('MyApp.view.computer.UpdateComputer', {
             autoLoadOnValue:false,
             width:'100%',
             labelWidth:200,
-            submitValue:false,
-            value:'0',
-            listeners:{
-                afterrender:'Load'
-            }
-
+            submitValue:false
         },{
             xtype:'toolbar',
             width:'100%',
@@ -101,7 +98,7 @@ Ext.define('MyApp.view.computer.UpdateComputer', {
                 {
                     xtype:'button',
                     text:'Save',
-                    handler:'SaveComputer',
+                    handler:'UpdateComputer',
                     formBind: true, //only enabled once the form is valid
                     disabled: true
                 },{

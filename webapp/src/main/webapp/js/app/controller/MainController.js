@@ -58,17 +58,18 @@ Ext.define('MyApp.controller.MainController', {
         Ext.getStore('ComputerStore').getModel().load(id, { // load user with ID of "1"
             success: function (user) {
                 var form = Ext.getCmp('form');
-                form.loadRecord(user);
-                var model = Ext.getCmp("UpdateComputer").getViewModel();
-                var combo = Ext.getCmp("comboBox");
-                console.log(model);
-                if(model && combo) {
-                    if(user.data.company!=null) {
-                        model.set('id', user.data.company.id);
-                        combo.setValue(user.data.company.id);
-                    }else {
-                        model.set('id',"0");
-                        combo.setValue("0");
+                if(form) {
+                    form.loadRecord(user);
+                    var model = Ext.getCmp("UpdateComputer").getViewModel();
+                    var combo = Ext.getCmp("comboBox");
+                    if(model && combo) {
+                        if(user.data.company!=null) {
+                            model.set('id', user.data.company.id);
+                            combo.setValue(user.data.company.id);
+                        }else {
+                            model.set('id',"0");
+                            combo.setValue("0");
+                        }
                     }
                 }
             },failure: function(user) {

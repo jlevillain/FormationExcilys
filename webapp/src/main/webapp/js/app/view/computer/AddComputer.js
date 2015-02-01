@@ -64,7 +64,7 @@ Ext.define('MyApp.view.computer.AddComputer', {
             editable:false,
             allowBlank:false,
             forceSelection:true,
-            autoLoadOnValue:true,
+            autoLoadOnValue:false,
             width:'100%',
             labelWidth:200,
             submitValue:false

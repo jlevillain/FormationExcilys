@@ -5,9 +5,10 @@ Ext.define('MyApp.view.computer.UpdateComputerController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.updatecomputer',
     init:function() {
-        console.log(Ext.getCmp("UpdateComputer").getViewModel().get('id'));
+        var combo = Ext.getCmp('comboBox');
+        combo.getStore().load();
     },
-    AddComputer:function() {
+    UpdateComputer:function() {
         var me = this;
         var form = Ext.getCmp("form");
         var comboBox = Ext.getCmp("comboBox");
@@ -33,13 +34,5 @@ Ext.define('MyApp.view.computer.UpdateComputerController', {
     },
     Cancel:function() {
         this.redirectTo('home');
-    },
-    Load: function () {
-        console.log(Ext.getCmp("UpdateComputer").getViewModel().get('id'));
-        var combo = Ext.getCmp('comboBox');
-        console.log(combo.getRawValue());
-        if(combo.getRawValue()=="") {
-            this.redirectTo('home');
-        }
     }
 });
