@@ -9,5 +9,12 @@ Ext.define('MyApp.view.home.HomeController', {
     },
     AddComputer:function() {
         this.redirectTo('user');
+    },
+    DeleteComputer:function(grid, rowIndex, colIndex) {
+        var store = grid.getStore();
+        var rec = store.getAt(rowIndex);
+        rec.erase({success:function() {
+            alert(rec.get('name')+' deleted');
+        }});
     }
 });

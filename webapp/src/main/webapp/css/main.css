@@ -88,3 +88,27 @@ table.computers .header a {
     color: #2A6496;
     text-decoration: underline;
 }
+
+a.deleteButton{
+    background-color:#D9534F;
+    border-color:#D43F3A;
+    background-image:none;
+}
+
+a.deleteButton:hover {
+    border-color:#D43F3A;
+    background-image:none;
+    background-color: #ac2925;
+}
+
+ a.x-btn-focus.deleteButton{
+    background-color:#D9534F;
+    border-color:#D43F3A;
+    background-image:none;
+}
+
+ a.x-btn-focus.deleteButton:hover {
+    border-color:#D43F3A;
+    background-image:none;
+    background-color: #ac2925;
+}

@@ -148,4 +148,18 @@ public class AllComputerServlet {
         }
         return null;
     }
+
+    /*@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean deleteComputer(@PathVariable int id) {
+        computerService.deleteOne(id);
+        return true;
+    }*/
+
+    @RequestMapping(value="/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public boolean deleteComputer(@PathVariable int id, @RequestBody Object o) {
+        computerService.deleteOne(id);
+        return true;
+    }
 }

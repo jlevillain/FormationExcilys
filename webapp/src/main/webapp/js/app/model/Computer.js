@@ -23,10 +23,10 @@ Ext.define('MyApp.model.Computer', {
             totalProperty:'total'
         },
         api:{
-            create:'/webapp-2.1.1-RELEASE/AddComputer',
+            create:'/webapp-2.1.1-RELEASE/AllComputer/add',
             read:'/webapp-2.1.1-RELEASE/AllComputer',
-            update:'/webapp-2.1.1-RELEASE/UpdateComputer',
-            destroy:'/webapp-2.1.1-RELEASE/DeleteComputer'
+            update:'/webapp-2.1.1-RELEASE/AllComputer/save',
+            destroy:'/webapp-2.1.1-RELEASE/AllComputer/delete'
         }
     }
 });
