@@ -69,7 +69,7 @@ Ext.define('MyApp.view.home.HomeView', {
                     height:'100%',
                     plugins:'gridfilters',
                     columns:[
-                        {text:this.columnName, dataIndex:'name', hideable:false, flex:1,filter:'string',xtype:'templatecolumn', tpl:'<a href="/webapp-2.1.1-RELEASE/#user/{id}/"'+LOCALE+'>{name}</a>'},
+                        {text:this.columnName, dataIndex:'name', hideable:false, flex:1,filter:'string',xtype:'templatecolumn', tpl:'<a href="/webapp-2.1.1-RELEASE/#user/{id}/'+LOCALE+'">{name}</a>'},
                         {text:this.columnIntroduced, dataIndex:'introduced', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
                         {text:this.columnDiscontinued, dataIndex:'discontinued', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
                         {text:this.columnCompany, dataIndex:'company', hideable:false,flex:1,renderer:function(data) {if(data!=null) {return data.name}else {return ''}},filter:'string'},

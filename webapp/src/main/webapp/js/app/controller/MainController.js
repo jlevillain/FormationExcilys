@@ -3,6 +3,7 @@
  */
 Ext.define('MyApp.controller.MainController', {
     extend: 'Ext.app.Controller',
+    failLoading:'Fail to load computer',
     requires: [
         'Ext.MessageBox'
     ],routes:{
@@ -77,7 +78,7 @@ Ext.define('MyApp.controller.MainController', {
                 }
             },failure: function(user) {
                 me.redirectTo('home/'+LOCALE);
-                Ext.Msg.alert('Failed', "fail to load computer");
+                Ext.Msg.alert('Failed', this.failLoading);
             }
         });
 
@@ -87,9 +88,18 @@ Ext.define('MyApp.controller.MainController', {
             if (locale=="fr") {
                 LOCALE = "fr";
                 eval(SCRIPT_FR);
+                eval(SCRIPT_TEXT_FR);
+                var view = this.getMain();//('MyApp.view.computer.addComputer');
+                var center = view.down('#menu');
+                center.html = '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+center.homeTitle+'</a></h1>';
             } else {
                 LOCALE = "en";
                 eval(SCRIPT_EN);
+                eval(SCRIPT_TEXT_EN);
+
+                var view = this.getMain();//('MyApp.view.computer.addComputer');
+                var center = view.down('#menu');
+                center.html = '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+center.homeTitle+'</a></h1>';
             }
     }
 //    onClickButton: function (button, e, eOpts) {

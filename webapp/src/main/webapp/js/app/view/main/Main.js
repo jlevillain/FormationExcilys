@@ -3,10 +3,12 @@ Ext.define('MyApp.view.main.Main', {
     alias:"widget.main",
     width:'100%',
     height:'100%',
+    id:'MainPage',
+    homeTitle:'Application - Computer Database',
     layout: {
         type: 'border'
     },
-    items: [{
+    /*items: [{
         xtype: 'panel',
         region: 'north',
         itemId:'menu',
@@ -31,5 +33,39 @@ Ext.define('MyApp.view.main.Main', {
         itemId:'center',
         layout:{type:'fit'},
         xtype:'container'
-    }]
+    }]*/
+    initComponent : function(config) {
+        Ext.apply(this, {
+            items: [
+                {
+                    xtype: 'panel',
+                    region: 'north',
+                    itemId: 'menu',
+                    html: '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+this.homeTitle+'</a></h1>',
+                    bodyStyle: {
+                        marginTop: '20px',
+                        marginBottom: '30px',
+                        backgroundColor: 'black',
+                        color: 'white',
+                        marginLeft: '20px'
+                    },
+                    style: {
+                        backgroundColor: 'black',
+                        color: 'white'
+                    },
+                    width: '100%',
+                    height: 100
+                },
+                {
+                    width: '100%',
+                    height: '100%',
+                    region: 'center',
+                    itemId: 'center',
+                    layout: {type: 'fit'},
+                    xtype: 'container'
+                }
+            ]
+        });
+        this.callParent(arguments);
+    }
 });
