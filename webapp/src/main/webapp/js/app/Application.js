@@ -20,6 +20,7 @@ Ext.define('MyApp.Application', {
         'MyApp.controller.MainController'
     ],
     views:[
+        'MyApp.view.main.Main',
         'MyApp.view.home.HomeView','MyApp.view.home.HomeController',
         'MyApp.view.computer.AddComputer','MyApp.view.computer.AddComputerController',
         'MyApp.view.computer.UpdateComputer','MyApp.view.computer.UpdateComputerController', 'MyApp.view.computer.UpdateComputerModel'

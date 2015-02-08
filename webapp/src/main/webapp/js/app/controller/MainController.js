@@ -91,7 +91,8 @@ Ext.define('MyApp.controller.MainController', {
                 eval(SCRIPT_TEXT_FR);
                 var view = this.getMain();//('MyApp.view.computer.addComputer');
                 var center = view.down('#menu');
-                center.html = '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+center.homeTitle+'</a></h1>';
+                console.log(view.homeTitle);
+                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleFr+'</a></h1>', true);
             } else {
                 LOCALE = "en";
                 eval(SCRIPT_EN);
@@ -99,7 +100,8 @@ Ext.define('MyApp.controller.MainController', {
 
                 var view = this.getMain();//('MyApp.view.computer.addComputer');
                 var center = view.down('#menu');
-                center.html = '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+center.homeTitle+'</a></h1>';
+                console.log(view.homeTitle);
+                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleEn+'</a></h1>', true);
             }
     }
 //    onClickButton: function (button, e, eOpts) {
