@@ -6,13 +6,13 @@ Ext.define('MyApp.controller.MainController', {
     requires: [
         'Ext.MessageBox'
     ],routes:{
-        'user/:id': {
+        'user/:id/:lang': {
             action:'loadUser'
         },
-        'user' : {
+        'user/:lang' : {
             action:'onUser'
         },
-        'home':{
+        'home/:lang':{
             action:'onHome'
         }
     },
@@ -21,13 +21,15 @@ Ext.define('MyApp.controller.MainController', {
     ],
     alias: 'controller.main',
     init:function() {
+        console.log('init main')
         this.addRef([{
             ref: 'main',
             selector: '[xtype=main]'
         }]);
         this.callParent();
     },
-    onUser: function() {
+    onUser: function(lang) {
+        this.setLocale(lang);
         var view = this.getMain();//('MyApp.view.computer.addComputer');
         var center = view.down('#center');
         center.removeAll();
@@ -36,7 +38,8 @@ Ext.define('MyApp.controller.MainController', {
         });
         return cmp;
     },
-    onHome: function() {
+    onHome: function(lang) {
+        this.setLocale(lang);
         var view = this.getMain();//('MyApp.view.computer.addComputer');
         var center = view.down('#center');
         center.removeAll();
@@ -45,9 +48,9 @@ Ext.define('MyApp.controller.MainController', {
         });
         return cmp;
     },
-    loadUser: function(id) {
+    loadUser: function(id, lang) {
         console.log(id);
-
+        this.setLocale(lang);
         var me =this;
         var view = this.getMain();//('MyApp.view.computer.addComputer');
         var center = view.down('#center');
@@ -73,12 +76,21 @@ Ext.define('MyApp.controller.MainController', {
                     }
                 }
             },failure: function(user) {
-                me.redirectTo('home');
+                me.redirectTo('home/'+LOCALE);
                 Ext.Msg.alert('Failed', "fail to load computer");
             }
         });
 
         return cmp;
+    },
+    setLocale : function(locale) {
+            if (locale=="fr") {
+                LOCALE = "fr";
+                eval(SCRIPT_FR);
+            } else {
+                LOCALE = "en";
+                eval(SCRIPT_EN);
+            }
     }
 //    onClickButton: function (button, e, eOpts) {
 //        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);

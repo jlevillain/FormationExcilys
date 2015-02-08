@@ -1,9 +1,10 @@
+var LOCALE="en";
 Ext.define('MyApp.Application', {
     extend: 'Ext.app.Application',
 
     name: 'MyApp',
 
-    defaultToken:'home',
+    defaultToken:'home/en',
 
 
 

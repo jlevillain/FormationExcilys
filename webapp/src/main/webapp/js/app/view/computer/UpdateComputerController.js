@@ -5,6 +5,7 @@ Ext.define('MyApp.view.computer.UpdateComputerController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.updatecomputer',
     init:function() {
+        console.log('init update')
         var combo = Ext.getCmp('comboBox');
         combo.getStore().load();
     },
@@ -24,7 +25,7 @@ Ext.define('MyApp.view.computer.UpdateComputerController', {
                 },
                 success: function(form) {
                     Ext.Msg.alert('Success', "success");
-                    me.redirectTo('home');
+                    me.redirectTo('home/'+LOCALE);
                 },
                 failure: function(form, action) {
                     Ext.Msg.alert('Failed', "fail");
@@ -33,6 +34,6 @@ Ext.define('MyApp.view.computer.UpdateComputerController', {
         }
     },
     Cancel:function() {
-        this.redirectTo('home');
+        this.redirectTo('home/'+LOCALE);
     }
 });

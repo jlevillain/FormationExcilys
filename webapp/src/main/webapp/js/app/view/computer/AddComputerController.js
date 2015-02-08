@@ -5,6 +5,7 @@ Ext.define('MyApp.view.computer.AddComputerController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.addcomputer',
     init:function() {
+        console.log('init addcomputer')
         var combo = Ext.getCmp("comboBox")
         if(combo!=null && combo.getStore()!=null && combo.getStore().first()!=null) {
             combo.setValue(combo.getStore().first().data.id);
@@ -27,7 +28,7 @@ Ext.define('MyApp.view.computer.AddComputerController', {
                 },
                 success: function(form) {
                     Ext.Msg.alert('Success', "success");
-                    me.redirectTo('home');
+                    me.redirectTo('home/'+LOCALE);
                 },
                 failure: function(form, action) {
                     Ext.Msg.alert('Failed', "fail");
@@ -36,6 +37,6 @@ Ext.define('MyApp.view.computer.AddComputerController', {
         }
     },
     Cancel:function() {
-        this.redirectTo('home');
+        this.redirectTo('home/'+LOCALE);
     }
 });

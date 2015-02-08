@@ -7,16 +7,24 @@ Ext.define('MyApp.view.home.HomeView', {
     width:'100%',
     height:'100%',
     controller:'home',
+    columnName:"Name",
+    columnIntroduced:"Introduced",
+    columnDiscontinued:"Discontinued",
+    columnCompany:"Company",
+    homeTitle:"Computers found",
+    buttonAdd:"Add computer",
+    tooltipDelete:'Delete',
+    me:this,/*
     items: [
         {
         xtype: 'gridpanel',
         id:'grid',
-        title:'Computers found',
+        title:me.homeTitle,
         header:{
             titlePosition: 0,
             items:[{
                 xtype:'button',
-                text: 'Add Computer',
+                text: me.buttonAdd,
                 handler: 'AddComputer'
             }]
         },
@@ -25,28 +33,60 @@ Ext.define('MyApp.view.home.HomeView', {
         height:'100%',
         plugins:'gridfilters',
         columns:[
-            {text:'Name', dataIndex:'name', hideable:false, flex:1,filter:'string',xtype:'templatecolumn', tpl:'<a href="/webapp-2.1.1-RELEASE/#user/{id}">{name}</a>'},
-            {text:'Introduced', dataIndex:'introduced', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
-            {text:'Discontinued', dataIndex:'discontinued', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
-            {text:'Company', dataIndex:'company', hideable:false,flex:1,renderer:function(data) {if(data!=null) {return data.name}else {return ''}},filter:'string'},
-            {xtype:'actioncolumn',width:50,hideable:false, sortable:false, tooltip:'Delete', handler:'DeleteComputer', icon:'/webapp-2.1.1-RELEASE/images/delete.png'
-                /*
-                widget:{
-                xtype:'button',
-                text:'Delete',
-                handler:'DeleteComputer',
-                cls:'deleteButton'
-            }*/
-        }],
+            {text:me.columnName, dataIndex:'name', hideable:false, flex:1,filter:'string',xtype:'templatecolumn', tpl:'<a href="/webapp-2.1.1-RELEASE/#user/{id}/"'+LOCALE+'>{name}</a>'},
+            {text:me.columnIntroduced, dataIndex:'introduced', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
+            {text:me.columnDiscontinued, dataIndex:'discontinued', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
+            {text:me.columnCompany, dataIndex:'company', hideable:false,flex:1,renderer:function(data) {if(data!=null) {return data.name}else {return ''}},filter:'string'},
+            {xtype:'actioncolumn',width:50,hideable:false, sortable:false, tooltip:me.tooltipDelete, handler:'DeleteComputer', icon:'/webapp-2.1.1-RELEASE/images/delete.png'}
+        ],
         dockedItems: [{
             xtype: 'pagingtoolbar',
             store: 'ComputerStore',   // same store GridPanel is using
             dock: 'bottom',
             displayInfo: true,
-            displayMsg:'Displaying {0} - {1} of {2} computers',
             items: ['->'],
             prependButtons: true
         }]
         }
-    ]
+    ]*/
+    initComponent : function(config) {
+        Ext.apply(this, {
+            items: [
+                {
+                    xtype: 'gridpanel',
+                    id:'grid',
+                    title:this.homeTitle,
+                    header:{
+                        titlePosition: 0,
+                        items:[{
+                            xtype:'button',
+                            text: this.buttonAdd,
+                            handler: 'AddComputer'
+                        }]
+                    },
+                    store:'ComputerStore',
+                    width:'100%',
+                    height:'100%',
+                    plugins:'gridfilters',
+                    columns:[
+                        {text:this.columnName, dataIndex:'name', hideable:false, flex:1,filter:'string',xtype:'templatecolumn', tpl:'<a href="/webapp-2.1.1-RELEASE/#user/{id}/"'+LOCALE+'>{name}</a>'},
+                        {text:this.columnIntroduced, dataIndex:'introduced', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
+                        {text:this.columnDiscontinued, dataIndex:'discontinued', hideable:false, flex:1,xtype: 'datecolumn',   format:'Y-m-d'},
+                        {text:this.columnCompany, dataIndex:'company', hideable:false,flex:1,renderer:function(data) {if(data!=null) {return data.name}else {return ''}},filter:'string'},
+                        {xtype:'actioncolumn',width:50,hideable:false, sortable:false, tooltip:this.tooltipDelete, handler:'DeleteComputer', icon:'/webapp-2.1.1-RELEASE/images/delete.png'}
+                    ],
+                    dockedItems: [{
+                        xtype: 'pagingtoolbar',
+                        store: 'ComputerStore',   // same store GridPanel is using
+                        dock: 'bottom',
+                        displayInfo: true,
+                        items: ['->'],
+                        prependButtons: true
+                    }]
+                }
+            ]
+        });
+
+        this.callParent(arguments);
+    }
 });
