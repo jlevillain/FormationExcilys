@@ -92,7 +92,7 @@ Ext.define('MyApp.controller.MainController', {
                 var view = this.getMain();//('MyApp.view.computer.addComputer');
                 var center = view.down('#menu');
                 console.log(view.homeTitle);
-                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleFr+'</a></h1>', true);
+                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleFr+'</a></h1><span style="float: right"><a href="#home/en"><img src="/webapp-2.1.1-RELEASE/resources/images/anglais.png"></a> | <a href="#home/fr"><img src="/webapp-2.1.1-RELEASE/resources/images/francais.png"></a></span>', true);
             } else {
                 LOCALE = "en";
                 eval(SCRIPT_EN);
@@ -101,7 +101,7 @@ Ext.define('MyApp.controller.MainController', {
                 var view = this.getMain();//('MyApp.view.computer.addComputer');
                 var center = view.down('#menu');
                 console.log(view.homeTitle);
-                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleEn+'</a></h1>', true);
+                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleEn+'</a></h1><span style="float: right"><a href="#home/en"><img src="/webapp-2.1.1-RELEASE/resources/images/anglais.png"></a> | <a href="#home/fr"><img src="/webapp-2.1.1-RELEASE/resources/images/francais.png"></a></span>', true);
             }
     }
 //    onClickButton: function (button, e, eOpts) {

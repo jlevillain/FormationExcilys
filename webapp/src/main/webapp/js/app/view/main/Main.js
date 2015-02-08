@@ -41,13 +41,13 @@ Ext.define('MyApp.view.main.Main', {
                     xtype: 'panel',
                     region: 'north',
                     itemId: 'menu',
-                    html: '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+this.homeTitle+'</a></h1>',
+                    html: '<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+this.homeTitle+'</a></h1><span style="float: right"><a href="#home/en"><img src="/webapp-2.1.1-RELEASE/resources/images/anglais.png"></a> | <a href="#home/fr"><img src="/webapp-2.1.1-RELEASE/resources/images/francais.png"></a></span>',
                     bodyStyle: {
-                        marginTop: '20px',
-                        marginBottom: '30px',
+                        paddingTop: '20px',
+                        paddingBottom: '30px',
                         backgroundColor: 'black',
                         color: 'white',
-                        marginLeft: '20px'
+                        paddingLeft: '20px'
                     },
                     style: {
                         backgroundColor: 'black',
