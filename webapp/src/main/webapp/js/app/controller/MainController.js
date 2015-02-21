@@ -15,17 +15,26 @@ Ext.define('MyApp.controller.MainController', {
         },
         'home/:lang':{
             action:'onHome'
+        },
+        'disconnect':{
+            action:'disconnect'
         }
     },
     views:[
-      'MyApp.view.main.Main'
+      'Main'
     ],
     alias: 'controller.main',
     init:function() {
+        var me = this;
         console.log('init main')
+        loggedIn = localStorage.getItem("LoggedIn");
+        if(loggedIn) {
+            me.redirectTo('home/'+LOCALE);
+        }
         this.addRef([{
             ref: 'main',
-            selector: '[xtype=main]'
+            selector: '[xtype=app-main]',
+            autoCreate:true
         }]);
         this.callParent();
     },
@@ -85,24 +94,40 @@ Ext.define('MyApp.controller.MainController', {
         return cmp;
     },
     setLocale : function(locale) {
-            if (locale=="fr") {
-                LOCALE = "fr";
-                eval(SCRIPT_FR);
-                eval(SCRIPT_TEXT_FR);
-                var view = this.getMain();//('MyApp.view.computer.addComputer');
-                var center = view.down('#menu');
-                console.log(view.homeTitle);
-                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleFr+'</a></h1><span style="float: right"><a href="#home/en"><img src="/webapp-2.1.1-RELEASE/resources/images/anglais.png"></a> | <a href="#home/fr"><img src="/webapp-2.1.1-RELEASE/resources/images/francais.png"></a></span>', true);
-            } else {
-                LOCALE = "en";
-                eval(SCRIPT_EN);
-                eval(SCRIPT_TEXT_EN);
+        var homeTitle  = "";
+        var diconnectButtonText = "";
+        var homeTitleText="";
+        if (locale=="fr") {
+            LOCALE = "fr";
+            eval(SCRIPT_FR);
+            eval(SCRIPT_TEXT_FR);
+            var view = this.getMain();//('MyApp.view.computer.addComputer');
+            var center = view.down('#menu');
+            homeTitle=homeTitleFr;
+            diconnectButtonText = disconnectButtonFr;
+        } else {
+            LOCALE = "en";
+            eval(SCRIPT_EN);
+            eval(SCRIPT_TEXT_EN);
+            homeTitle=homeTitleEn;
+            diconnectButtonText = disconnectButtonEn;
+        }
+        var view = this.getMain();//('MyApp.view.computer.addComputer');
+        var center = view.down('#menu');
+        var button = '<span style="float: right;position: relative;top: -50px;right:20px;"><a id="logout" href="/webapp-2.1.1-RELEASE/#disconnect">'+diconnectButtonText+'</a><br><br><a href="#home/en"><img src="/webapp-2.1.1-RELEASE/resources/images/anglais.png"></a> | <a href="#home/fr"><img src="/webapp-2.1.1-RELEASE/resources/images/francais.png"></a></span>'
+        center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitle+'</a></h1>'+button, true);
+    },
+    disconnect: function () {
+        console.log("disconnect");
+        // Remove the localStorage key/value
+        localStorage.removeItem('LoggedIn');
 
-                var view = this.getMain();//('MyApp.view.computer.addComputer');
-                var center = view.down('#menu');
-                console.log(view.homeTitle);
-                center.body.update('<h1><a id="titleLink" href="/webapp-2.1.1-RELEASE/#home/'+LOCALE+'">'+homeTitleEn+'</a></h1><span style="float: right"><a href="#home/en"><img src="/webapp-2.1.1-RELEASE/resources/images/anglais.png"></a> | <a href="#home/fr"><img src="/webapp-2.1.1-RELEASE/resources/images/francais.png"></a></span>', true);
-            }
+        // Remove Main View
+
+        this.getMain().destroy();
+
+        // Add the Login Window
+        Ext.widget('login');
     }
 //    onClickButton: function (button, e, eOpts) {
 //        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);

@@ -6,9 +6,9 @@
 Ext.application({
     name: 'MyApp',
 
-    extend: 'MyApp.Application',
+    extend: 'MyApp.Application'
 
-    autoCreateViewport: 'MyApp.view.main.Main'
+    //autoCreateViewport: 'MyApp.view.main.Main'
 
 
 

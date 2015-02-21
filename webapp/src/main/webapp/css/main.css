@@ -89,6 +89,23 @@ table.computers .header a {
     text-decoration: underline;
 }
 
+#logout{
+    color: #428BCA;
+    text-decoration: none;
+}
+
+#logout:focus {
+    outline: thin dotted;
+    outline-offset: -2px;
+    color: #2A6496;
+    text-decoration: underline;
+}
+
+#logout:hover {
+    color: #2A6496;
+    text-decoration: underline;
+}
+
 a.deleteButton{
     background-color:#D9534F;
     border-color:#D43F3A;
