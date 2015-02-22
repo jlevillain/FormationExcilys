@@ -4,13 +4,12 @@
 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<http auto-config="true">
-		<intercept-url pattern="/UpdateComputer**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/AddComputer**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/DeleteComputer**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/#home**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/#user**" access="ROLE_ADMIN" />
 		<!-- default-target-url="/welcome" -->
-		<form-login login-page="/login" authentication-failure-url="/login?error"
+		<form-login login-page="/" authentication-failure-url="/login"
 			username-parameter="username" password-parameter="password" />
-		<logout logout-success-url="/DashBoard?logout" />
+		<logout logout-success-url="/#disconnect" />
 		<!-- enable csrf protection -->
 		<!--<csrf />-->
 		<!-- <intercept-url pattern="/DashBoard**" access="ROLE_USER, ROLE_ADMIN" 

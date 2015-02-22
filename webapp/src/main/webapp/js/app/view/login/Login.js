@@ -21,6 +21,7 @@ Ext.define("MyApp.view.login.Login",{
             title:this.loginTitle,
             items: {
                 xtype: 'form',
+                id:'loginForm',
                 reference: 'form',
                 items: [
                     {
@@ -40,6 +41,10 @@ Ext.define("MyApp.view.login.Login",{
                         xtype: 'displayfield',
                         hideEmptyLabel: false,
                         value: this.hideEmptyLabel
+                    },{
+                        xtype:'hiddenfield',
+                        name:'submit',
+                        value:'login'
                     }
                 ],
                 buttons: [
