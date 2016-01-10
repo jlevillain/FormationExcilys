@@ -17,7 +17,9 @@ FormationExcilys
 	- Java JDK 1.7
 	
 5 - JNDI Tomcat configuration
+
 	Add in tomcat conf/context.xml
+	
 	```
 	<Resource name="jdbc/BoneCpPool"
           type="com.jolbox.bonecp.BoneCPDataSource"
