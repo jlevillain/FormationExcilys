@@ -1,3 +1,4 @@
+INSERT INTO users(username,password,enabled)
 VALUES ('admin','admin', TRUE);
 INSERT INTO users(username,password,enabled)
 VALUES ('user','user', TRUE);
