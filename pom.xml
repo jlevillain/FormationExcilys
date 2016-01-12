@@ -40,6 +40,7 @@
 		<jerseyVersion>1.8</jerseyVersion>
 		<projectVersion>2.1.1-RELEASE</projectVersion>
 		<jackson.version>1.9.10</jackson.version>
+		<mockito.version>1.10.19</mockito.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -97,7 +98,7 @@
 				<artifactId>querydsl-apt</artifactId>
 				<version>${queryDSLVersion}</version>
 			</dependency>
-
+			
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-hql</artifactId>
@@ -274,7 +275,20 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-
+			
+			<!-- Mockito -->
+			<dependency>
+			    <groupId>org.mockito</groupId>
+			    <artifactId>mockito-core</artifactId>
+			    <version>${mockito.version}</version>
+			</dependency>
+			<!-- Junit -->
+			<dependency>
+			    <groupId>junit</groupId>
+			    <artifactId>junit</artifactId>
+			    <version>4.12</version>
+			</dependency>
+			
 			<!-- Library from java.net, integrate Spring with JAX-WS -->
 			<dependency>
 				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
