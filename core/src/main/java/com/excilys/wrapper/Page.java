@@ -2,6 +2,8 @@ package com.excilys.wrapper;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.excilys.dto.ComputerDto;
 import com.excilys.om.Computer;
 /**
@@ -9,6 +11,7 @@ import com.excilys.om.Computer;
  * @author excilys
  *
  */
+@XmlRootElement(name="page")
 public class Page {
 	private int page=1;
 	private int interval=5;
