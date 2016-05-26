@@ -32,20 +32,20 @@ import org.junit.runner.RunWith;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Page.class, PageValidator.class})
 public class DashBordServletTest {
-	private static String searchParam = "searchParam";
-	private static String pageParam = "pageParam";
-	private static String orderByParam = "orderByParam";
-	private static String isDescParam = "isDescParam";
-	private static String nbPageParam = "nbPageParam";
-	private static String lang = "lang";
-	private static String logout = "logout";
-	private static String langCookie = "langCookie";
-	private static String search = "searchParam";
-	int page = 1;
-	int orderBy = 2;
-	boolean desc = false;
-	int nbPage = 1;
-	int computerSize = 1;
+	private static final String SEARCH_PARAM = "searchParam";
+	private static final String PAGE_PARAM = "pageParam";
+	private static final String ORDER_BY_PARAM = "orderByParam";
+	private static final String IS_DESC_PARAM = "isDescParam";
+	private static final String NB_PAGE_PARAM = "nbPageParam";
+	private static final String LANG = "lang";
+	private static final String LOGOUT = "logout";
+	private static final String LANG_COOKIE = "langCookie";
+	private static final String SEARCH = "searchParam";
+	private static final int PAGE = 1;
+	private static final int ORDER_BY = 2;
+	private static final boolean DESC = false;
+	private static final int NB_PAGE = 1;
+	private static final int COMPUTER_SIZE = 1;
 	
 	@Mock
 	ApplicationContext context;
@@ -81,26 +81,26 @@ public class DashBordServletTest {
 		
 		when(context.getMessage("Login.success", null, LocaleContextHolder.getLocale())).thenReturn("Login.success");
 		
-		when(computerService.getAll(search, page-1, nbPage,orderBy,desc)).thenReturn(computerList);
-		when(computerService.getSize(search)).thenReturn(computerSize);
+		when(computerService.getAll(SEARCH, PAGE-1, NB_PAGE, ORDER_BY, DESC)).thenReturn(computerList);
+		when(computerService.getSize(SEARCH)).thenReturn(COMPUTER_SIZE);
 		
-		when(PageValidator.validSearch(searchParam)).thenReturn(search);
-		when(PageValidator.validPage(pageParam)).thenReturn(page);
-		when(PageValidator.validOrderBy(orderByParam)).thenReturn(orderBy);
-		when(PageValidator.validIsDesc(isDescParam)).thenReturn(desc);
-		when(PageValidator.validNbPage(nbPageParam)).thenReturn(nbPage);
+		when(PageValidator.validSearch(SEARCH_PARAM)).thenReturn(SEARCH);
+		when(PageValidator.validPage(PAGE_PARAM)).thenReturn(PAGE);
+		when(PageValidator.validOrderBy(ORDER_BY_PARAM)).thenReturn(ORDER_BY);
+		when(PageValidator.validIsDesc(IS_DESC_PARAM)).thenReturn(DESC);
+		when(PageValidator.validNbPage(NB_PAGE_PARAM)).thenReturn(NB_PAGE);
 		
 		when(Page.build()).thenReturn(pageBuilder);
-		when(pageBuilder.search(search)).thenReturn(pageBuilder);
-		when(pageBuilder.page(page)).thenReturn(pageBuilder);
-		when(pageBuilder.isDesc(desc)).thenReturn(pageBuilder);
-		when(pageBuilder.orderBy(orderBy)).thenReturn(pageBuilder);
-		when(pageBuilder.nbPage(nbPage)).thenReturn(pageBuilder);
+		when(pageBuilder.search(SEARCH)).thenReturn(pageBuilder);
+		when(pageBuilder.page(PAGE)).thenReturn(pageBuilder);
+		when(pageBuilder.isDesc(DESC)).thenReturn(pageBuilder);
+		when(pageBuilder.orderBy(ORDER_BY)).thenReturn(pageBuilder);
+		when(pageBuilder.nbPage(NB_PAGE)).thenReturn(pageBuilder);
 		when(pageBuilder.computerList(any(List.class))).thenReturn(pageBuilder);
-		when(pageBuilder.computerSize(computerSize)).thenReturn(pageBuilder);
+		when(pageBuilder.computerSize(COMPUTER_SIZE)).thenReturn(pageBuilder);
 		when(pageBuilder.build()).thenReturn(pageWrapperExpected);
 		
-		dashBordServlet.doGet(searchParam, pageParam, orderByParam, isDescParam, nbPageParam, lang, logout, langCookie, model);
+		dashBordServlet.doGet(SEARCH_PARAM, PAGE_PARAM, ORDER_BY_PARAM, IS_DESC_PARAM, NB_PAGE_PARAM, LANG, LOGOUT, LANG_COOKIE, model);
 		
 		verify(computerMapper).convertComputerToDto(computer);
 		verify(model).addAttribute("msg",context.getMessage("Login.success",null,  LocaleContextHolder.getLocale()));
