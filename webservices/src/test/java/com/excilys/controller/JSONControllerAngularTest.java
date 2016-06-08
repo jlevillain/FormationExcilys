@@ -11,8 +11,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.ModelMap;
 
+import com.excilys.dto.CompanyDto;
 import com.excilys.dto.ComputerDto;
 import com.excilys.mapper.ComputerMapper;
+import com.excilys.om.Company;
 import com.excilys.om.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
@@ -42,6 +44,9 @@ public class JSONControllerAngularTest {
 	private static final String LOGOUT = "logout";
 	private static final String LANG_COOKIE = "langCookie";
 	private static final String SEARCH = "searchParam";
+	private static final String NAME = "name";
+	private static final String INTRODUCED = "introduced";
+	private static final String DISCONTINUED = "discontinued";
 	private static final int PAGE = 1;
 	private static final int ORDER_BY = 2;
 	private static final boolean DESC = false;
@@ -148,5 +153,60 @@ public class JSONControllerAngularTest {
 		verify(computerService).getOne(ID);
 		verify(computerMapper).convertComputerToDto(computer);
 		assertEquals(computerDTO, actual);
+	}
+	
+	@Test 
+	public void populateComputerList() {
+		List<Company> companies = new ArrayList<>();
+		when(companyService.getAll()).thenReturn(companies);
+		
+		List<Company> actual = jsonControllerAngular.populateComputerList();
+		
+		verify(companyService).getAll();
+		assertEquals(companies, actual);
+	}
+	
+	@Test
+	public void addCompterNullName() {
+		ComputerDto computerDTO = new ComputerDto();
+		computerDTO.setName(null);
+		
+		ComputerDto actual = jsonControllerAngular.addCompter(computerDTO);
+		
+		assertEquals(null, actual);
+	}
+	
+	@Test
+	public void addCompterNullComputer() {
+		ComputerDto computerDto = ComputerDto.build().name(NAME).introduced(INTRODUCED).discontinued(DISCONTINUED)
+				.company(new CompanyDto()).build();
+		Computer computer = null;
+		when(computerMapper.convertDtoToComputer(computerDto)).thenReturn(computer);
+		
+		ComputerDto actual = jsonControllerAngular.addCompter(computerDto);
+		
+		verify(computerMapper).convertDtoToComputer(computerDto);
+		assertEquals(null, actual);
+	}
+	
+	@Test
+	public void addCompter() {
+		ComputerDto computerDto = ComputerDto.build().name(NAME).introduced(INTRODUCED).discontinued(DISCONTINUED)
+				.company(new CompanyDto()).build();
+		Computer computer = new Computer();
+		when(computerMapper.convertDtoToComputer(computerDto)).thenReturn(computer);
+		
+		ComputerDto actual = jsonControllerAngular.addCompter(computerDto);
+		
+		verify(computerMapper).convertDtoToComputer(computerDto);
+		verify(computerService).insertOne(computer);
+	}
+	
+	@Test
+	public void deleteComputer() {
+		
+		jsonControllerAngular.doGet(ID);
+		
+		verify(computerService).deleteOne(ID);
 	}
 }
